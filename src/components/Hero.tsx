@@ -7,15 +7,48 @@ import { Phone, Calendar, ArrowRight, ShieldCheck, Sparkles, Cpu, CheckCircle2 }
 interface HeroProps {
   onNavigate: (route: PageRoute) => void;
   onOpenBooking: () => void;
-  onOpenLead: () => void;
+  onOpenLeadModal?: () => void;
+  onOpenLead?: () => void;
 }
 
-export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenBooking, onOpenLead }) => {
+export const Hero: React.FC<HeroProps> = ({ 
+  onNavigate, 
+  onOpenBooking, 
+  onOpenLeadModal,
+  onOpenLead 
+}) => {
+  const handleOpenLead = onOpenLeadModal || onOpenLead || onOpenBooking;
   return (
     <section 
       id="hero-section"
       className="relative min-h-[92vh] pt-28 pb-16 lg:pt-36 lg:pb-24 flex items-center overflow-hidden bg-midnight-radial"
     >
+      {/* Background High-Tech Video Loop */}
+      <div className="absolute inset-0 w-full h-full overflow-hidden pointer-events-none z-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover object-center opacity-25 filter contrast-125 brightness-95 mix-blend-screen scale-105"
+          poster="https://images.unsplash.com/photo-1550751827-4bd374c3f58b?q=80&w=1600&auto=format&fit=crop"
+        >
+          <source
+            src="https://assets.mixkit.co/videos/preview/mixkit-circuit-board-details-and-components-41559-large.mp4"
+            type="video/mp4"
+          />
+          <source
+            src="https://assets.mixkit.co/videos/preview/mixkit-technology-network-connections-background-loop-42866-large.mp4"
+            type="video/mp4"
+          />
+        </video>
+        
+        {/* Dark overlays to maintain pristine text legibility & contrast */}
+        <div className="absolute inset-0 bg-[#030612]/75 backdrop-blur-[1px]" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#030612]/90 via-[#030612]/50 to-[#030612]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,_var(--tw-gradient-stops))] from-blue-900/10 via-transparent to-[#030612]/80" />
+      </div>
+
       {/* Ambient background glows */}
       <div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] sm:w-[800px] h-[450px] bg-blue-600/10 rounded-full blur-[140px] pointer-events-none" />
       <div className="absolute top-20 right-10 w-80 h-80 bg-cyan-600/10 rounded-full blur-[100px] pointer-events-none" />
@@ -177,7 +210,7 @@ export const Hero: React.FC<HeroProps> = ({ onNavigate, onOpenBooking, onOpenLea
               {/* Bottom Quick Action */}
               <button
                 id="hero-lead-quick-btn"
-                onClick={onOpenLead}
+                onClick={handleOpenLead}
                 className="w-full py-2.5 rounded-xl bg-gradient-to-r from-blue-900/50 to-slate-900 border border-blue-600/30 hover:border-blue-500 text-xs font-semibold text-blue-200 hover:text-white transition-all flex items-center justify-center gap-2"
               >
                 <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />

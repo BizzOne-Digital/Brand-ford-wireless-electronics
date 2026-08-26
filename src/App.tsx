@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { PageRoute, ServiceCategoryItem, ProductItem } from './types';
 import { BUSINESS_INFO } from './data/mockData';
 
 // Component imports
-import { IntroLoader } from './components/IntroLoader';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { TrustStrip } from './components/TrustStrip';
@@ -28,7 +27,6 @@ import { PrivacyTermsModal } from './components/PrivacyTermsModal';
 import { Toast } from './components/Toast';
 
 export function App() {
-  const [showIntro, setShowIntro] = useState(true);
   const [currentRoute, setCurrentRoute] = useState<PageRoute>('home');
   
   // Modals & Interactivity
@@ -60,19 +58,13 @@ export function App() {
 
   return (
     <div className="min-h-screen bg-[#030610] text-slate-100 selection:bg-blue-600 selection:text-white font-sans antialiased overflow-x-hidden">
-      
-      {/* 1. Intro Animation */}
-      {showIntro && (
-        <IntroLoader onComplete={() => setShowIntro(false)} />
-      )}
-
-      {/* 2. Toast Notifications */}
+      {/* Toast Notifications */}
       <Toast
         message={toastMessage}
         onClose={() => setToastMessage(null)}
       />
 
-      {/* 3. Sticky Luxury Header Navigation */}
+      {/* Sticky Luxury Header Navigation */}
       <Header
         currentRoute={currentRoute}
         onNavigate={handleNavigate}

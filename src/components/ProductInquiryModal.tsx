@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ProductItem } from '../types';
 import { BUSINESS_INFO } from '../data/mockData';
-import { X, Send, Phone, CheckCircle2, ShieldCheck } from 'lucide-react';
+import { X, Send, Phone, CheckCircle2, ShieldCheck, Sparkles, MessageSquare } from 'lucide-react';
 
 interface ProductInquiryModalProps {
   product: ProductItem | null;
@@ -23,11 +23,27 @@ export const ProductInquiryModal: React.FC<ProductInquiryModalProps> = ({
   });
   const [submitting, setSubmitting] = useState(false);
 
+  // Esc key and body scroll lock
+  useEffect(() => {
+    if (!product) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [product, onClose]);
+
   if (!product) return null;
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!formData.name || !formData.phone) return;
+    if (!formData.name.trim() || !formData.phone.trim()) return;
 
     setSubmitting(true);
     setTimeout(() => {
@@ -36,156 +52,175 @@ export const ProductInquiryModal: React.FC<ProductInquiryModalProps> = ({
         `Thank you ${formData.name}! Your inquiry for "${product.name}" has been sent to Ernest. We will contact you at ${formData.phone} shortly.`
       );
       onClose();
-    }, 600);
+    }, 500);
   };
 
   return (
     <div 
       id="product-inquiry-modal"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-md overflow-y-auto animate-in fade-in duration-200"
+      className="fixed inset-0 z-[999] overflow-y-auto bg-black/85 backdrop-blur-md flex justify-center items-start p-3 sm:p-4 pt-24 sm:pt-28 md:pt-32 pb-20 animate-in fade-in duration-150"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) onClose();
+      }}
     >
-      <div className="relative w-full max-w-xl bg-[#080d1e] border border-blue-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl text-slate-200 my-8">
-        
-        {/* Close Button */}
-        <button
-          id="product-modal-close-btn"
-          onClick={onClose}
-          className="absolute top-5 right-5 p-2 rounded-full bg-slate-900/80 border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors"
-          aria-label="Close product modal"
-        >
-          <X className="w-5 h-5" />
-        </button>
+      <div 
+        className="relative w-full max-w-sm sm:max-w-md bg-[#070d1e] border border-blue-500/40 rounded-2xl shadow-2xl text-slate-200 flex flex-col max-h-[calc(100vh-8rem)] sm:max-h-[calc(100vh-9.5rem)] overflow-hidden"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Pinned Header */}
+        <div className="flex items-center justify-between px-3.5 py-2.5 sm:px-4 sm:py-3 border-b border-slate-800 bg-[#091126] shrink-0">
+          <div className="flex items-center gap-2 min-w-0 pr-2">
+            <div className="w-7 h-7 rounded-lg bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400 shrink-0">
+              <MessageSquare className="w-3.5 h-3.5" />
+            </div>
+            <div className="min-w-0">
+              <h2 className="text-xs sm:text-sm font-bold text-white font-display truncate leading-tight">
+                Product Inquiry
+              </h2>
+              <span className="text-[10px] text-blue-400 font-semibold uppercase tracking-wider block leading-none mt-0.5 truncate">
+                {product.name}
+              </span>
+            </div>
+          </div>
 
-        {/* Product Snapshot Header */}
-        <div className="flex items-center gap-4 mb-6 pb-5 border-b border-slate-800">
-          <div className="w-16 h-16 rounded-2xl overflow-hidden bg-slate-950 border border-slate-800 shrink-0">
-            <img
-              src={product.image}
-              alt={product.name}
-              className="w-full h-full object-cover"
-              loading="lazy"
-              referrerPolicy="no-referrer"
-            />
-          </div>
-          <div>
-            <span className="text-[11px] font-semibold text-blue-400 uppercase tracking-wider">
-              {product.categoryLabel}
-            </span>
-            <h3 className="text-lg sm:text-xl font-bold text-white font-display">
-              {product.name}
-            </h3>
-            <span className="text-xs text-slate-400">
-              Status: <span className="text-blue-300 font-medium">{product.status}</span>
-            </span>
-          </div>
+          <button
+            id="product-modal-close-btn"
+            onClick={onClose}
+            className="p-1.5 rounded-lg bg-slate-900/90 border border-slate-700 text-slate-400 hover:text-white hover:bg-slate-800 transition-colors focus:outline-none shrink-0"
+            aria-label="Close product modal"
+          >
+            <X className="w-4 h-4" />
+          </button>
         </div>
 
-        {/* Inquiry Form */}
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-              Your Full Name *
-            </label>
-            <input
-              type="text"
-              required
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              placeholder="e.g. Alex Mitchell"
-              className="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-            />
-          </div>
+        {/* Scrollable Form Body */}
+        <form onSubmit={handleSubmit} className="flex-1 overflow-y-auto p-3.5 sm:p-4 space-y-3 flex flex-col justify-between">
+          <div className="space-y-2.5">
+            {/* Product Snapshot Card */}
+            <div className="flex items-center gap-2.5 p-2 rounded-xl bg-slate-950/80 border border-slate-800/80 shrink-0">
+              <div className="w-10 h-10 rounded-lg overflow-hidden bg-slate-900 border border-slate-800 shrink-0">
+                <img
+                  src={product.image}
+                  alt={product.name}
+                  className="w-full h-full object-cover"
+                  loading="lazy"
+                  referrerPolicy="no-referrer"
+                />
+              </div>
+              <div className="min-w-0 flex-1">
+                <div className="text-[9px] font-bold text-blue-400 uppercase tracking-wider truncate">
+                  {product.categoryLabel}
+                </div>
+                <div className="text-xs font-bold text-white truncate">
+                  {product.name}
+                </div>
+                <div className="text-[10px] text-emerald-400 font-medium">
+                  {product.status}
+                </div>
+              </div>
+            </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                Phone Number *
+              <label className="block text-[10px] font-semibold text-slate-300 uppercase tracking-wider mb-1">
+                Your Full Name *
               </label>
               <input
-                type="tel"
+                type="text"
                 required
-                value={formData.phone}
-                onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                placeholder="(416) 000-0000"
-                className="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+                value={formData.name}
+                onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                placeholder="e.g. Alex Mitchell"
+                className="w-full bg-slate-950/80 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
               />
             </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              <div>
+                <label className="block text-[10px] font-semibold text-slate-300 uppercase tracking-wider mb-1">
+                  Phone Number *
+                </label>
+                <input
+                  type="tel"
+                  required
+                  value={formData.phone}
+                  onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                  placeholder="(416) 000-0000"
+                  className="w-full bg-slate-950/80 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+              <div>
+                <label className="block text-[10px] font-semibold text-slate-300 uppercase tracking-wider mb-1">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                  placeholder="your.email@domain.com"
+                  className="w-full bg-slate-950/80 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                />
+              </div>
+            </div>
+
             <div>
-              <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-                Email Address
+              <label className="block text-[10px] font-semibold text-slate-300 uppercase tracking-wider mb-1">
+                Inquiry Type
               </label>
-              <input
-                type="email"
-                value={formData.email}
-                onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                placeholder="your.email@domain.com"
-                className="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+              <select
+                value={formData.inquiryType}
+                onChange={(e) => setFormData({ ...formData, inquiryType: e.target.value })}
+                className="w-full bg-slate-950/80 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-xs text-white focus:outline-none focus:border-blue-500"
+              >
+                <option value="Availability & Pricing">Check Availability & Pricing</option>
+                <option value="Custom Configuration">Request Custom Specs</option>
+                <option value="Hold Item">Hold / Reserve Item for Pickup</option>
+                <option value="General Question">General Product Question</option>
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-[10px] font-semibold text-slate-300 uppercase tracking-wider mb-1">
+                Questions / Notes (Optional)
+              </label>
+              <textarea
+                rows={2}
+                value={formData.message}
+                onChange={(e) => setFormData({ ...formData, message: e.target.value })}
+                placeholder="Questions regarding warranty, specs, or availability..."
+                className="w-full bg-slate-950/80 border border-slate-700/80 rounded-lg px-2.5 py-1.5 text-xs text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 resize-none"
               />
             </div>
           </div>
 
-          <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-              Inquiry Type
-            </label>
-            <select
-              value={formData.inquiryType}
-              onChange={(e) => setFormData({ ...formData, inquiryType: e.target.value })}
-              className="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
-            >
-              <option value="Availability & Pricing">Check Showroom Availability & Pricing</option>
-              <option value="Custom Configuration">Request Custom Configuration / Specific Specs</option>
-              <option value="Hold Item">Hold / Reserve Item for Pickup</option>
-              <option value="General Question">General Product Question</option>
-            </select>
-          </div>
-
-          <div>
-            <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1.5">
-              Specific Message or Notes (Optional)
-            </label>
-            <textarea
-              rows={3}
-              value={formData.message}
-              onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-              placeholder="e.g. Inquiring about preferred storage capacity or color options..."
-              className="w-full bg-slate-900/90 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 resize-none"
-            />
-          </div>
-
-          <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-3">
+          {/* Form Actions */}
+          <div className="pt-2 border-t border-slate-800/80 flex items-center justify-between gap-2 shrink-0">
             <a
               href={`tel:${BUSINESS_INFO.phoneRaw}`}
-              className="w-full sm:w-auto text-xs text-slate-400 hover:text-blue-300 flex items-center justify-center gap-1.5 py-2"
+              className="text-[11px] text-slate-400 hover:text-blue-300 flex items-center gap-1 py-1"
             >
-              <Phone className="w-3.5 h-3.5 text-blue-400" />
-              <span>Or call {BUSINESS_INFO.phone}</span>
+              <Phone className="w-3 h-3 text-blue-400" />
+              <span>Call {BUSINESS_INFO.phone}</span>
             </a>
 
             <button
               id="submit-product-inquiry-btn"
               type="submit"
               disabled={submitting}
-              className="w-full sm:w-auto px-6 py-3 rounded-xl text-xs sm:text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-600/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50"
+              className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-md shadow-blue-600/30 border border-blue-400/30 transition-all flex items-center justify-center gap-1.5 disabled:opacity-50 active:scale-[0.98]"
             >
               {submitting ? (
                 <span>Sending...</span>
               ) : (
                 <>
-                  <Send className="w-4 h-4" />
-                  <span>Send Product Inquiry</span>
+                  <Send className="w-3.5 h-3.5" />
+                  <span>Send Inquiry</span>
                 </>
               )}
             </button>
           </div>
         </form>
-
-        <div className="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-400 flex items-center gap-2">
-          <ShieldCheck className="w-3.5 h-3.5 text-blue-400" />
-          <span>Inquiries are answered directly by Ernest. No automated spam.</span>
-        </div>
-
       </div>
     </div>
   );
 };
+

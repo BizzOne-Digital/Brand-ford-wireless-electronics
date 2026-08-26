@@ -192,9 +192,10 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                     <button
                       id={`ask-product-${product.id}`}
                       onClick={() => setActiveInquiryProduct(product)}
-                      className="px-4 py-2 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-md shadow-blue-600/30 transition-all flex items-center gap-1.5"
+                      className="px-4 py-2.5 rounded-xl text-xs font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-md shadow-blue-600/30 border border-blue-400/30 transition-all flex items-center gap-1.5 active:scale-95"
+                      aria-label={`Inquire about ${product.name}`}
                     >
-                      <span>Ask About This</span>
+                      <span>Inquire About This</span>
                       <ArrowRight className="w-3.5 h-3.5" />
                     </button>
                   </div>
