@@ -1,0 +1,6 @@
+{
+  "name": "Brantford Wireless & Electronics",
+  "description": "Premium luxury consumer electronics, computer sales, repair services, and technology solutions in Brantford.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
