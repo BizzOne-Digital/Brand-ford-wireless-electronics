@@ -106,3 +106,18 @@ export interface ContactSubmission {
   subject: string;
   message: string;
 }
+
+export interface PromoSlide {
+  id: string;
+  /** Small pill above the headline. Keep it 1-3 words. */
+  badge: string;
+  headline: string;
+  /** One short supporting line. Aim for under 14 words. */
+  body: string;
+  ctaLabel: string;
+  /** Where the CTA sends the visitor. 'booking' opens the booking page. */
+  ctaRoute: PageRoute;
+  image: string;
+  /** Alt text for the product image. Required. */
+  imageAlt: string;
+}

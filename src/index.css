@@ -1,84 +1,221 @@
 @import "tailwindcss";
 
+/* ==========================================================================
+   Brantford Wireless & Electronics - Design Tokens
+   Bright blue + white retail system. See /DESIGN.md for the rules.
+   ========================================================================== */
+
+@theme {
+  /* Brand blue: one controlled ramp, no ad-hoc blues */
+  --color-brand-50:  #F0F6FF;
+  --color-brand-100: #DDEAFE;
+  --color-brand-200: #BFD8FD;
+  --color-brand-300: #93BDFA;
+  --color-brand-400: #5E9AF6;
+  --color-brand-500: #3B82F6;
+  --color-brand-600: #1D6AE5;  /* primary action */
+  --color-brand-700: #1553BE;  /* hover, links on light */
+  --color-brand-800: #133F8F;
+  --color-brand-900: #102F66;
+
+  /* Neutrals: cool, blue-leaning, never warm grey */
+  --color-ink:   #0A1B33;  /* headings, dark contrast band */
+  --color-copy:  #4A5C74;  /* body text */
+  --color-faint: #5A6B80;  /* labels, meta, fine print (AA on white, mist and frost) */
+  --color-line:  #E4EAF3;  /* hairline borders */
+  --color-mist:  #F5F8FC;  /* soft grey surface */
+  --color-frost: #ECF3FF;  /* light blue surface */
+
+  --font-display: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+  --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
 @layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
   body {
-    font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-    background-color: #040711;
-    color: #e2e8f0;
+    font-family: var(--font-sans);
+    background-color: #ffffff;
+    color: var(--color-copy);
     overflow-x: hidden;
   }
 
   h1, h2, h3, h4, .font-display {
-    font-family: 'Space Grotesk', 'Plus Jakarta Sans', sans-serif;
+    font-family: var(--font-display);
     letter-spacing: -0.025em;
+    color: var(--color-ink);
+  }
+
+  /* One focus grammar for the whole site */
+  :where(a, button, input, select, textarea, [tabindex]):focus-visible {
+    outline: 2px solid var(--color-brand-600);
+    outline-offset: 2px;
+    border-radius: 6px;
   }
 }
 
-/* Custom Luxury Gradients and Glass Effects */
-.bg-midnight-radial {
-  background: radial-gradient(circle at 50% 20%, rgba(29, 78, 216, 0.15), rgba(4, 7, 17, 0.95) 75%), #040711;
+@layer components {
+  /* Section rhythm. Apple-style: generous air, colour change is the divider. */
+  .section {
+    padding-block: 3.5rem;
+  }
+  @media (min-width: 1024px) {
+    .section { padding-block: 5.5rem; }
+  }
+
+  .shell {
+    width: 100%;
+    max-width: 80rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 640px) { .shell { padding-inline: 1.5rem; } }
+  @media (min-width: 1024px) { .shell { padding-inline: 2rem; } }
+
+  /* The header spans wider than the content column so the 8-item nav keeps
+     real gaps around it at every desktop width. */
+  .shell-wide {
+    width: 100%;
+    max-width: 90rem;
+    margin-inline: auto;
+    padding-inline: 1rem;
+  }
+  @media (min-width: 640px) { .shell-wide { padding-inline: 1.5rem; } }
+  @media (min-width: 1024px) { .shell-wide { padding-inline: 2rem; } }
+
+  /* Card: white, hairline, weightless until you touch it. */
+  .card {
+    background-color: #ffffff;
+    border: 1px solid var(--color-line);
+    border-radius: 1rem;
+    transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+  }
+
+  .card-interactive:hover {
+    border-color: var(--color-brand-200);
+    box-shadow: 0 12px 28px -18px rgba(10, 27, 51, 0.35);
+    transform: translateY(-2px);
+  }
+
+  /* Buttons: one primary grammar, one secondary, one quiet. */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    font-size: 0.9375rem;
+    line-height: 1;
+    padding: 0.875rem 1.5rem;
+    border-radius: 9999px;
+    min-height: 44px;
+    transition: background-color 180ms ease, color 180ms ease, border-color 180ms ease;
+    white-space: nowrap;
+  }
+
+  .btn-primary {
+    background-color: var(--color-brand-600);
+    color: #ffffff;
+  }
+  .btn-primary:hover { background-color: var(--color-brand-700); }
+
+  .btn-secondary {
+    background-color: #ffffff;
+    color: var(--color-brand-700);
+    border: 1px solid var(--color-brand-200);
+  }
+  .btn-secondary:hover {
+    border-color: var(--color-brand-400);
+    background-color: var(--color-brand-50);
+  }
+
+  .btn-onink {
+    background-color: #ffffff;
+    color: var(--color-ink);
+  }
+  .btn-onink:hover { background-color: var(--color-brand-50); }
+
+  /* Eyebrow label. Used sparingly, see DESIGN.md. */
+  .eyebrow {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--color-brand-700);
+  }
+
+  /* Product imagery: the one shadow in the system. */
+  .product-shadow {
+    box-shadow: 0 18px 40px -24px rgba(10, 27, 51, 0.45);
+  }
+
+  /* Caret for the home hero typing effect. Stops with the global
+     prefers-reduced-motion block further down. */
+  .type-caret {
+    display: inline-block;
+    width: 0.07em;
+    height: 0.82em;
+    margin-left: 0.06em;
+    vertical-align: -0.06em;
+    background-color: var(--color-brand-600);
+    animation: caretBlink 1s steps(1) infinite;
+  }
+
+  .trust-marquee-track {
+    display: flex;
+    width: max-content;
+    animation: trustMarquee 24s linear infinite;
+  }
+
+  .trust-marquee-group {
+    flex: 0 0 100vw;
+  }
+
+  @keyframes trustMarquee {
+    from { transform: translateX(0); }
+    to { transform: translateX(-100vw); }
+  }
+
+  @keyframes caretBlink {
+    0%, 45% { opacity: 1; }
+    55%, 100% { opacity: 0; }
+  }
+
+  .field {
+    width: 100%;
+    background-color: #ffffff;
+    border: 1px solid var(--color-line);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: var(--color-ink);
+    font-size: 0.9375rem;
+    transition: border-color 160ms ease, box-shadow 160ms ease;
+  }
+  .field::placeholder { color: var(--color-faint); }
+  .field:focus {
+    border-color: var(--color-brand-500);
+    box-shadow: 0 0 0 3px var(--color-brand-100);
+    outline: none;
+  }
 }
 
-.bg-midnight-card {
-  background: linear-gradient(135deg, rgba(15, 23, 42, 0.8) 0%, rgba(7, 12, 27, 0.9) 100%);
-  border: 1px solid rgba(59, 130, 246, 0.15);
-  backdrop-filter: blur(16px);
-}
-
-.bg-midnight-card-hover:hover {
-  border-color: rgba(59, 130, 246, 0.4);
-  box-shadow: 0 10px 35px -5px rgba(37, 99, 235, 0.18);
-}
-
-.glow-blue {
-  box-shadow: 0 0 40px -10px rgba(59, 130, 246, 0.35);
-}
-
-.glow-blue-lg {
-  box-shadow: 0 0 80px -15px rgba(37, 99, 235, 0.45);
-}
-
-.text-gradient-silver {
-  background: linear-gradient(180deg, #FFFFFF 0%, #CBD5E1 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.text-gradient-blue {
-  background: linear-gradient(135deg, #60A5FA 0%, #3B82F6 50%, #93C5FD 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-/* Custom Scrollbar */
-::-webkit-scrollbar {
-  width: 8px;
-}
-::-webkit-scrollbar-track {
-  background: #040711;
-}
+/* Scrollbar tuned to the light surface */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--color-mist); }
 ::-webkit-scrollbar-thumb {
-  background: #1e293b;
-  border-radius: 4px;
+  background: #C9D5E5;
+  border-radius: 5px;
+  border: 2px solid var(--color-mist);
 }
-::-webkit-scrollbar-thumb:hover {
-  background: #334155;
-}
+::-webkit-scrollbar-thumb:hover { background: #AEBED4; }
 
-@keyframes floatSlow {
-  0%, 100% { transform: translateY(0px) rotate(0deg); }
-  50% { transform: translateY(-8px) rotate(1deg); }
-}
-
-@keyframes pulseGlow {
-  0%, 100% { opacity: 0.4; transform: scale(1); }
-  50% { opacity: 0.8; transform: scale(1.05); }
-}
-
-.animate-float {
-  animation: floatSlow 6s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulseGlow 8s ease-in-out infinite;
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
 }

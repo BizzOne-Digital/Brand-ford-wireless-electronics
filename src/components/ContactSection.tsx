@@ -1,21 +1,21 @@
 import React, { useState } from 'react';
 import { BUSINESS_INFO } from '../data/mockData';
 import { ContactSubmission, PageRoute } from '../types';
-import { 
-  Phone, 
-  Mail, 
-  Globe, 
-  Instagram, 
-  Sparkles, 
-  Send, 
-  ShieldCheck, 
-  MapPin, 
-  CheckCircle2, 
-  MessageSquare,
-  Calendar
+import {
+  Phone,
+  Mail,
+  Instagram,
+  Send,
+  ShieldCheck,
+  MapPin,
+  CheckCircle2,
+  Calendar,
 } from 'lucide-react';
 
 interface ContactSectionProps {
+  /** Suppress the in-section title when a PageHero already states it. */
+  hideHeader?: boolean;
+  /** Full page shows the message form; the homepage shows a compact contact band. */
   isFullPage?: boolean;
   onNavigate?: (route: PageRoute) => void;
   onOpenBooking?: () => void;
@@ -23,8 +23,8 @@ interface ContactSectionProps {
 }
 
 export const ContactSection: React.FC<ContactSectionProps> = ({
+  hideHeader = false,
   isFullPage = false,
-  onNavigate,
   onOpenBooking,
   onNotify = (_msg: string) => {},
 }) => {
@@ -41,7 +41,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!formData.name || !formData.phone || !formData.message) {
-      onNotify('Please fill in your name, phone number, and message.');
+      onNotify('Please fill in your name, phone number and message.');
       return;
     }
 
@@ -50,288 +50,261 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
       setSubmitting(false);
       setSubmitted(true);
       onNotify(
-        `Thank you ${formData.name}! Your message has been sent to Ernest at Brantford Wireless. We will respond promptly.`
+        `Thank you ${formData.name}. Your message has been sent. We will respond promptly.`
       );
     }, 600);
   };
 
-  return (
-    <section 
-      id="contact-section"
-      className={`relative ${isFullPage ? 'pt-32 pb-24' : 'py-20 lg:py-28'} bg-[#040711]`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-        
-        {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-blue-950/70 border border-blue-800/40 text-blue-400 text-xs font-semibold uppercase tracking-wider mb-4">
-            <Sparkles className="w-3.5 h-3.5" />
-            <span>Direct Communication</span>
+  const details = (
+    <div className="space-y-1">
+      <a
+        id="contact-info-phone"
+        href={`tel:${BUSINESS_INFO.phoneRaw}`}
+        className="flex min-h-[44px] items-center gap-3 text-ink hover:text-brand-700 transition-colors"
+      >
+        <Phone aria-hidden="true" className="w-4 h-4 text-brand-600 shrink-0" />
+        <span className="font-semibold">{BUSINESS_INFO.phone}</span>
+      </a>
+
+      <a
+        id="contact-info-email"
+        href={`mailto:${BUSINESS_INFO.email}`}
+        className="flex min-h-[44px] items-center gap-3 text-copy hover:text-brand-700 transition-colors min-w-0"
+      >
+        <Mail aria-hidden="true" className="w-4 h-4 text-brand-600 shrink-0" />
+        <span className="truncate">{BUSINESS_INFO.email}</span>
+      </a>
+
+      <a
+        href={BUSINESS_INFO.socialUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex min-h-[44px] items-center gap-3 text-copy hover:text-brand-700 transition-colors"
+      >
+        <Instagram aria-hidden="true" className="w-4 h-4 text-brand-600 shrink-0" />
+        <span>{BUSINESS_INFO.social}</span>
+      </a>
+
+      <p className="flex items-start gap-3 text-copy">
+        <MapPin aria-hidden="true" className="w-4 h-4 text-brand-600 shrink-0 mt-0.5" />
+        <span>{BUSINESS_INFO.locationNote}</span>
+      </p>
+    </div>
+  );
+
+  /* Homepage: a short contact band. The full form lives on the contact page. */
+  if (!isFullPage) {
+    return (
+      <section id="contact-section" className="section bg-mist">
+        <div className="shell">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-start">
+            <div>
+              <h2 className="text-2xl sm:text-3xl lg:text-[2.5rem] lg:leading-[1.1] font-bold text-ink">
+                Come in, or call us first
+              </h2>
+              <p className="mt-4 text-base sm:text-lg text-copy leading-relaxed max-w-[46ch]">
+                Ask for {BUSINESS_INFO.contactPerson}. We are happy to talk through a repair,
+                a device upgrade or a quote before you visit.
+              </p>
+
+              <div className="mt-7 flex flex-col sm:flex-row gap-3">
+                {onOpenBooking && (
+                  <button
+                    id="contact-book-shortcut-btn"
+                    onClick={onOpenBooking}
+                    className="btn btn-primary"
+                  >
+                    <Calendar aria-hidden="true" className="w-4 h-4" />
+                    <span>Book a Service</span>
+                  </button>
+                )}
+                <a href={`tel:${BUSINESS_INFO.phoneRaw}`} className="btn btn-secondary">
+                  <Phone aria-hidden="true" className="w-4 h-4" />
+                  <span>Call {BUSINESS_INFO.phone}</span>
+                </a>
+              </div>
+            </div>
+
+            <div className="lg:pt-2 text-[0.95rem]">{details}</div>
           </div>
-
-          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white tracking-tight mb-4 font-display">
-            Contact Brantford Wireless & Electronics
-          </h2>
-
-          <p className="text-sm sm:text-base text-slate-300">
-            Have a question about a device, computer repair, or accessory? Speak with Ernest directly or send us an inquiry.
-          </p>
         </div>
+      </section>
+    );
+  }
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-start">
-          
-          {/* Left Column: Direct Business Contact Cards */}
-          <div className="lg:col-span-5 space-y-6">
-            
-            {/* Primary Info Card */}
-            <div className="bg-[#070d1e] border border-blue-500/30 rounded-3xl p-6 sm:p-8 shadow-2xl space-y-6">
-              <div className="border-b border-slate-800 pb-4">
-                <span className="text-xs uppercase tracking-widest text-blue-400 font-bold font-display">
-                  Business Details
-                </span>
-                <h3 className="text-xl sm:text-2xl font-extrabold text-white mt-1 font-display">
-                  {BUSINESS_INFO.name}
-                </h3>
-                <p className="text-xs text-slate-400 mt-1">
-                  Primary Contact: <strong className="text-slate-200">{BUSINESS_INFO.contactPerson}</strong>
-                </p>
-              </div>
+  /* Contact page: details plus the message form. */
+  return (
+    <section id="contact-section" className="section bg-white">
+      <div className="shell">
 
-              {/* Direct Channels */}
-              <div className="space-y-4">
-                {/* Phone */}
-                <a
-                  id="contact-info-phone"
-                  href={`tel:${BUSINESS_INFO.phoneRaw}`}
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-blue-500/40 transition-all group"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-blue-950/80 border border-blue-800/50 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
-                      Direct Phone / Calls
-                    </span>
-                    <span className="text-sm sm:text-base font-bold text-white group-hover:text-blue-300 transition-colors">
-                      {BUSINESS_INFO.phone}
-                    </span>
-                  </div>
-                </a>
+        {!hideHeader && (
+  <div className="max-w-2xl">
+            <h2 className="text-2xl sm:text-3xl lg:text-[2.5rem] lg:leading-[1.1] font-bold text-ink">
+              Contact {BUSINESS_INFO.shortName}
+            </h2>
+            <p className="mt-4 text-base sm:text-lg text-copy leading-relaxed">
+              Primary contact:{' '}
+              <strong className="text-ink font-semibold">{BUSINESS_INFO.contactPerson}</strong>.
+              Call for the fastest answer, or send a message and we will get back to you.
+            </p>
+          </div>
+        )}
 
-                {/* Email */}
-                <a
-                  id="contact-info-email"
-                  href={`mailto:${BUSINESS_INFO.email}`}
-                  className="flex items-center gap-4 p-4 rounded-2xl bg-slate-900/80 border border-slate-800 hover:border-blue-500/40 transition-all group"
-                >
-                  <div className="w-11 h-11 rounded-xl bg-blue-950/80 border border-blue-800/50 flex items-center justify-center text-blue-400 group-hover:scale-110 transition-transform">
-                    <Mail className="w-5 h-5" />
-                  </div>
-                  <div className="overflow-hidden">
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
-                      Email Inquiries
-                    </span>
-                    <span className="text-xs sm:text-sm font-semibold text-white group-hover:text-blue-300 transition-colors truncate block">
-                      {BUSINESS_INFO.email}
-                    </span>
-                  </div>
-                </a>
+        <div className={`${hideHeader ? '' : 'mt-10 lg:mt-14'} grid lg:grid-cols-12 gap-8 lg:gap-12 items-start`}>
 
-                {/* Website */}
-                <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-                  <div className="w-11 h-11 rounded-xl bg-blue-950/80 border border-blue-800/50 flex items-center justify-center text-blue-400">
-                    <Globe className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
-                      Official Domain
-                    </span>
-                    <span className="text-xs sm:text-sm font-semibold text-white">
-                      {BUSINESS_INFO.website}
-                    </span>
-                  </div>
-                </div>
-
-                {/* Social Media */}
-                <div className="flex items-center gap-4 p-4 rounded-2xl bg-slate-900/80 border border-slate-800">
-                  <div className="w-11 h-11 rounded-xl bg-blue-950/80 border border-blue-800/50 flex items-center justify-center text-blue-400">
-                    <Instagram className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <span className="text-[10px] uppercase font-bold text-slate-400 block tracking-wider">
-                      Social Media
-                    </span>
-                    <span className="text-xs sm:text-sm font-semibold text-blue-400">
-                      {BUSINESS_INFO.social}
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Service Region Note */}
-              <div className="p-4 rounded-2xl bg-blue-950/40 border border-blue-800/30 flex items-start gap-3">
-                <MapPin className="w-5 h-5 text-blue-400 shrink-0 mt-0.5" />
-                <div className="text-xs text-slate-300">
-                  <strong className="text-white block mb-0.5">Location & Area Served</strong>
-                  Serving Brantford & surrounding Ontario communities. Please contact Ernest by phone or appointment form for showroom visits and service drop-offs.
-                </div>
-              </div>
-
-              {/* Book button shortcut */}
+          <div className="lg:col-span-5">
+            <div className="rounded-2xl bg-mist border border-line p-6 sm:p-7">
+              {details}
               {onOpenBooking && (
                 <button
                   id="contact-book-shortcut-btn"
                   onClick={onOpenBooking}
-                  className="w-full py-3 rounded-xl text-xs sm:text-sm font-bold text-white bg-slate-900 hover:bg-slate-800 border border-slate-700 hover:border-blue-500/50 flex items-center justify-center gap-2 transition-all"
+                  className="btn btn-primary w-full mt-6"
                 >
-                  <Calendar className="w-4 h-4 text-blue-400" />
-                  <span>Prefer To Schedule An Appointment?</span>
+                  <Calendar aria-hidden="true" className="w-4 h-4" />
+                  <span>Book a Service</span>
                 </button>
               )}
             </div>
-
           </div>
 
-          {/* Right Column: Contact Message Form */}
-          <div className="lg:col-span-7 bg-[#070d1e] border border-blue-900/20 rounded-3xl p-6 sm:p-10 shadow-2xl">
-            <div className="flex items-center gap-3 mb-6 pb-4 border-b border-slate-800">
-              <div className="w-10 h-10 rounded-xl bg-blue-600/20 border border-blue-500/40 flex items-center justify-center text-blue-400">
-                <MessageSquare className="w-5 h-5" />
-              </div>
-              <div>
-                <h3 className="text-xl font-bold text-white font-display">
-                  Send a Direct Message
-                </h3>
-                <p className="text-xs text-slate-400">
-                  Fill out the form below and Ernest will respond promptly.
-                </p>
-              </div>
-            </div>
-
+          <div className="lg:col-span-7">
             {submitted ? (
-              <div className="text-center py-12 space-y-4 animate-in fade-in zoom-in-95">
-                <div className="w-14 h-14 rounded-full bg-blue-600/20 border border-blue-400/50 flex items-center justify-center mx-auto text-blue-400">
-                  <CheckCircle2 className="w-7 h-7" />
-                </div>
-                <h4 className="text-2xl font-bold text-white font-display">Message Dispatched!</h4>
-                <p className="text-sm text-slate-300 max-w-md mx-auto">
-                  Thank you, <strong className="text-white">{formData.name}</strong>. Your inquiry regarding "{formData.subject}" has been received. We will contact you at <strong className="text-blue-300">{formData.phone}</strong>.
+              <div className="card p-8 text-center">
+                <span className="w-14 h-14 rounded-full bg-brand-50 flex items-center justify-center mx-auto text-brand-600">
+                  <CheckCircle2 aria-hidden="true" className="w-7 h-7" />
+                </span>
+                <h3 className="mt-5 text-xl font-bold text-ink">Message sent</h3>
+                <p className="mt-3 text-sm text-copy max-w-md mx-auto">
+                  Thank you, <strong className="text-ink font-semibold">{formData.name}</strong>.
+                  Your inquiry about {formData.subject} has been received. We will contact you
+                  at <strong className="text-ink font-semibold">{formData.phone}</strong>.
                 </p>
                 <button
                   onClick={() => setSubmitted(false)}
-                  className="px-6 py-2.5 rounded-xl text-xs font-semibold text-white bg-blue-600 hover:bg-blue-500 transition-colors"
+                  className="btn btn-secondary mt-6"
                 >
-                  Send Another Message
+                  Send another message
                 </button>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="card p-6 sm:p-8 space-y-4">
+                <h3 className="text-lg font-bold text-ink">Send a message</h3>
+
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
-                      Your Name *
+                    <label htmlFor="contact-name" className="block text-sm font-semibold text-ink mb-1.5">
+                      Your name <span className="text-brand-700">*</span>
                     </label>
                     <input
+                      id="contact-name"
+                      name="name"
                       type="text"
+                      autoComplete="name"
                       required
                       value={formData.name}
                       onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                      placeholder="e.g. Alex Mitchell"
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                      className="field"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
-                      Phone Number *
+                    <label htmlFor="contact-phone" className="block text-sm font-semibold text-ink mb-1.5">
+                      Phone number <span className="text-brand-700">*</span>
                     </label>
                     <input
+                      id="contact-phone"
+                      name="phone"
                       type="tel"
+                      autoComplete="tel"
                       required
                       value={formData.phone}
                       onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                      placeholder="(416) 000-0000"
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                      className="field"
                     />
                   </div>
                 </div>
 
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
-                      Email Address
+                    <label htmlFor="contact-email" className="block text-sm font-semibold text-ink mb-1.5">
+                      Email address
                     </label>
                     <input
+                      id="contact-email"
+                      name="email"
                       type="email"
+                      autoComplete="email"
                       value={formData.email}
                       onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                      placeholder="your.email@domain.com"
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500"
+                      className="field"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
-                      Subject / Topic
+                    <label htmlFor="contact-subject" className="block text-sm font-semibold text-ink mb-1.5">
+                      Subject
                     </label>
                     <select
+                      id="contact-subject"
+                      name="subject"
                       value={formData.subject}
                       onChange={(e) => setFormData({ ...formData, subject: e.target.value })}
-                      className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white focus:outline-none focus:border-blue-500"
+                      className="field"
                     >
                       <option value="General Inquiry">General Tech Inquiry</option>
-                      <option value="Mobile Phone / Accessories">Mobile Phones & Accessories</option>
+                      <option value="Mobile Phone / Accessories">Mobile Phones &amp; Accessories</option>
                       <option value="Computer Sales">Computer Sales Consultation</option>
-                      <option value="Repair Diagnostic">Repair & Diagnostic Question</option>
-                      <option value="Product Availability">Product Stock & Availability</option>
+                      <option value="Repair Diagnostic">Repair &amp; Diagnostic Question</option>
+                      <option value="Product Availability">Product Stock &amp; Availability</option>
                       <option value="Other Question">Other Question</option>
                     </select>
                   </div>
                 </div>
 
                 <div>
-                  <label className="block text-xs font-semibold text-slate-300 uppercase tracking-wider mb-1">
-                    Your Message *
+                  <label htmlFor="contact-message" className="block text-sm font-semibold text-ink mb-1.5">
+                    Your message <span className="text-brand-700">*</span>
                   </label>
                   <textarea
+                    id="contact-message"
+                    name="message"
                     rows={4}
                     required
                     value={formData.message}
                     onChange={(e) => setFormData({ ...formData, message: e.target.value })}
-                    placeholder="Tell us what device you have, what problem you are facing, or what products you need..."
-                    className="w-full bg-slate-900 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-blue-500 resize-none"
+                    placeholder="Tell us what device you have and what you need"
+                    className="field resize-none"
                   />
                 </div>
 
-                <div className="pt-2 flex flex-col sm:flex-row items-center justify-between gap-4">
-                  <div className="flex items-center gap-1.5 text-[11px] text-slate-400">
-                    <ShieldCheck className="w-4 h-4 text-blue-400" />
-                    <span>Direct responses from Ernest</span>
-                  </div>
+                <div className="pt-2 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                  <p className="flex items-center gap-2 text-xs text-faint">
+                    <ShieldCheck aria-hidden="true" className="w-4 h-4 text-brand-600" />
+                    <span>Replies come directly from {BUSINESS_INFO.contactPerson}</span>
+                  </p>
 
                   <button
                     id="submit-contact-form-btn"
                     type="submit"
                     disabled={submitting}
-                    className="w-full sm:w-auto px-8 py-3.5 rounded-xl text-sm font-bold text-white bg-blue-600 hover:bg-blue-500 shadow-lg shadow-blue-600/30 border border-blue-400/30 transition-all flex items-center justify-center gap-2 disabled:opacity-50 hover:scale-[1.02] active:scale-[0.98]"
+                    className="btn btn-primary w-full sm:w-auto disabled:opacity-60"
                   >
                     {submitting ? (
-                      <span>Sending...</span>
+                      <span>Sending</span>
                     ) : (
                       <>
-                        <Send className="w-4 h-4" />
-                        <span>Send Message</span>
+                        <Send aria-hidden="true" className="w-4 h-4" />
+                        <span>Send message</span>
                       </>
                     )}
                   </button>
                 </div>
               </form>
             )}
-
           </div>
 
         </div>
-
       </div>
     </section>
   );

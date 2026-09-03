@@ -1,13 +1,12 @@
-import { ServiceItem, ProductItem, PricingCategory, TestimonialItem, FAQItem } from '../types';
+import { ServiceItem, ProductItem, PricingCategory, TestimonialItem, FAQItem, PromoSlide } from '../types';
 
 export const BUSINESS_INFO = {
   name: 'Brantford Wireless & Electronics',
   shortName: 'Brantford Wireless',
-  contactPerson: 'Ernest',
+  contactPerson: 'our team',
   phone: '(416) 771-9078',
   phoneRaw: '4167719078',
   email: 'brantfordwirelss@gmail.com',
-  website: 'brantfordwirelss.com',
   social: '@branntfordwirelss',
   socialUrl: 'https://instagram.com/branntfordwirelss',
   tagline: 'Premium Technology. Expert Service. All in One Place.',
@@ -240,7 +239,7 @@ export const PRODUCTS_DATA: ProductItem[] = [
     categoryLabel: 'Other Electronics',
     description: 'Reliable portable power reservoir capable of recharging modern smartphones multiple times on single charge.',
     specs: ['20,000mAh Battery Capacity', 'Dual Fast USB Output', 'Digital Battery Indicator', 'Airline Approved'],
-    image: 'https://images.unsplash.com/photo-1609592424368-80f498bc57d2?q=80&w=1000&auto=format&fit=crop',
+      image: 'https://ugreenpk.com/wp-content/uploads/2024/10/UGREEN-25683-Power-Bank-20000mAh-22.5W-PD-3.0-Fast-Charging.webp',
     tag: 'Portable Power',
     status: 'Available in Showroom'
   }
@@ -353,7 +352,7 @@ export const PRICING_CATEGORIES: PricingCategory[] = [
 export const TESTIMONIALS_DATA: TestimonialItem[] = [
   {
     id: 'test-1',
-    quote: 'Ernest and the team at Brantford Wireless provided honest, straightforward advice when my laptop screen stopped turning on. They clearly explained what was wrong and had it fixed without any runaround. Highly recommended for local tech service.',
+    quote: 'The team at Brantford Wireless provided honest, straightforward advice when my laptop screen stopped turning on. They clearly explained what was wrong and had it fixed without any runaround. Highly recommended for local tech service.',
     customerName: 'Verified Brantford Customer',
     serviceCategory: 'Computer Repair & Diagnostics',
     verified: true,
@@ -402,7 +401,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     id: 'faq-4',
     question: 'Can I request a repair appointment online?',
-    answer: 'Yes, you can use our online "Book a Service" tool right here on the website to choose your preferred date, time slot, device type, and service request. Once submitted, Ernest and our team will review your request and get in touch to confirm details.',
+    answer: 'Yes, you can use our online "Book a Service" tool right here on the website to choose your preferred date, time slot, device type, and service request. Once submitted, our team will review your request and get in touch to confirm details.',
     category: 'Booking & Quotes'
   },
   {
@@ -433,7 +432,7 @@ export const FAQ_DATA: FAQItem[] = [
 
 export const TEAM_VALUES = [
   {
-    title: 'Ernest',
+    title: 'Technology Specialist',
     role: 'Technology Specialist & Founder',
     description: 'Dedicated to bringing trusted, transparent, and approachable technology solutions to the Brantford community with a commitment to customer satisfaction.',
     highlights: ['Device Diagnostics', 'Hardware Consultation', 'Customer Service']
@@ -443,5 +442,53 @@ export const TEAM_VALUES = [
     role: 'Hardware & Repair Support',
     description: 'Committed to rigorous hardware testing, precision screen & battery replacements, and reliable software recoveries.',
     highlights: ['Component Repair', 'Data Migration', 'System Optimization']
+  }
+];
+
+/* --------------------------------------------------------------------------
+   Promotional banner slides.
+   Edit, reorder, add or remove entries here. The banner adapts to any count,
+   and hides its controls when only one slide is present. Keep copy factual.
+   -------------------------------------------------------------------------- */
+export const PROMO_SLIDES: PromoSlide[] = [
+  {
+    id: 'promo-new-devices',
+    badge: 'In store now',
+    headline: 'Upgrade your phone today',
+    body: 'New and certified pre-owned smartphones, set up and transferred in store.',
+    ctaLabel: 'See devices',
+    ctaRoute: 'products',
+    image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1400&auto=format&fit=crop',
+    imageAlt: 'Modern smartphone displayed on a light surface'
+  },
+  {
+    id: 'promo-accessory-bundle',
+    badge: 'Bundle',
+    headline: 'Phone, case and screen protection',
+    body: 'Pick your accessories with us and we fit the protection before you leave.',
+    ctaLabel: 'Browse accessories',
+    ctaRoute: 'products',
+    image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?q=80&w=1400&auto=format&fit=crop',
+    imageAlt: 'Protective phone cases arranged on a light background'
+  },
+  {
+    id: 'promo-repairs',
+    badge: 'Repairs',
+    headline: 'Phone and computer repairs',
+    body: 'Screens, batteries, charging ports and system recovery. Book a slot or walk in.',
+    ctaLabel: 'Book a repair',
+    ctaRoute: 'booking',
+    image: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=1400&auto=format&fit=crop',
+    imageAlt: 'Technician repairing a device at a workbench'
+  },
+  {
+    id: 'promo-computers',
+    badge: 'Computers',
+    headline: 'Laptops and desktops for work and study',
+    body: 'Tell us how you will use it and we will match the specification.',
+    ctaLabel: 'View computers',
+    ctaRoute: 'products',
+    image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1400&auto=format&fit=crop',
+    imageAlt: 'Open laptop on a bright desk'
   }
 ];

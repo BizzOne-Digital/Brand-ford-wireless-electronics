@@ -1,10 +1,11 @@
 import React, { useState } from 'react';
 import { PageRoute, ServiceCategoryItem, ProductItem } from './types';
-import { BUSINESS_INFO } from './data/mockData';
 
 // Component imports
 import { Header } from './components/Header';
+import { PromoBanner } from './components/PromoBanner';
 import { Hero } from './components/Hero';
+import { PageHero } from './components/PageHero';
 import { TrustStrip } from './components/TrustStrip';
 import { ServicesOverview } from './components/ServicesOverview';
 import { FeaturedServices } from './components/FeaturedServices';
@@ -22,13 +23,24 @@ import { LeadCaptureModal } from './components/LeadCaptureModal';
 import { BookingForm } from './components/BookingForm';
 import { ContactSection } from './components/ContactSection';
 import { Footer } from './components/Footer';
-import { MobileQuickBar } from './components/MobileQuickBar';
 import { PrivacyTermsModal } from './components/PrivacyTermsModal';
 import { Toast } from './components/Toast';
 
+/** Interior page hero photography. One distinct photograph per page. */
+const PAGE_IMAGES = {
+  services: 'https://images.unsplash.com/photo-1519389950473-47ba0277781c?q=80&w=1800&auto=format&fit=crop',
+  products: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?q=80&w=1800&auto=format&fit=crop',
+  pricing: 'https://images.unsplash.com/photo-1516387938699-a93567ec168e?q=80&w=1800&auto=format&fit=crop',
+  team: 'https://images.unsplash.com/photo-1556742049-0cfed4f6a45d?q=80&w=1800&auto=format&fit=crop',
+  booking: 'https://images.unsplash.com/photo-1581092795360-fd1ca04f0952?q=80&w=1800&auto=format&fit=crop',
+  testimonials: 'https://images.unsplash.com/photo-1593642702821-c8da6771f0c6?q=80&w=1800&auto=format&fit=crop',
+  faq: 'https://images.unsplash.com/photo-1512428559087-560fa5ceab42?q=80&w=1800&auto=format&fit=crop',
+  contact: 'https://images.unsplash.com/photo-1587560699334-cc4ff634909a?q=80&w=1800&auto=format&fit=crop',
+};
+
 export function App() {
   const [currentRoute, setCurrentRoute] = useState<PageRoute>('home');
-  
+
   // Modals & Interactivity
   const [selectedService, setSelectedService] = useState<ServiceCategoryItem | null>(null);
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
@@ -50,21 +62,18 @@ export function App() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
-  const handleServiceInquire = (serviceName: string) => {
+  const handleServiceInquire = (_serviceName: string) => {
     setSelectedService(null);
     setCurrentRoute('booking');
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   return (
-    <div className="min-h-screen bg-[#030610] text-slate-100 selection:bg-blue-600 selection:text-white font-sans antialiased overflow-x-hidden">
+    <div className="min-h-screen bg-white text-copy selection:bg-brand-600 selection:text-white antialiased overflow-x-hidden">
       {/* Toast Notifications */}
-      <Toast
-        message={toastMessage}
-        onClose={() => setToastMessage(null)}
-      />
+      <Toast message={toastMessage} onClose={() => setToastMessage(null)} />
 
-      {/* Sticky Luxury Header Navigation */}
+      {/* Sticky Header Navigation */}
       <Header
         currentRoute={currentRoute}
         onNavigate={handleNavigate}
@@ -72,73 +81,37 @@ export function App() {
         onOpenLeadModal={() => setIsLeadModalOpen(true)}
       />
 
-      {/* 4. Main Page Routing & Content */}
-      <main id="main-content" className="relative z-10 pb-16 lg:pb-0">
+      {/* Page content. Top padding clears the fixed header for every route. */}
+      <main id="main-content">
         {currentRoute === 'home' && (
           <>
-            {/* Cinematic Hero */}
+            {/* What the business is, and how to reach it */}
             <Hero
               onNavigate={handleNavigate}
               onOpenBooking={handleOpenBooking}
               onOpenLeadModal={() => setIsLeadModalOpen(true)}
             />
 
-            {/* Trust & Value Proposition Strip */}
-            <TrustStrip onNavigate={handleNavigate} />
+            {/* Promotions: packages, new arrivals and repair offers */}
+            <PromoBanner onNavigate={handleNavigate} onOpenBooking={handleOpenBooking} />
 
-            {/* Services Overview Grid */}
+            <TrustStrip />
+
+            {/* Everything tech, under one roof */}
             <ServicesOverview
               onSelectService={(service) => setSelectedService(service)}
               onNavigate={handleNavigate}
               onOpenBooking={handleOpenBooking}
             />
 
-            {/* Alternating Featured Technology Solutions */}
-            <FeaturedServices
-              onSelectService={(service) => setSelectedService(service)}
-              onOpenBooking={handleOpenBooking}
-            />
-
-            {/* Products & Tech Showcase */}
+            {/* A short curated look at the showroom */}
             <ProductCatalog
+              onNavigate={handleNavigate}
               onSelectProduct={(product) => setSelectedProduct(product)}
-              onOpenLeadModal={() => setIsLeadModalOpen(true)}
             />
 
-            {/* About the Business */}
-            <AboutSection
-              onNavigate={handleNavigate}
-              onOpenBooking={handleOpenBooking}
-            />
+            <TestimonialsSection onNavigate={handleNavigate} onNotify={showToast} />
 
-            {/* Why Choose Us: 4 Core Pillars */}
-            <WhyChooseUs
-              onNavigate={handleNavigate}
-              onOpenBooking={handleOpenBooking}
-            />
-
-            {/* Transparent Pricing Framework & Interactive Quote Estimator */}
-            <PricingSection
-              onNavigate={handleNavigate}
-              onNotify={showToast}
-            />
-
-            {/* Customer Testimonials & Reviews */}
-            <TestimonialsSection
-              onNavigate={handleNavigate}
-              onNotify={showToast}
-            />
-
-            {/* FAQ Accordion with Search */}
-            <FAQSection
-              onNavigate={handleNavigate}
-              onOpenBooking={handleOpenBooking}
-            />
-
-            {/* Personalized Lead Gen Banner */}
-            <LeadBanner onNotify={showToast} />
-
-            {/* Contact Hub with Direct Details */}
             <ContactSection
               onNavigate={handleNavigate}
               onOpenBooking={handleOpenBooking}
@@ -148,8 +121,14 @@ export function App() {
         )}
 
         {currentRoute === 'services' && (
-          <div className="pt-8">
+          <>
+            <PageHero
+              title="Everything tech, under one roof"
+              subtitle="From everyday device needs to complex computer problems, we provide practical technology solutions you can rely on."
+              image={PAGE_IMAGES.services}
+            />
             <ServicesOverview
+              hideHeader
               isFullPage
               onSelectService={(service) => setSelectedService(service)}
               onNavigate={handleNavigate}
@@ -159,147 +138,142 @@ export function App() {
               onSelectService={(service) => setSelectedService(service)}
               onOpenBooking={handleOpenBooking}
             />
-            <PricingSection onNotify={showToast} />
+            <PricingSection onNavigate={handleNavigate} onNotify={showToast} />
             <LeadBanner onNotify={showToast} />
-          </div>
+          </>
         )}
 
         {currentRoute === 'products' && (
-          <div className="pt-8">
+          <>
+            <PageHero
+              title="Products / Shop"
+              subtitle="Smartphones, computing hardware, protective accessories and power essentials, all available to view in the showroom."
+              image={PAGE_IMAGES.products}
+            />
             <ProductCatalog
+              hideHeader
               isFullPage
+              onNavigate={handleNavigate}
               onSelectProduct={(product) => setSelectedProduct(product)}
-              onOpenLeadModal={() => setIsLeadModalOpen(true)}
             />
             <LeadBanner onNotify={showToast} />
-          </div>
+          </>
         )}
 
         {currentRoute === 'pricing' && (
-          <div className="pt-8">
-            <PricingSection
-              isFullPage
-              onNavigate={handleNavigate}
-              onNotify={showToast}
+          <>
+            <PageHero
+              title="Pricing"
+              subtitle="Every device and repair is different. We give upfront, transparent estimates based on your exact model and the work involved."
+              image={PAGE_IMAGES.pricing}
             />
-            <FAQSection onOpenBooking={handleOpenBooking} />
-          </div>
+            <PricingSection hideHeader isFullPage onNavigate={handleNavigate} onNotify={showToast} />
+            <FAQSection onNavigate={handleNavigate} onOpenBooking={handleOpenBooking} />
+          </>
         )}
 
         {currentRoute === 'testimonials' && (
-          <div className="pt-8">
-            <TestimonialsSection
-              isFullPage
-              onNavigate={handleNavigate}
-              onNotify={showToast}
+          <>
+            <PageHero
+              title="What our customers say"
+              subtitle="Real feedback from individuals, families and businesses across Brantford."
+              image={PAGE_IMAGES.testimonials}
             />
-            <WhyChooseUs
-              onNavigate={handleNavigate}
-              onOpenBooking={handleOpenBooking}
-            />
+            <TestimonialsSection hideHeader isFullPage onNavigate={handleNavigate} onNotify={showToast} />
+            <WhyChooseUs onNavigate={handleNavigate} onOpenBooking={handleOpenBooking} />
             <LeadBanner onNotify={showToast} />
-          </div>
+          </>
         )}
 
         {currentRoute === 'faq' && (
-          <div className="pt-8">
-            <FAQSection
-              isFullPage
-              onNavigate={handleNavigate}
-              onOpenBooking={handleOpenBooking}
+          <>
+            <PageHero
+              title="Common questions and answers"
+              subtitle="Clear answers about our devices, repair process, quotes and customer support."
+              image={PAGE_IMAGES.faq}
             />
+            <FAQSection hideHeader isFullPage onNavigate={handleNavigate} onOpenBooking={handleOpenBooking} />
             <ContactSection
+              isFullPage
               onNavigate={handleNavigate}
               onOpenBooking={handleOpenBooking}
               onNotify={showToast}
             />
-          </div>
+          </>
         )}
 
         {currentRoute === 'team' && (
-          <div className="pt-8">
-            <TeamSection
-              isFullPage
-              onNavigate={handleNavigate}
-              onOpenBooking={handleOpenBooking}
+          <>
+            <PageHero
+              title="Experience. Reliability. Customer care."
+              subtitle="Meet the technology specialists behind Brantford Wireless and Electronics, committed to honest advice and careful work."
+              image={PAGE_IMAGES.team}
             />
-            <WhyChooseUs
-              onNavigate={handleNavigate}
-              onOpenBooking={handleOpenBooking}
-            />
-            <ContactSection
-              onNavigate={handleNavigate}
-              onOpenBooking={handleOpenBooking}
-              onNotify={showToast}
-            />
-          </div>
+            <TeamSection hideHeader isFullPage onNavigate={handleNavigate} onOpenBooking={handleOpenBooking} />
+            <AboutSection onNavigate={handleNavigate} onOpenBooking={handleOpenBooking} />
+            <WhyChooseUs onNavigate={handleNavigate} onOpenBooking={handleOpenBooking} />
+          </>
         )}
 
         {currentRoute === 'booking' && (
-          <div className="pt-8">
-            <BookingForm
-              isFullPage
-              onNavigate={handleNavigate}
-              onNotify={showToast}
+          <>
+            <PageHero
+              title="Book your service"
+              subtitle="Schedule a diagnostic check, a device repair or a technology consultation. We confirm every request directly."
+              image={PAGE_IMAGES.booking}
             />
-            <FAQSection onOpenBooking={handleOpenBooking} />
-          </div>
+            <BookingForm hideHeader isFullPage onNavigate={handleNavigate} onNotify={showToast} />
+            <FAQSection onNavigate={handleNavigate} onOpenBooking={handleOpenBooking} />
+          </>
         )}
 
         {currentRoute === 'contact' && (
-          <div className="pt-8">
+          <>
+            <PageHero
+              title="Contact Brantford Wireless"
+              subtitle="Call for the fastest answer, or send a message and we will get back to you."
+              image={PAGE_IMAGES.contact}
+            />
             <ContactSection
+              hideHeader
               isFullPage
               onNavigate={handleNavigate}
               onOpenBooking={handleOpenBooking}
               onNotify={showToast}
             />
-            <FAQSection onOpenBooking={handleOpenBooking} />
-          </div>
+            <FAQSection onNavigate={handleNavigate} onOpenBooking={handleOpenBooking} />
+          </>
         )}
       </main>
 
-      {/* 5. Modals */}
-      
-      {/* Service Detail Modal */}
+      {/* Modals */}
       <ServiceDetailModal
         service={selectedService}
         onClose={() => setSelectedService(null)}
         onInquire={handleServiceInquire}
       />
 
-      {/* Product Inquiry Modal */}
       <ProductInquiryModal
         product={selectedProduct}
         onClose={() => setSelectedProduct(null)}
         onSubmitSuccess={showToast}
       />
 
-      {/* Quick Lead Capture Modal */}
       <LeadCaptureModal
         isOpen={isLeadModalOpen}
         onClose={() => setIsLeadModalOpen(false)}
         onSubmitSuccess={showToast}
       />
 
-      {/* Privacy Policy & Terms Modal */}
       <PrivacyTermsModal
         type={privacyTermsType}
         onClose={() => setPrivacyTermsType(null)}
       />
 
-      {/* 6. Footer */}
       <Footer
         onNavigate={handleNavigate}
         onOpenBooking={handleOpenBooking}
         onOpenPrivacyTerms={(type) => setPrivacyTermsType(type)}
-      />
-
-      {/* 7. Mobile Bottom Quick Action Bar (Call Now, Book, Shop, Inquire) */}
-      <MobileQuickBar
-        onOpenBooking={handleOpenBooking}
-        onOpenLeadModal={() => setIsLeadModalOpen(true)}
-        onNavigate={handleNavigate}
       />
 
     </div>

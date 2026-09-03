@@ -45,7 +45,7 @@ export const FeaturedServices: React.FC<FeaturedServicesProps> = ({
       category: 'Diagnostic & Care',
       title: 'Reliable Repairs',
       headline: "Technology problems shouldn't slow you down.",
-      description: 'Cracked displays, rapidly draining batteries, unresponsive keyboards, or sudden software failures — our systematic diagnostic checks pinpoint the root cause for straightforward, lasting repairs.',
+      description: 'Cracked displays, rapidly draining batteries, unresponsive keyboards, or sudden software failures. Our systematic diagnostic checks pinpoint the root cause for straightforward, lasting repairs.',
       icon: Wrench,
       image: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=1000&auto=format&fit=crop',
       points: ['Screen & Digitizer Replacement', 'Battery Diagnostics & Refresh', 'No-Nonsense Diagnostic Reports'],
@@ -56,18 +56,18 @@ export const FeaturedServices: React.FC<FeaturedServicesProps> = ({
   ];
 
   return (
-    <section id="featured-solutions-section" className="py-20 lg:py-28 bg-[#030610] relative">
+    <section id="featured-solutions-section" className="section bg-mist">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
         {/* Section Title */}
         <div className="text-center max-w-3xl mx-auto mb-20">
-          <span className="text-xs uppercase tracking-widest text-blue-400 font-bold font-display">
+          <span className="text-xs uppercase tracking-widest text-brand-700 font-bold font-display">
             Showroom Spotlight
           </span>
-          <h2 className="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mt-2 mb-4 font-display">
+          <h2 className="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight mt-2 mb-4 font-display">
             Featured Technology Solutions
           </h2>
-          <p className="text-sm sm:text-base text-slate-300">
+          <p className="text-sm sm:text-base text-copy">
             Engineered around performance, durability, and practical local service.
           </p>
         </div>
@@ -90,7 +90,7 @@ export const FeaturedServices: React.FC<FeaturedServicesProps> = ({
                     item.reverse ? 'lg:order-2' : 'lg:order-1'
                   }`}
                 >
-                  <div className="relative h-80 sm:h-96 rounded-3xl overflow-hidden border border-blue-900/30 bg-[#060c1d] shadow-2xl shadow-blue-950/30">
+                  <div className="relative h-80 sm:h-96 rounded-3xl overflow-hidden border border-brand-200 bg-white">
                     <img
                       src={item.image}
                       alt={item.title}
@@ -98,11 +98,10 @@ export const FeaturedServices: React.FC<FeaturedServicesProps> = ({
                       loading="lazy"
                       referrerPolicy="no-referrer"
                     />
-                    <div className="absolute inset-0 bg-gradient-to-t from-[#030610] via-transparent to-transparent opacity-80" />
                     
                     {/* Badge on Image */}
-                    <div className="absolute top-4 left-4 bg-slate-950/80 backdrop-blur-md border border-slate-800 px-3.5 py-1.5 rounded-full flex items-center gap-2 text-xs text-blue-300 font-semibold">
-                      <Icon className="w-3.5 h-3.5 text-blue-400" />
+                    <div className="absolute top-4 left-4 bg-mist backdrop-blur-md border border-line px-3.5 py-1.5 rounded-full flex items-center gap-2 text-xs text-brand-700 font-semibold">
+                      <Icon className="w-3.5 h-3.5 text-brand-700" />
                       <span>{item.category}</span>
                     </div>
                   </div>
@@ -114,23 +113,23 @@ export const FeaturedServices: React.FC<FeaturedServicesProps> = ({
                     item.reverse ? 'lg:order-1' : 'lg:order-2'
                   }`}
                 >
-                  <div className="inline-flex items-center gap-2 text-xs font-bold text-blue-400 uppercase tracking-widest mb-3">
+                  <div className="inline-flex items-center gap-2 text-xs font-bold text-brand-700 uppercase tracking-widest mb-3">
                     <Icon className="w-4 h-4" />
                     <span>{item.title}</span>
                   </div>
 
-                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-white tracking-tight mb-4 font-display leading-snug">
+                  <h3 className="text-2xl sm:text-3xl lg:text-4xl font-extrabold text-ink tracking-tight mb-4 font-display leading-snug">
                     {item.headline}
                   </h3>
 
-                  <p className="text-sm sm:text-base text-slate-300 leading-relaxed mb-6 font-normal">
+                  <p className="text-sm sm:text-base text-copy leading-relaxed mb-6 font-normal">
                     {item.description}
                   </p>
 
                   <div className="space-y-2.5 mb-8 w-full">
                     {item.points.map((pt, idx) => (
-                      <div key={idx} className="flex items-center gap-2.5 text-xs sm:text-sm text-slate-200">
-                        <CheckCircle2 className="w-4 h-4 text-blue-400 shrink-0" />
+                      <div key={idx} className="flex items-center gap-2.5 text-xs sm:text-sm text-ink">
+                        <CheckCircle2 className="w-4 h-4 text-brand-700 shrink-0" />
                         <span>{pt}</span>
                       </div>
                     ))}
@@ -139,7 +138,7 @@ export const FeaturedServices: React.FC<FeaturedServicesProps> = ({
                   <button
                     id={`featured-cta-${item.id}`}
                     onClick={item.ctaAction}
-                    className="px-6 py-3.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-500 hover:to-blue-600 shadow-lg shadow-blue-600/25 border border-blue-400/30 transition-all flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
+                    className="px-6 py-3.5 rounded-xl text-xs sm:text-sm font-bold text-white bg-brand-600 hover:bg-brand-700 border border-brand-200 transition-all flex items-center gap-2 hover:scale-[1.02] active:scale-[0.98]"
                   >
                     <span>{item.ctaLabel}</span>
                     <ArrowRight className="w-4 h-4" />
