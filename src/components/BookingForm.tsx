@@ -210,11 +210,16 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                       onChange={(e) => setFormData({ ...formData, serviceType: e.target.value })}
                     className="field"
                   >
-                    <option value="Mobile Device">Mobile Device (Repair / Setup)</option>
-                    <option value="Computer Repair">Computer Repair & Diagnostics</option>
-                    <option value="Computer Sales">Computer Sales Consultation</option>
-                    <option value="Accessories">Accessories & Protection</option>
-                    <option value="Technical Support">Technical Support & Troubleshooting</option>
+                    <option value="Cell Phone Repair">Cell Phone Repair (iPhone / Samsung / Android)</option>
+                    <option value="Tablet Repair">iPad &amp; Tablet Repair</option>
+                    <option value="Computer Repair">Computer &amp; Laptop Repair</option>
+                    <option value="Gaming Console Repair">Gaming Console Repair (PlayStation / Other)</option>
+                    <option value="Custom Device Wrapping">Custom Device Wrapping</option>
+                    <option value="Security Cameras">Security Cameras &amp; CCTV Installation</option>
+                    <option value="Sell or Trade In a Device">Sell or Trade In a Device</option>
+                    <option value="Device Sales Consultation">Phone or Computer Purchase Advice</option>
+                    <option value="Technical Support">Device Support, Setup &amp; Data Transfer</option>
+                    <option value="Business Technology">Business Technology &amp; Networking</option>
                     <option value="Other">Other Technology Inquiry</option>
                   </select>
                 </div>
@@ -229,7 +234,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                       required
                       value={formData.deviceType}
                       onChange={(e) => setFormData({ ...formData, deviceType: e.target.value })}
-                    placeholder="e.g. iPhone 13, Dell Inspiron, Custom Desktop..."
+                    placeholder="e.g. iPhone 13, Galaxy S22, Dell Inspiron, PlayStation 5..."
                     className="field"
                   />
                 </div>

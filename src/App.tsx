@@ -124,7 +124,7 @@ export function App() {
           <>
             <PageHero
               title="Everything tech, under one roof"
-              subtitle="From everyday device needs to complex computer problems, we provide practical technology solutions you can rely on."
+              subtitle="Phone and computer repair, gaming consoles, custom device wraps, security cameras, sales and buy back. All from one store at 28 King Street."
               image={PAGE_IMAGES.services}
             />
             <ServicesOverview
@@ -135,8 +135,9 @@ export function App() {
               onOpenBooking={handleOpenBooking}
             />
             <FeaturedServices
-              onSelectService={(service) => setSelectedService(service)}
+              onNavigate={handleNavigate}
               onOpenBooking={handleOpenBooking}
+              onOpenBookingWithService={handleServiceInquire}
             />
             <PricingSection onNavigate={handleNavigate} onNotify={showToast} />
             <LeadBanner onNotify={showToast} />
@@ -147,7 +148,7 @@ export function App() {
           <>
             <PageHero
               title="Products / Shop"
-              subtitle="Smartphones, computing hardware, protective accessories and power essentials, all available to view in the showroom."
+              subtitle="New and pre-owned smartphones, computers, gaming systems, custom wraps, security cameras and accessories. Inventory changes regularly, so contact us to check."
               image={PAGE_IMAGES.products}
             />
             <ProductCatalog
@@ -164,7 +165,7 @@ export function App() {
           <>
             <PageHero
               title="Pricing"
-              subtitle="Every device and repair is different. We give upfront, transparent estimates based on your exact model and the work involved."
+              subtitle="Every device and repair is different. We quote on your exact model and the work involved, and we tell you when a repair is not worth doing."
               image={PAGE_IMAGES.pricing}
             />
             <PricingSection hideHeader isFullPage onNavigate={handleNavigate} onNotify={showToast} />
@@ -176,7 +177,7 @@ export function App() {
           <>
             <PageHero
               title="What our customers say"
-              subtitle="Real feedback from individuals, families and businesses across Brantford."
+              subtitle="Feedback from individuals, families and businesses across Brantford and the surrounding communities."
               image={PAGE_IMAGES.testimonials}
             />
             <TestimonialsSection hideHeader isFullPage onNavigate={handleNavigate} onNotify={showToast} />
@@ -189,7 +190,7 @@ export function App() {
           <>
             <PageHero
               title="Common questions and answers"
-              subtitle="Clear answers about our devices, repair process, quotes and customer support."
+              subtitle="Clear answers on repairs, custom wrapping, security cameras, buying and selling devices, quotes and where to find us."
               image={PAGE_IMAGES.faq}
             />
             <FAQSection hideHeader isFullPage onNavigate={handleNavigate} onOpenBooking={handleOpenBooking} />
@@ -219,7 +220,7 @@ export function App() {
           <>
             <PageHero
               title="Book your service"
-              subtitle="Schedule a diagnostic check, a device repair or a technology consultation. We confirm every request directly."
+              subtitle="Book a phone, tablet, computer or console repair, a wrapping fitting, or a security camera consultation. We confirm every request directly."
               image={PAGE_IMAGES.booking}
             />
             <BookingForm hideHeader isFullPage onNavigate={handleNavigate} onNotify={showToast} />
@@ -231,7 +232,7 @@ export function App() {
           <>
             <PageHero
               title="Contact Brantford Wireless"
-              subtitle="Call for the fastest answer, or send a message and we will get back to you."
+              subtitle="Visit us at 28 King Street, Brantford. Call for the fastest answer, or send a message and we will get back to you."
               image={PAGE_IMAGES.contact}
             />
             <ContactSection

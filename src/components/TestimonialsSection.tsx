@@ -181,9 +181,12 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
                   onChange={(e) => setNewReview({ ...newReview, serviceCategory: e.target.value })}
                   className="field"
                 >
-                  <option value="Mobile Device &amp; Accessories">Mobile Device &amp; Accessories</option>
-                  <option value="Computer Sales">Computer Sales</option>
-                  <option value="Computer Repair &amp; Diagnostics">Computer Repair &amp; Diagnostics</option>
+                  <option value="Cell Phone Repair">Cell Phone Repair</option>
+                  <option value="Computer &amp; Laptop Repair">Computer &amp; Laptop Repair</option>
+                  <option value="Gaming Console Repair">Gaming Console Repair</option>
+                  <option value="Custom Device Wrapping">Custom Device Wrapping</option>
+                  <option value="Security Cameras &amp; CCTV">Security Cameras &amp; CCTV</option>
+                  <option value="Device Purchase or Trade In">Device Purchase or Trade In</option>
                   <option value="Device Support &amp; Setup">Device Support &amp; Setup</option>
                   <option value="Other Technology Service">Other Technology Service</option>
                 </select>

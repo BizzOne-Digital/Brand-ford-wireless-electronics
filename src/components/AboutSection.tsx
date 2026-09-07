@@ -55,19 +55,19 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onNavigate, onOpenBo
           <div className="lg:col-span-6 flex flex-col items-start text-left">
             <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-brand-50 border border-brand-200 text-brand-700 text-xs font-semibold uppercase tracking-wider mb-4">
               <Sparkles className="w-3.5 h-3.5" />
-              <span>About Brantford Wireless & Electronics</span>
+              <span>About Brantford Wireless &amp; Electronics</span>
             </div>
 
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-ink tracking-tight mb-6 font-display leading-tight">
-              Technology That Works For You
+              One Local Store. More Technology Solutions.
             </h2>
 
             <p className="text-base text-copy leading-relaxed mb-6 font-normal">
-              <strong>Brantford Wireless & Electronics</strong> is your trusted one-stop destination for mobile devices, high-grade accessories, computer systems, repairs, and reliable technology support.
+              <strong>Brantford Wireless &amp; Electronics</strong> is a local technology store at {BUSINESS_INFO.addressFull}, offering cell phone and computer repair, electronics sales, gaming console repair, custom device wrapping, security cameras and technology solutions for individuals, families and businesses.
             </p>
 
             <p className="text-sm text-copy leading-relaxed mb-8">
-              We believe quality technology retail and dependable technical services belong under one roof. Whether you are searching for a new laptop for university, outfitting your smartphone with heavy-duty protection, or seeking honest diagnostics for a malfunctioning computer, we take the time to deliver solutions that fit your lifestyle and budget.
+              Instead of visiting one store for your phone, another for your computer, another for your gaming system and another for electronics, our goal is to provide those services from one convenient Brantford location. Most importantly, we are a local business committed to building long-term relationships with our customers.
             </p>
 
             {/* Core Values 2x2 Grid */}
@@ -76,7 +76,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onNavigate, onOpenBo
                 <Store className="w-4 h-4 text-brand-700 shrink-0 mt-0.5" />
                 <div>
                   <h4 className="text-xs font-bold text-ink font-display">One-Stop Convenience</h4>
-                  <p className="text-[11px] text-copy">Hardware, accessories, and repairs in one place.</p>
+                  <p className="text-[11px] text-copy">Sales, repairs, wraps and cameras in one place.</p>
                 </div>
               </div>
 
@@ -91,16 +91,16 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onNavigate, onOpenBo
               <div className="p-3.5 rounded-xl bg-mist border border-line flex items-start gap-3">
                 <Cpu className="w-4 h-4 text-brand-700 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xs font-bold text-ink font-display">Practical Technology</h4>
-                  <p className="text-[11px] text-copy">Straightforward advice without tech jargon.</p>
+                  <h4 className="text-xs font-bold text-ink font-display">Repair Or Replace</h4>
+                  <p className="text-[11px] text-copy">We say when a repair is not worth the money.</p>
                 </div>
               </div>
 
               <div className="p-3.5 rounded-xl bg-mist border border-line flex items-start gap-3">
                 <Users className="w-4 h-4 text-brand-700 shrink-0 mt-0.5" />
                 <div>
-                  <h4 className="text-xs font-bold text-ink font-display">Customer Focused</h4>
-                  <p className="text-[11px] text-copy">Direct assistance from our team.</p>
+                  <h4 className="text-xs font-bold text-ink font-display">Local Business</h4>
+                  <p className="text-[11px] text-copy">Built on long-term customer relationships.</p>
                 </div>
               </div>
             </div>

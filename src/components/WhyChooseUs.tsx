@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageRoute } from '../types';
-import { Store, ShieldCheck, HeartHandshake, Cpu, ArrowRight } from 'lucide-react';
+import { Store, ShieldCheck, HeartHandshake, MapPin, ArrowRight } from 'lucide-react';
 
 interface WhyChooseUsProps {
   onNavigate?: (route: PageRoute) => void;
@@ -11,13 +11,13 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onOpenBooking }) => {
   const points = [
     {
       icon: Store,
-      title: 'One Stop Shop',
-      description: 'Smartphones, accessories, computer hardware and technology support, all in one place.',
+      title: 'One Local Store',
+      description: 'Phones, computers, gaming systems, wraps, security cameras and accessories, instead of four separate trips.',
     },
     {
       icon: ShieldCheck,
       title: 'Reliable Solutions',
-      description: 'Practical, honest help for everyday technology needs, with systematic diagnostics and durable parts.',
+      description: 'Diagnostics before quotes, and a straight answer on whether a repair is worth doing or the device is better replaced.',
     },
     {
       icon: HeartHandshake,
@@ -25,9 +25,9 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onOpenBooking }) => {
       description: 'Recommendations built around what you actually need, without confusing upselling.',
     },
     {
-      icon: Cpu,
-      title: 'Technology Expertise',
-      description: 'Knowledgeable support across both mobile ecosystems and modern computer systems.',
+      icon: MapPin,
+      title: 'Local On King Street',
+      description: 'A Brantford business at 28 King Street, building long-term relationships with the customers who walk in.',
     },
   ];
 
@@ -40,7 +40,8 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onOpenBooking }) => {
             Your technology. Our expertise.
           </h2>
           <p className="mt-4 text-base text-copy leading-relaxed">
-            We bridge high-end electronics retail with dependable local technical assistance.
+            Sales, repairs, buy and sell, custom wraps, computers, gaming, electronics and
+            security cameras. One local store, more technology solutions.
           </p>
         </div>
 

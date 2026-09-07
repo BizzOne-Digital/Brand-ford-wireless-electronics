@@ -1,7 +1,7 @@
 import React from 'react';
 import { PageRoute } from '../types';
 import { BUSINESS_INFO } from '../data/mockData';
-import { Phone, Mail, Instagram, ArrowUp, Calendar } from 'lucide-react';
+import { Phone, Mail, Instagram, MapPin, ArrowUp, Calendar } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 
 interface FooterProps {
@@ -56,8 +56,8 @@ export const Footer: React.FC<FooterProps> = ({
             </button>
 
             <p className="mt-5 text-sm text-brand-200/80 leading-relaxed max-w-sm">
-              Your trusted one stop technology destination for devices, accessories,
-              computer solutions and reliable technical services in Brantford.
+              Sales, repairs, buy and sell, custom wraps, computers, gaming, electronics and
+              security cameras. Brantford's local destination for wireless and electronics.
             </p>
 
             <button
@@ -95,12 +95,20 @@ export const Footer: React.FC<FooterProps> = ({
               Get in touch
             </h2>
 
-            <p className="mt-4 text-sm text-brand-200/80">
-              Primary contact:{' '}
-              <strong className="text-white font-semibold">{BUSINESS_INFO.contactPerson}</strong>
-            </p>
+            <div className="mt-4 text-sm">
+              <a
+                href={BUSINESS_INFO.mapsUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex min-h-[40px] items-start gap-2.5 py-1 text-brand-200/90 hover:text-white transition-colors"
+              >
+                <MapPin aria-hidden="true" className="w-4 h-4 text-brand-300 shrink-0 mt-[3px]" />
+                <span>
+                  <span className="block text-white font-semibold">{BUSINESS_INFO.addressLine}</span>
+                  <span className="block">{BUSINESS_INFO.addressCity}</span>
+                </span>
+              </a>
 
-            <div className="mt-2 text-sm">
               <a
                 href={`tel:${BUSINESS_INFO.phoneRaw}`}
                 className="flex min-h-[40px] items-center gap-2.5 text-brand-200/90 hover:text-white transition-colors"
@@ -129,7 +137,7 @@ export const Footer: React.FC<FooterProps> = ({
             </div>
 
             <p className="mt-4 text-sm text-brand-200/70">
-              {BUSINESS_INFO.locationNote}
+              Serving Brantford and the surrounding communities.
             </p>
           </div>
 

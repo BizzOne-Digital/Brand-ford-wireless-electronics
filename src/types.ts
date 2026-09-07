@@ -16,7 +16,19 @@ export interface ServiceItem {
   title: string;
   shortDesc: string;
   fullDesc: string;
-  category: 'mobile' | 'computer' | 'repair' | 'support' | 'solutions' | 'accessories';
+  category:
+    | 'mobile'
+    | 'computer'
+    | 'repair'
+    | 'gaming'
+    | 'sales'
+    | 'buyback'
+    | 'wrapping'
+    | 'security'
+    | 'business'
+    | 'support'
+    | 'solutions'
+    | 'accessories';
   iconName: string;
   features: string[];
   image: string;
@@ -25,11 +37,15 @@ export interface ServiceItem {
 
 export type ServiceCategoryItem = ServiceItem;
 
-export type ProductCategory = 
+export type ProductCategory =
   | 'all'
   | 'smartphones'
+  | 'used-phones'
   | 'laptops'
   | 'desktops'
+  | 'gaming'
+  | 'security-cameras'
+  | 'wraps'
   | 'phone-accessories'
   | 'computer-accessories'
   | 'chargers-cables'

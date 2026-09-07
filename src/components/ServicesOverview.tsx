@@ -9,6 +9,14 @@ import {
   LifeBuoy,
   Cpu,
   Headphones,
+  Palette,
+  Cctv,
+  Gamepad2,
+  Tablet,
+  Store,
+  BadgeDollarSign,
+  Recycle,
+  Building2,
   ArrowRight,
   ChevronRight
 } from 'lucide-react';
@@ -30,6 +38,14 @@ const ICONS: Record<string, React.ComponentType<{ className?: string }>> = {
   LifeBuoy,
   Cpu,
   Headphones,
+  Palette,
+  Cctv,
+  Gamepad2,
+  Tablet,
+  Store,
+  BadgeDollarSign,
+  Recycle,
+  Building2,
 };
 
 export const ServicesOverview: React.FC<ServicesOverviewProps> = ({
@@ -53,8 +69,8 @@ export const ServicesOverview: React.FC<ServicesOverviewProps> = ({
               Everything tech, under one roof
             </h2>
             <p className="mt-4 text-base sm:text-lg text-copy leading-relaxed">
-              From everyday device needs to complex computer problems, we provide practical
-              technology solutions you can rely on.
+              Phone and computer repair, electronics sales, gaming consoles, custom wraps and
+              security cameras. One local store on King Street instead of four.
             </p>
           </div>
         )}

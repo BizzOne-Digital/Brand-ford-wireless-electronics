@@ -82,7 +82,7 @@ export const PrivacyTermsModal: React.FC<PrivacyTermsModalProps> = ({ type, onCl
               </p>
               <h4 className="text-ink font-bold font-display text-xs">4. Contacting Us</h4>
               <p>
-                For any privacy questions or requests regarding your data, contact our team directly at (416) 771-9078 or via email at brantfordwirelss@gmail.com.
+                For any privacy questions or requests regarding your data, contact our team directly at (416) 771-9078, visit us at 28 King Street, Brantford, Ontario, or email brantfordwireless@gmail.com.
               </p>
             </>
           ) : (

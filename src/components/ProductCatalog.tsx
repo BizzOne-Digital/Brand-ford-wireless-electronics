@@ -26,9 +26,13 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
   const categories: { id: ProductCategory; label: string }[] = [
     { id: 'all', label: 'All Products' },
     { id: 'smartphones', label: 'Smartphones' },
-    { id: 'phone-accessories', label: 'Phone Accessories' },
+    { id: 'used-phones', label: 'Used & Refurbished' },
     { id: 'laptops', label: 'Laptops' },
     { id: 'desktops', label: 'Desktop Computers' },
+    { id: 'gaming', label: 'Gaming Systems' },
+    { id: 'wraps', label: 'Custom Wraps' },
+    { id: 'security-cameras', label: 'Security Cameras' },
+    { id: 'phone-accessories', label: 'Phone Accessories' },
     { id: 'computer-accessories', label: 'Computer Accessories' },
     { id: 'chargers-cables', label: 'Chargers & Cables' },
     { id: 'headphones', label: 'Headphones' },
@@ -52,9 +56,9 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
   // filters live on the products page, where someone is actually browsing.
   const HOME_PICKS = [
     'prod-smartphones-flagship',
+    'prod-used-phones',
     'prod-laptop-ultrabook',
-    'prod-cases-protection',
-    'prod-audio-headphones',
+    'prod-device-wraps',
   ];
 
   const displayedProducts = isFullPage
@@ -81,7 +85,8 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
               {isFullPage ? 'Products / Shop' : 'In the showroom'}
             </h2>
             <p className="mt-4 text-base sm:text-lg text-copy leading-relaxed">
-              Smartphones, computing hardware, protective accessories and power essentials.
+              New and pre-owned smartphones, computers, gaming systems, custom wraps, security
+              cameras and everyday accessories. Stock changes regularly, so call to confirm.
             </p>
           </div>
         )}
@@ -102,7 +107,7 @@ export const ProductCatalog: React.FC<ProductCatalogProps> = ({
                   type="search"
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Search smartphones, laptops, chargers, audio"
+                  placeholder="Search phones, laptops, consoles, cameras, wraps, chargers"
                   className="field !pl-11"
                 />
               </div>

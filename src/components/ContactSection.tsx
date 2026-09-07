@@ -58,6 +58,20 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
   const details = (
     <div className="space-y-1">
       <a
+        id="contact-info-address"
+        href={BUSINESS_INFO.mapsUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="flex min-h-[44px] items-start gap-3 text-ink hover:text-brand-700 transition-colors"
+      >
+        <MapPin aria-hidden="true" className="w-4 h-4 text-brand-600 shrink-0 mt-[3px]" />
+        <span>
+          <span className="font-semibold block">{BUSINESS_INFO.addressLine}</span>
+          <span className="text-copy text-sm">{BUSINESS_INFO.addressCity}</span>
+        </span>
+      </a>
+
+      <a
         id="contact-info-phone"
         href={`tel:${BUSINESS_INFO.phoneRaw}`}
         className="flex min-h-[44px] items-center gap-3 text-ink hover:text-brand-700 transition-colors"
@@ -85,9 +99,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
         <span>{BUSINESS_INFO.social}</span>
       </a>
 
-      <p className="flex items-start gap-3 text-copy">
-        <MapPin aria-hidden="true" className="w-4 h-4 text-brand-600 shrink-0 mt-0.5" />
-        <span>{BUSINESS_INFO.locationNote}</span>
+      <p className="pt-2 text-sm text-faint">
+        Serving Brantford and the surrounding communities.
       </p>
     </div>
   );
@@ -103,8 +116,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                 Come in, or call us first
               </h2>
               <p className="mt-4 text-base sm:text-lg text-copy leading-relaxed max-w-[46ch]">
-                Ask for {BUSINESS_INFO.contactPerson}. We are happy to talk through a repair,
-                a device upgrade or a quote before you visit.
+                We are at {BUSINESS_INFO.addressFull}. Call first if you want a quote,
+                a stock check or advice on whether a repair is worth doing.
               </p>
 
               <div className="mt-7 flex flex-col sm:flex-row gap-3">
@@ -143,8 +156,8 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
               Contact {BUSINESS_INFO.shortName}
             </h2>
             <p className="mt-4 text-base sm:text-lg text-copy leading-relaxed">
-              Primary contact:{' '}
-              <strong className="text-ink font-semibold">{BUSINESS_INFO.contactPerson}</strong>.
+              Visit us at{' '}
+              <strong className="text-ink font-semibold">{BUSINESS_INFO.addressFull}</strong>.
               Call for the fastest answer, or send a message and we will get back to you.
             </p>
           </div>
@@ -253,10 +266,14 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                       className="field"
                     >
                       <option value="General Inquiry">General Tech Inquiry</option>
-                      <option value="Mobile Phone / Accessories">Mobile Phones &amp; Accessories</option>
-                      <option value="Computer Sales">Computer Sales Consultation</option>
-                      <option value="Repair Diagnostic">Repair &amp; Diagnostic Question</option>
+                      <option value="Phone Repair">Phone, iPad or Tablet Repair</option>
+                      <option value="Computer Repair">Computer &amp; Laptop Repair</option>
+                      <option value="Gaming Console Repair">Gaming Console Repair</option>
+                      <option value="Custom Device Wrapping">Custom Device Wrapping</option>
+                      <option value="Security Cameras">Security Cameras &amp; CCTV</option>
+                      <option value="Sell My Device">Sell or Trade In a Device</option>
                       <option value="Product Availability">Product Stock &amp; Availability</option>
+                      <option value="Business Technology">Business Technology Enquiry</option>
                       <option value="Other Question">Other Question</option>
                     </select>
                   </div>

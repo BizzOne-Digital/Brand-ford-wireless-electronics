@@ -82,7 +82,7 @@ export const IntroLoader: React.FC<IntroLoaderProps> = ({ onComplete }) => {
               <span className="w-4 h-[1px] bg-blue-500/60 inline-block"></span>
             </motion.div>
 
-            {/* Luxury light sweep bar */}
+            {/* Light sweep bar */}
             <div className="relative w-48 sm:w-64 h-[2px] bg-slate-800 rounded-full mt-6 overflow-hidden">
               <motion.div
                 initial={{ x: '-100%' }}
@@ -94,7 +94,7 @@ export const IntroLoader: React.FC<IntroLoaderProps> = ({ onComplete }) => {
             
             <p className="text-[11px] text-slate-400 uppercase tracking-widest mt-4 flex items-center gap-1.5">
               <Sparkles className="w-3 h-3 text-blue-400" />
-              Luxury Technology Showroom
+              Repairs &middot; Sales &middot; Wraps &middot; Cameras
             </p>
           </motion.div>
 

@@ -13,7 +13,11 @@ import {
   Smartphone,
   Laptop,
   Wrench,
-  Cpu
+  Cpu,
+  Gamepad2,
+  Palette,
+  Cctv,
+  Recycle
 } from 'lucide-react';
 
 interface PricingSectionProps {
@@ -51,10 +55,23 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
         return Wrench;
       case 'Cpu':
         return Cpu;
+      case 'Gamepad2':
+        return Gamepad2;
+      case 'Palette':
+        return Palette;
+      case 'Cctv':
+        return Cctv;
+      case 'Recycle':
+        return Recycle;
       default:
         return Wrench;
     }
   };
+
+  /* The services page previews the four headline categories; the pricing page
+     lists all of them. Eight full-height cards inline would bury the sections
+     that follow. */
+  const shownCategories = isFullPage ? PRICING_CATEGORIES : PRICING_CATEGORIES.slice(0, 4);
 
   const handleQuoteSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -97,7 +114,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
             </h2>
 
             <p className="text-sm sm:text-base text-copy leading-relaxed">
-              Every device and repair is unique. We provide upfront, transparent quote assessments based on your exact device model, required replacement components, and labor complexity.
+              Every device and repair is different. We quote on your exact model, the parts required and the work involved, and we tell you when a repair is not worth the money.
             </p>
           </div>
         )}
@@ -176,6 +193,8 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                   <option value="Laptop (MacBook / Windows / Chromebook)">Laptop (MacBook / Windows / Dell / HP / Lenovo)</option>
                   <option value="Desktop PC & Workstation">Desktop PC & Custom Workstation</option>
                   <option value="Tablet (iPad / Galaxy Tab)">Tablet (iPad / Android Tablet)</option>
+                  <option value="Gaming Console (PlayStation / Other)">Gaming Console (PlayStation 5 / PS4 / Other)</option>
+                  <option value="Security Camera System (CCTV)">Security Camera System (CCTV / NVR)</option>
                   <option value="Accessories & Power Products">Accessories & Peripheral Equipment</option>
                   <option value="Other Technology Issue">Other Electronics / Tech Issue</option>
                 </select>
@@ -197,6 +216,10 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                   <option value="System Speed & SSD Upgrade">Slow Performance & SSD / RAM Upgrade</option>
                   <option value="Virus / Malware Removal & OS Clean">OS Crash / Virus & Malware Removal</option>
                   <option value="Data Backup & Transfer">Data Transfer to New Device / Backup</option>
+                  <option value="Console HDMI / No Display / Overheating">Console HDMI Port / No Display / Overheating</option>
+                  <option value="Custom Device Wrapping">Custom Device Wrapping</option>
+                  <option value="Security Camera Supply & Installation">Security Camera Supply & Installation</option>
+                  <option value="Sell or Trade In a Device">Sell or Trade In a Device</option>
                   <option value="Custom PC Build Consultation">Custom PC Build & Parts Consultation</option>
                   <option value="General Diagnostics">General Diagnostic Inspection</option>
                 </select>
@@ -291,7 +314,7 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
 
           {/* Right Column: Structured Service Categories & Details */}
           <div className="lg:col-span-7 space-y-6">
-            {PRICING_CATEGORIES.map((category) => {
+            {shownCategories.map((category) => {
               const Icon = getCategoryIcon(category.iconName);
               return (
                 <div
@@ -350,6 +373,16 @@ export const PricingSection: React.FC<PricingSectionProps> = ({
                 </div>
               );
             })}
+
+            {!isFullPage && onNavigate && (
+              <button
+                id="pricing-see-all-btn"
+                onClick={() => onNavigate('pricing')}
+                className="btn btn-secondary w-full sm:w-auto"
+              >
+                <span>See all service pricing</span>
+              </button>
+            )}
           </div>
 
         </div>

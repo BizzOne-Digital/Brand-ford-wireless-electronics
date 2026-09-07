@@ -1,5 +1,5 @@
 import React from 'react';
-import { Store, ShieldCheck, Wrench, HeartHandshake } from 'lucide-react';
+import { Store, Wrench, Palette, Cctv } from 'lucide-react';
 
 /**
  * Slim credibility bar. Deliberately label-only: the longer explanations live in
@@ -7,10 +7,10 @@ import { Store, ShieldCheck, Wrench, HeartHandshake } from 'lucide-react';
  */
 export const TrustStrip: React.FC = () => {
   const trustPillars = [
-    { icon: Store, title: 'One stop tech shop' },
-    { icon: ShieldCheck, title: 'Reliable solutions' },
-    { icon: Wrench, title: 'Expert support' },
-    { icon: HeartHandshake, title: 'Customer first' },
+    { icon: Wrench, title: 'Phone & PC repair' },
+    { icon: Palette, title: 'Custom wraps' },
+    { icon: Cctv, title: 'Security cameras' },
+    { icon: Store, title: 'Buy, sell & trade' },
   ];
 
   return (

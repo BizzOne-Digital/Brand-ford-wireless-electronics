@@ -1,6 +1,6 @@
 import React from 'react';
 import { PageRoute } from '../types';
-import { ArrowRight, Smartphone, Laptop, Wrench, CheckCircle2 } from 'lucide-react';
+import { ArrowRight, Palette, Cctv, Recycle, CheckCircle2 } from 'lucide-react';
 
 interface FeaturedServicesProps {
   onNavigate: (route: PageRoute) => void;
@@ -15,42 +15,42 @@ export const FeaturedServices: React.FC<FeaturedServicesProps> = ({
 }) => {
   const featured = [
     {
-      id: 'featured-mobile',
-      category: 'Mobile Solutions',
-      title: 'Mobile Technology',
-      headline: 'Stay connected with the right technology.',
-      description: 'Find premium smartphones, certified accessories, fast charging adapters, and crystal-clear screen protection designed to safeguard and power your everyday digital life.',
-      icon: Smartphone,
-      image: 'https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?q=80&w=1000&auto=format&fit=crop',
-      points: ['Flagship & Certified Smartphones', 'Impact-Tested Cases & 9H Glass', 'Fast Multi-Device GaN Chargers'],
-      ctaLabel: 'Explore Mobile Solutions',
-      ctaAction: () => onNavigate('products'),
+      id: 'featured-wrapping',
+      category: 'Store Specialty',
+      title: 'Custom Wrapping',
+      headline: 'Give your technology a completely new look.',
+      description: 'Instead of carrying the same looking device as everyone else, customise your phone, laptop, console or controller with a professional wrap. It gives a unique appearance while helping protect the original exterior from everyday scratches and wear.',
+      icon: Palette,
+      image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?q=80&w=1000&auto=format&fit=crop',
+      points: ['Colours, Patterns & Textured Finishes', 'Phones, Tablets, Laptops & Consoles', 'Fitted In Store, See The Options In Person'],
+      ctaLabel: 'Ask About Wrapping',
+      ctaAction: () => onOpenBookingWithService('Custom Device Wrapping'),
       reverse: false,
     },
     {
-      id: 'featured-computers',
-      category: 'Computing Systems',
-      title: 'Computer Solutions',
-      headline: 'From choosing a new computer to fixing the one you already own.',
-      description: 'Whether you require an efficient laptop for school, a high-performance desktop tower for demanding projects, or diagnostic upgrades for your current machine, we configure solutions that work seamlessly.',
-      icon: Laptop,
-      image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?q=80&w=1000&auto=format&fit=crop',
-      points: ['Work & Academic Laptops', 'Storage SSD & RAM Speed Upgrades', 'Clean OS Installation & Optimization'],
-      ctaLabel: 'Explore Computer Services',
-      ctaAction: () => onNavigate('services'),
+      id: 'featured-security',
+      category: 'Home & Business',
+      title: 'Security Cameras',
+      headline: 'See what happens at your property, from anywhere.',
+      description: 'We help you choose a camera system around your actual property and security requirements, install it properly, and set up remote viewing so you can check the cameras from your phone. Suitable for houses, retail stores, offices and commercial property.',
+      icon: Cctv,
+      image: 'https://images.unsplash.com/photo-1558002038-1055907df827?q=80&w=1000&auto=format&fit=crop',
+      points: ['IP & PoE Cameras With NVR Recording', 'Indoor, Outdoor & Night Vision', 'Remote Viewing From Your Smartphone'],
+      ctaLabel: 'Discuss A Camera System',
+      ctaAction: () => onNavigate('contact'),
       reverse: true,
     },
     {
-      id: 'featured-repairs',
-      category: 'Diagnostic & Care',
-      title: 'Reliable Repairs',
-      headline: "Technology problems shouldn't slow you down.",
-      description: 'Cracked displays, rapidly draining batteries, unresponsive keyboards, or sudden software failures. Our systematic diagnostic checks pinpoint the root cause for straightforward, lasting repairs.',
-      icon: Wrench,
-      image: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?q=80&w=1000&auto=format&fit=crop',
-      points: ['Screen & Digitizer Replacement', 'Battery Diagnostics & Refresh', 'No-Nonsense Diagnostic Reports'],
-      ctaLabel: 'Book a Repair',
-      ctaAction: () => onOpenBookingWithService('Computer Repairs'),
+      id: 'featured-buy-sell',
+      category: 'Buy & Sell',
+      title: 'We Buy Devices',
+      headline: 'Turn unwanted technology into money.',
+      description: 'We buy selected new, used, damaged and broken electronics, including phones, tablets, laptops, desktops and PlayStation consoles. Bring the device in and we will inspect it and make you an offer. All purchases are subject to inspection, ownership verification and our purchasing requirements.',
+      icon: Recycle,
+      image: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?q=80&w=1000&auto=format&fit=crop',
+      points: ['Phones, Tablets, Laptops & Consoles', 'Working, Damaged & Broken Considered', 'Evaluated In Store, Usually While You Wait'],
+      ctaLabel: 'Get A Device Evaluated',
+      ctaAction: () => onNavigate('contact'),
       reverse: false,
     },
   ];
@@ -62,13 +62,14 @@ export const FeaturedServices: React.FC<FeaturedServicesProps> = ({
         {/* Section Title */}
         <div className="text-center max-w-3xl mx-auto mb-20">
           <span className="text-xs uppercase tracking-widest text-brand-700 font-bold font-display">
-            Showroom Spotlight
+            What Sets Us Apart
           </span>
           <h2 className="text-3xl sm:text-4xl font-extrabold text-ink tracking-tight mt-2 mb-4 font-display">
-            Featured Technology Solutions
+            Three Things You Will Not Find Everywhere
           </h2>
           <p className="text-sm sm:text-base text-copy">
-            Engineered around performance, durability, and practical local service.
+            Custom wrapping, security camera installation, and a counter that buys your old
+            devices as well as selling you new ones.
           </p>
         </div>
 

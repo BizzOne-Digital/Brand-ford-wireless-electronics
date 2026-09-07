@@ -12,7 +12,7 @@ interface HeroProps {
   onOpenLead?: () => void;
 }
 
-const HEADLINE = 'Premium technology. Expert service.';
+const HEADLINE = 'One local store. More tech solutions.';
 const TYPE_SPEED_MS = 45;
 
 /**
@@ -76,7 +76,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
           transition={{ duration: 0.5, ease: 'easeOut' }}
           className="max-w-xl lg:max-w-2xl"
         >
-          <p className="eyebrow">Brantford &amp; surrounding communities</p>
+          <p className="eyebrow">{BUSINESS_INFO.addressFull}</p>
 
           {/* The invisible copy reserves the final box so typing never shifts
               the layout, and the sr-only copy gives assistive tech the whole
@@ -93,8 +93,8 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
           </h1>
 
           <p className="mt-5 text-base sm:text-lg text-ink font-medium leading-relaxed max-w-[48ch]">
-            Phones, computers, accessories and reliable repairs, from a local team
-            you can talk to in person.
+            Phone and computer repair, gaming consoles, custom device wraps, security cameras,
+            electronics to buy and sell. From a local team you can talk to in person.
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-3">

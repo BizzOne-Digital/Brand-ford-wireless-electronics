@@ -128,11 +128,14 @@ export const LeadBanner: React.FC<LeadBannerProps> = ({ onNotify = (_msg: string
                       onChange={(e) => setFormData({ ...formData, interest: e.target.value })}
                     className="field"
                   >
-                    <option value="Mobile Device & Accessories">Mobile Devices & Accessories</option>
-                    <option value="Computer Sales & Hardware">Computer Sales & Laptops</option>
-                    <option value="Computer Repair & Diagnostics">Computer Repair & Diagnostics</option>
-                    <option value="Device Support & Troubleshooting">Device Support & Troubleshooting</option>
-                    <option value="Tech Solutions & Consultations">Tech Solutions for Work/Home</option>
+                    <option value="Phone or Tablet Repair">Phone, iPad &amp; Tablet Repair</option>
+                    <option value="Computer Repair & Diagnostics">Computer &amp; Laptop Repair</option>
+                    <option value="Gaming Console Repair">Gaming Console Repair</option>
+                    <option value="Custom Device Wrapping">Custom Device Wrapping</option>
+                    <option value="Security Cameras & CCTV">Security Cameras &amp; CCTV</option>
+                    <option value="Sell or Trade In a Device">Sell or Trade In a Device</option>
+                    <option value="Phones & Electronics for Sale">Phones &amp; Electronics for Sale</option>
+                    <option value="Business Technology">Business Technology Solutions</option>
                     <option value="General Question">General Technology Inquiry</option>
                   </select>
                 </div>
