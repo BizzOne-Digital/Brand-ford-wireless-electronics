@@ -39,7 +39,11 @@
     font-family: var(--font-sans);
     background-color: #ffffff;
     color: var(--color-copy);
-    overflow-x: hidden;
+    /* `clip`, not `hidden`. Both stop sideways scrolling, but `hidden` makes
+       this a scroll container, which silently breaks `position: sticky` for
+       every descendant (the store toolbar was the first to need it). `clip`
+       does not. This is still a safety net, not a licence to overflow. */
+    overflow-x: clip;
   }
 
   h1, h2, h3, h4, .font-display {

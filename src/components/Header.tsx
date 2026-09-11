@@ -8,7 +8,6 @@ interface HeaderProps {
   currentRoute: PageRoute;
   onNavigate: (route: PageRoute) => void;
   onOpenBooking: () => void;
-  onOpenLeadModal?: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
@@ -41,14 +40,14 @@ export const Header: React.FC<HeaderProps> = ({
     };
   }, [mobileMenuOpen]);
 
+  /* Five destinations. Pricing, Quote, Testimonials, FAQ and Our Team were
+     removed as pages; their content sits on the pages that already had the
+     context for it. Every entry here resolves to a real route. */
   const navLinks: { label: string; route: PageRoute }[] = [
     { label: 'Home', route: 'home' },
     { label: 'Services', route: 'services' },
-    { label: 'Products / Shop', route: 'products' },
-    { label: 'Pricing', route: 'pricing' },
-    { label: 'Testimonials', route: 'testimonials' },
-    { label: 'FAQ', route: 'faq' },
-    { label: 'Our Team', route: 'team' },
+    { label: 'Store', route: 'products' },
+    { label: 'About', route: 'about' },
     { label: 'Contact', route: 'contact' },
   ];
 
@@ -86,16 +85,18 @@ export const Header: React.FC<HeaderProps> = ({
             </button>
 
             {/* Desktop Navigation Links */}
-            <nav className="hidden lg:flex items-center gap-1.5 mx-4 2xl:mx-6" aria-label="Main Navigation">
+            <nav className="hidden lg:flex items-center gap-1 mx-4 xl:mx-6" aria-label="Main Navigation">
               {navLinks.map((link) => {
-                const isActive = currentRoute === link.route;
+                const isActive =
+                  currentRoute === link.route ||
+                  (link.route === 'services' && currentRoute === 'service');
                 return (
                   <button
                     key={link.route}
                     id={`nav-link-${link.route}`}
                     onClick={() => handleNavClick(link.route)}
                     aria-current={isActive ? 'page' : undefined}
-                    className={`px-2 2xl:px-2.5 py-2 rounded-lg text-[12.5px] 2xl:text-[13px] font-medium whitespace-nowrap transition-colors ${
+                    className={`px-3.5 py-2 rounded-lg text-sm font-medium whitespace-nowrap transition-colors ${
                       isActive
                         ? 'text-white bg-white/12'
                         : 'text-brand-100 hover:text-white hover:bg-white/8'
@@ -108,11 +109,14 @@ export const Header: React.FC<HeaderProps> = ({
             </nav>
 
             {/* Right Action CTAs (Call & Book) */}
-            <div className="hidden sm:flex items-center gap-2 shrink-0">
+            {/* ml-auto pins this beside the drawer toggle below lg, where the
+                inline nav is absent and justify-between would otherwise strand
+                the button in the middle of the bar. */}
+            <div className="hidden sm:flex items-center gap-2 shrink-0 ml-auto lg:ml-0">
               <a
                 id="header-call-btn"
                 href={`tel:${BUSINESS_INFO.phoneRaw}`}
-                className="hidden 2xl:flex items-center gap-2 px-3 py-2 rounded-full text-[13px] font-semibold text-white whitespace-nowrap hover:bg-white/10 transition-colors"
+                className="hidden xl:flex items-center gap-2 px-3 py-2 rounded-full text-[13px] font-semibold text-white whitespace-nowrap hover:bg-white/10 transition-colors"
               >
                 <Phone aria-hidden="true" className="w-4 h-4 text-brand-300" />
                 <span>{BUSINESS_INFO.phone}</span>
@@ -125,17 +129,19 @@ export const Header: React.FC<HeaderProps> = ({
               >
                 <Calendar aria-hidden="true" className="w-4 h-4" />
                 {/* Shortened through the laptop range so the nav keeps its gap */}
-                <span className="2xl:hidden">Book Service</span>
-                <span className="hidden 2xl:inline">Book a Service</span>
+                <span className="xl:hidden">Book Service</span>
+                <span className="hidden xl:inline">Book a Service</span>
               </button>
             </div>
 
-            {/* Mobile Right Controls: Direct Phone Icon Link + Hamburger Menu */}
-            <div className="flex sm:hidden items-center gap-1.5">
+            {/* Drawer controls. These run to `lg`, where the inline nav takes
+                over: the drawer is the only navigation in the tablet range, so
+                hiding the toggle at `sm` left those widths with no nav at all. */}
+            <div className="flex lg:hidden items-center gap-1.5 ml-2 sm:ml-1">
               <a
                 id="mobile-header-call-btn"
                 href={`tel:${BUSINESS_INFO.phoneRaw}`}
-                className="flex items-center justify-center w-11 h-11 rounded-full text-brand-300 active:bg-white/10 transition-colors"
+                className="flex sm:hidden items-center justify-center w-11 h-11 rounded-full text-brand-300 active:bg-white/10 transition-colors"
                 aria-label={`Call ${BUSINESS_INFO.contactPerson} at ${BUSINESS_INFO.phone}`}
               >
                 <Phone aria-hidden="true" className="w-5 h-5" />
@@ -178,7 +184,9 @@ export const Header: React.FC<HeaderProps> = ({
 
             <nav aria-label="Mobile navigation" className="flex flex-col gap-1.5">
               {navLinks.map((link) => {
-                const isActive = currentRoute === link.route;
+                const isActive =
+                  currentRoute === link.route ||
+                  (link.route === 'services' && currentRoute === 'service');
                 return (
                   <button
                     key={link.route}

@@ -68,7 +68,10 @@ export const PageHero: React.FC<PageHeroProps> = ({
             decoding="async"
             className="h-full w-full object-cover object-center"
           />
-          <div className="absolute inset-0 bg-white/30 lg:hidden" />
+          {/* Below lg the copy sits over the whole frame, so the wash has to be
+            strong enough for the brand-700 eyebrow to clear 4.5:1 on the
+            lightest frame the film can show. */}
+        <div className="absolute inset-0 bg-white/70 lg:hidden" />
           <div className="absolute inset-0 hidden lg:block bg-gradient-to-r from-white/75 via-white/35 to-transparent" />
           <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-white to-transparent" />
         </div>

@@ -8,8 +8,6 @@ import heroVideo from '../vid/brat.mp4';
 interface HeroProps {
   onNavigate: (route: PageRoute) => void;
   onOpenBooking: () => void;
-  onOpenLeadModal?: () => void;
-  onOpenLead?: () => void;
 }
 
 const HEADLINE = 'One local store. More tech solutions.';
@@ -65,12 +63,15 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
           <source src={heroVideo} type="video/mp4" />
         </video>
         {/* Keep the text side light while letting the video remain prominent. */}
-        <div className="absolute inset-0 bg-white/30 lg:hidden" />
+        {/* Below lg the copy sits over the whole frame, so the wash has to be
+            strong enough for the brand-700 eyebrow to clear 4.5:1 on the
+            lightest frame the film can show. */}
+        <div className="absolute inset-0 bg-white/70 lg:hidden" />
         <div className="absolute inset-0 hidden lg:block bg-gradient-to-r from-white/75 via-white/35 to-transparent" />
         <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-white to-transparent" />
       </div>
 
-      <div className="shell relative z-10 pt-28 pb-14 lg:pt-32 lg:pb-24">
+      <div className="shell relative z-10 flex min-h-[34rem] flex-col justify-center pt-28 pb-16 lg:min-h-[42rem] lg:pt-32 lg:pb-24">
         <motion.div
           {...rise}
           transition={{ duration: 0.5, ease: 'easeOut' }}
@@ -92,9 +93,10 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
             </span>
           </h1>
 
-          <p className="mt-5 text-base sm:text-lg text-ink font-medium leading-relaxed max-w-[48ch]">
-            Phone and computer repair, gaming consoles, custom device wraps, security cameras,
-            electronics to buy and sell. From a local team you can talk to in person.
+          {/* One line. The film behind it and the tiles below already say the
+              rest, and the client's brief is that nobody reads a hero. */}
+          <p className="mt-5 max-w-[32ch] text-lg font-medium leading-snug text-ink sm:text-xl">
+            Repairs, wraps, cameras and electronics. All on King Street.
           </p>
 
           <div className="mt-8 flex flex-col sm:flex-row gap-3">

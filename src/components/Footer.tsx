@@ -1,11 +1,12 @@
 import React from 'react';
 import { PageRoute } from '../types';
-import { BUSINESS_INFO } from '../data/mockData';
+import { BUSINESS_INFO, SERVICES_DATA } from '../data/mockData';
 import { Phone, Mail, Instagram, MapPin, ArrowUp, Calendar } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 
 interface FooterProps {
   onNavigate: (route: PageRoute) => void;
+  onOpenService: (serviceId: string) => void;
   onOpenBooking: () => void;
   onOpenPrivacyTerms: (type: 'privacy' | 'terms') => void;
 }
@@ -16,6 +17,7 @@ interface FooterProps {
  */
 export const Footer: React.FC<FooterProps> = ({
   onNavigate,
+  onOpenService,
   onOpenBooking,
   onOpenPrivacyTerms,
 }) => {
@@ -28,14 +30,13 @@ export const Footer: React.FC<FooterProps> = ({
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  /* Mirrors the header exactly. Nothing here points at a page that no longer
+     exists, and the book flow is the button above rather than a nav row. */
   const navItems: { label: string; route: PageRoute }[] = [
     { label: 'Home', route: 'home' },
     { label: 'Services', route: 'services' },
-    { label: 'Products & Shop', route: 'products' },
-    { label: 'Pricing', route: 'pricing' },
-    { label: 'Testimonials', route: 'testimonials' },
-    { label: 'FAQ', route: 'faq' },
-    { label: 'Our Team', route: 'team' },
+    { label: 'Store', route: 'products' },
+    { label: 'About', route: 'about' },
     { label: 'Contact', route: 'contact' },
   ];
 
@@ -46,7 +47,7 @@ export const Footer: React.FC<FooterProps> = ({
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 lg:gap-8 pb-10 border-b border-white/10">
 
           {/* Brand */}
-          <div className="lg:col-span-5">
+          <div className="lg:col-span-4">
             <button
               onClick={() => handleLink('home')}
               className="flex min-h-[44px] items-center gap-2.5 text-left group"
@@ -71,7 +72,7 @@ export const Footer: React.FC<FooterProps> = ({
           </div>
 
           {/* Navigation */}
-          <nav className="lg:col-span-3" aria-label="Footer navigation">
+          <nav className="lg:col-span-2" aria-label="Footer navigation">
             <h2 className="text-xs uppercase tracking-[0.12em] text-white font-bold">
               Navigation
             </h2>
@@ -89,8 +90,35 @@ export const Footer: React.FC<FooterProps> = ({
             </ul>
           </nav>
 
+          {/* Services. Every entry opens that service's own page. */}
+          <nav className="lg:col-span-3" aria-label="Services navigation">
+            <h2 className="text-xs uppercase tracking-[0.12em] text-white font-bold">
+              Services
+            </h2>
+            <ul className="mt-2 text-sm">
+              {SERVICES_DATA.slice(0, 6).map((service) => (
+                <li key={service.id}>
+                  <button
+                    onClick={() => onOpenService(service.id)}
+                    className="flex min-h-[40px] items-center text-left text-brand-200/80 hover:text-white transition-colors"
+                  >
+                    {service.title}
+                  </button>
+                </li>
+              ))}
+              <li>
+                <button
+                  onClick={() => handleLink('services')}
+                  className="flex min-h-[40px] items-center font-semibold text-brand-300 hover:text-white transition-colors"
+                >
+                  All services
+                </button>
+              </li>
+            </ul>
+          </nav>
+
           {/* Contact */}
-          <div className="lg:col-span-4">
+          <div className="lg:col-span-3">
             <h2 className="text-xs uppercase tracking-[0.12em] text-white font-bold">
               Get in touch
             </h2>

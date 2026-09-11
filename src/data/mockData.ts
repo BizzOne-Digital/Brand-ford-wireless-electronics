@@ -1,4 +1,5 @@
-import { ServiceItem, ProductItem, PricingCategory, TestimonialItem, FAQItem, PromoSlide } from '../types';
+import { ServiceItem, ProductItem, TestimonialItem, FAQItem, PromoSlide } from '../types';
+import { DEMO_IMAGE } from './demoMedia';
 
 export const BUSINESS_INFO = {
   name: 'Brantford Wireless & Electronics',
@@ -63,7 +64,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     category: 'wrapping',
     iconName: 'Palette',
     badge: 'Store Specialty',
-    image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.texturedPhone,
     features: [
       'Smartphones, tablets and laptops',
       'Gaming consoles and controllers',
@@ -80,7 +81,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     category: 'security',
     iconName: 'Cctv',
     badge: 'Install Available',
-    image: 'https://images.unsplash.com/photo-1558002038-1055907df827?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.cameraInstall,
     features: [
       'IP and PoE camera systems with NVR recording',
       'Indoor, outdoor and night vision cameras',
@@ -96,7 +97,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     fullDesc: 'Do not let a broken console keep you out of the game. We handle selected repairs for PlayStation 5, PlayStation 4 and other gaming systems. Bring the console in for an assessment and we will explain what it needs.',
     category: 'gaming',
     iconName: 'Gamepad2',
-    image: 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.console,
     features: [
       'HDMI port repair and no display faults',
       'Power issues and overheating',
@@ -129,7 +130,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     category: 'sales',
     iconName: 'Store',
     badge: 'In Store Now',
-    image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.phonesBright,
     features: [
       'Apple iPhone and Samsung Galaxy phones',
       'New, pre-owned and unlocked smartphones',
@@ -146,7 +147,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     category: 'sales',
     iconName: 'BadgeDollarSign',
     badge: 'Budget Friendly',
-    image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.phoneInHand,
     features: [
       'Selected iPhone, Galaxy and Android models',
       'Several price points to suit your budget',
@@ -210,7 +211,7 @@ export const SERVICES_DATA: ServiceItem[] = [
     fullDesc: 'Complete your setup with accessories chosen for durability. We stock protective cases, tempered glass, fast chargers, braided cables, USB-C hubs, power banks and audio gear, and we fit screen protection before you leave the store.',
     category: 'accessories',
     iconName: 'Headphones',
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.headphones,
     features: [
       'Impact resistant cases and 9H tempered glass',
       'Fast GaN wall chargers, 30W to 100W',
@@ -221,6 +222,128 @@ export const SERVICES_DATA: ServiceItem[] = [
   }
 ];
 
+/**
+ * Service id to the value of the matching option in the booking form's service
+ * select. The two lists are worded differently, so a service page that sent its
+ * own title through would leave the select showing nothing.
+ * Keep this in step with the options in `BookingForm`.
+ */
+
+/* --------------------------------------------------------------------------
+   TEMPORARY DEMO PRODUCTS.
+
+   Stand-in listings so the store layout, category filtering, featured shelf
+   and product cards can be reviewed before the real inventory is photographed
+   and written up. Each carries `isDemo` so they stay identifiable in code and
+   can be pulled in one edit; nothing labels them in the UI.
+
+   Deliberately generic: no brand names, no model numbers, no invented
+   specifications and no prices. The copy says what the category is and tells
+   the visitor to ask, which is what the real listings already do because stock
+   changes weekly. Delete this array and the spread below to remove them.
+   -------------------------------------------------------------------------- */
+export const DEMO_PRODUCTS: ProductItem[] = [
+  {
+    id: 'demo-wireless-camera',
+    name: 'Wireless Security Camera',
+    category: 'security-cameras',
+    categoryLabel: 'Security Cameras',
+    description: 'Indoor and outdoor wireless cameras for homes and small businesses.',
+    specs: ['Indoor and outdoor options', 'Remote viewing from your phone', 'Ask in store for current models'],
+    image: DEMO_IMAGE.securityCamera,
+    tag: 'Install Available',
+    isDemo: true,
+    status: 'Inquire for Availability',
+  },
+  {
+    id: 'demo-dash-camera',
+    name: 'Dash Camera',
+    category: 'other-electronics',
+    categoryLabel: 'Other Electronics',
+    description: 'In-car cameras for everyday driving and for fleet vehicles.',
+    specs: ['Front and rear options', 'Fitted in store', 'Ask in store for current models'],
+    image: DEMO_IMAGE.dashCam,
+    tag: 'In Store Now',
+    isDemo: true,
+    status: 'Inquire for Availability',
+  },
+  {
+    id: 'demo-smart-gadget',
+    name: 'Smart Home Device',
+    category: 'other-electronics',
+    categoryLabel: 'Other Electronics',
+    description: 'Connected devices for the home, set up in store if you want the help.',
+    specs: ['Setup help available', 'Works with common home systems', 'Ask in store for current models'],
+    image: DEMO_IMAGE.smartHome,
+    tag: 'Setup Available',
+    isDemo: true,
+    status: 'Inquire for Availability',
+  },
+  {
+    id: 'demo-phone-accessory',
+    name: 'Phone Accessory',
+    category: 'phone-accessories',
+    categoryLabel: 'Phone Accessories',
+    description: 'Cases, mounts, stands and screen protection for current phones.',
+    specs: ['Fitted in store', 'Most current models covered', 'Ask in store for current models'],
+    image: DEMO_IMAGE.phoneWithKeyboard,
+    tag: 'Protection',
+    isDemo: true,
+    status: 'Inquire for Availability',
+  },
+  {
+    id: 'demo-computer-accessory',
+    name: 'Computer Accessory',
+    category: 'computer-accessories',
+    categoryLabel: 'Computer Accessories',
+    description: 'Keyboards, mice, hubs, docks and display adapters.',
+    specs: ['Desktop and laptop options', 'Wired and wireless', 'Ask in store for current models'],
+    image: DEMO_IMAGE.keyboardWhite,
+    tag: 'Productivity',
+    isDemo: true,
+    status: 'Inquire for Availability',
+  },
+  {
+    id: 'demo-audio-accessory',
+    name: 'Audio Accessory',
+    category: 'headphones',
+    categoryLabel: 'Headphones',
+    description: 'Wired and wireless headphones, earbuds and speakers.',
+    specs: ['Wired and wireless', 'Over-ear and in-ear', 'Ask in store for current models'],
+    image: DEMO_IMAGE.earbuds,
+    tag: 'Premium Audio',
+    isDemo: true,
+    status: 'Inquire for Availability',
+  },
+  {
+    id: 'demo-console-bundle',
+    name: 'Console Accessory',
+    category: 'gaming',
+    categoryLabel: 'Gaming Systems',
+    description: 'Controllers, headsets, cables and storage for current consoles.',
+    specs: ['Console accessories', 'New and pre-owned', 'Ask in store for current models'],
+    image: DEMO_IMAGE.gamepad,
+    tag: 'In Store Now',
+    isDemo: true,
+    status: 'Inquire for Availability',
+  },
+];
+
+export const SERVICE_BOOKING_OPTION: Record<string, string> = {
+  'cell-phone-repair': 'Cell Phone Repair',
+  'computer-repairs': 'Computer Repair',
+  'device-wrapping': 'Custom Device Wrapping',
+  'security-cameras': 'Security Cameras',
+  'gaming-console-repair': 'Gaming Console Repair',
+  'tablet-repair': 'Tablet Repair',
+  'device-sales': 'Device Sales Consultation',
+  'used-refurbished-phones': 'Device Sales Consultation',
+  'we-buy-devices': 'Sell or Trade In a Device',
+  'business-tech-solutions': 'Business Technology',
+  'device-support': 'Technical Support',
+  'accessories-peripherals': 'Device Sales Consultation',
+};
+
 export const PRODUCTS_DATA: ProductItem[] = [
   {
     id: 'prod-smartphones-flagship',
@@ -229,7 +352,7 @@ export const PRODUCTS_DATA: ProductItem[] = [
     categoryLabel: 'Smartphones',
     description: 'Selected flagship and high performance smartphones with vibrant OLED displays, multi camera systems and long battery life.',
     specs: ['Apple iPhone & Samsung Galaxy', 'OLED High-Refresh Display', '5G Connectivity', 'Setup & Transfer In Store'],
-    image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.phonesBright,
     tag: 'Showroom Featured',
     isPopular: true,
     status: 'Inquire for Availability'
@@ -241,7 +364,7 @@ export const PRODUCTS_DATA: ProductItem[] = [
     categoryLabel: 'Used & Refurbished Phones',
     description: 'An affordable alternative to buying new. Selected iPhone, Galaxy and Android handsets at several price points, with stock changing regularly.',
     specs: ['Several Price Points', 'iPhone, Galaxy & Android', 'Unlocked Options Available', 'Tested Before Sale'],
-    image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.phoneInHand,
     tag: 'Budget Friendly',
     isPopular: true,
     status: 'Inquire for Availability'
@@ -253,7 +376,7 @@ export const PRODUCTS_DATA: ProductItem[] = [
     categoryLabel: 'Laptops',
     description: 'Lightweight, dependable laptops for students, mobile professionals and everyday home use. Tell us how you will use it and we will match the specification.',
     specs: ['Multi-Core Processor', 'Fast PCIe SSD Storage', 'Full-Day Battery', 'OS Installed & Updated'],
-    image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.laptopDesk,
     tag: 'Top Performance',
     isPopular: true,
     status: 'Available in Showroom'
@@ -265,7 +388,7 @@ export const PRODUCTS_DATA: ProductItem[] = [
     categoryLabel: 'Laptops',
     description: 'Heavy duty performance laptop for intensive multitasking, business spreadsheets, media editing and data handling.',
     specs: ['Expanded RAM Memory', 'Dedicated Graphics Option', 'Reinforced Chassis', 'Full Port Selection'],
-    image: 'https://images.unsplash.com/photo-1541807084-5c52b6b3adef?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.laptopAngled,
     tag: 'Business Choice',
     status: 'Inquire for Availability'
   },
@@ -276,7 +399,7 @@ export const PRODUCTS_DATA: ProductItem[] = [
     categoryLabel: 'Desktop Computers',
     description: 'Reliable desktop systems, pre-configured or custom assembled, for dependable everyday productivity and expandable storage.',
     specs: ['Modular & Upgradable', 'High Airflow Cooling', 'NVMe Storage', 'Multi-Display Support'],
-    image: 'https://images.unsplash.com/photo-1587831990711-23ca6441447b?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.desktopSetup,
     tag: 'Expandable',
     status: 'Special Order'
   },
@@ -287,7 +410,7 @@ export const PRODUCTS_DATA: ProductItem[] = [
     categoryLabel: 'Gaming Systems',
     description: 'A changing selection of gaming consoles and systems, alongside our PlayStation 5 and PlayStation 4 repair service.',
     specs: ['PlayStation & Other Systems', 'New & Pre-Owned Stock', 'Controllers & Accessories', 'Repair Service Available'],
-    image: 'https://images.unsplash.com/photo-1606144042614-b2417e99c4e3?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.console,
     tag: 'Sales & Repair',
     isPopular: true,
     status: 'Inquire for Availability'
@@ -299,7 +422,7 @@ export const PRODUCTS_DATA: ProductItem[] = [
     categoryLabel: 'Security Cameras',
     description: 'Camera systems for homes, retail stores, offices and commercial property, with NVR recording and remote viewing from your phone.',
     specs: ['IP & PoE Cameras', 'Network Video Recorder', 'Night Vision, Indoor & Outdoor', 'Professional Installation'],
-    image: 'https://images.unsplash.com/photo-1558002038-1055907df827?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.cameraInstall,
     tag: 'Install Available',
     status: 'Special Order'
   },
@@ -310,7 +433,7 @@ export const PRODUCTS_DATA: ProductItem[] = [
     categoryLabel: 'Custom Wraps',
     description: 'Change the look of a phone, tablet, laptop, console or controller with a professional wrap, while helping protect the original exterior.',
     specs: ['Colours, Patterns & Textures', 'Phones, Laptops & Consoles', 'Controllers & Selected Electronics', 'Fitted In Store'],
-    image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.texturedPhone,
     tag: 'Store Specialty',
     status: 'Available in Showroom'
   },
@@ -321,7 +444,7 @@ export const PRODUCTS_DATA: ProductItem[] = [
     categoryLabel: 'Phone Accessories',
     description: 'Drop tested smartphone cases with raised bezel edges that protect the camera lenses and screen from impacts.',
     specs: ['Dual-Layer Polycarbonate & TPU', 'Raised Screen & Camera Bumpers', 'Wireless Charging Compatible', 'Precision Port Cutouts'],
-    image: 'https://images.unsplash.com/photo-1601784551446-20c9e07cdbdb?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.phoneOnDesk,
     tag: 'Protection',
     isPopular: true,
     status: 'Available in Showroom'
@@ -333,7 +456,7 @@ export const PRODUCTS_DATA: ProductItem[] = [
     categoryLabel: 'Chargers & Cables',
     description: 'Compact gallium nitride charger that rapid charges phones, tablets and laptops at the same time with intelligent power delivery.',
     specs: ['USB-C Power Delivery 3.0', 'Universal Compatibility', 'Over-Heat & Surge Protection', 'Compact Travel Size'],
-    image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.charger,
     tag: 'Essential Tech',
     isPopular: true,
     status: 'Available in Showroom'
@@ -345,7 +468,7 @@ export const PRODUCTS_DATA: ProductItem[] = [
     categoryLabel: 'Chargers & Cables',
     description: 'Nylon braided cables built to survive thousands of bends without fraying or losing charging speed.',
     specs: ['Nylon Braided Sheath', 'High-Speed Data Sync', 'Reinforced Connector Collars', 'Available in 1m, 2m & 3m'],
-    image: 'https://images.unsplash.com/photo-1544716278-ca5e3f4abd8c?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.accessoriesFlatlay,
     tag: 'Heavy Duty',
     status: 'Available in Showroom'
   },
@@ -356,7 +479,7 @@ export const PRODUCTS_DATA: ProductItem[] = [
     categoryLabel: 'Headphones',
     description: 'Immersive sound with active noise cancellation for focused work, study or travel.',
     specs: ['Precision Dynamic Drivers', 'Active Noise Cancellation', 'Memory Foam Ear Cushions', '30+ Hour Playtime'],
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.headphones,
     tag: 'Premium Audio',
     isPopular: true,
     status: 'Available in Showroom'
@@ -368,7 +491,7 @@ export const PRODUCTS_DATA: ProductItem[] = [
     categoryLabel: 'Computer Accessories',
     description: 'Expand your laptop with 4K HDMI output, USB 3.0 ports, an SD card reader and USB-C pass-through power.',
     specs: ['4K 60Hz HDMI Output', 'Gigabit Ethernet Port', 'USB 3.1 Data Ports', 'Anodised Aluminium Casing'],
-    image: 'https://images.unsplash.com/photo-1629654297299-c8506221ca97?q=80&w=1000&auto=format&fit=crop',
+    image: DEMO_IMAGE.mouse,
     tag: 'Productivity',
     status: 'Available in Showroom'
   },
@@ -382,194 +505,10 @@ export const PRODUCTS_DATA: ProductItem[] = [
     image: 'https://ugreenpk.com/wp-content/uploads/2024/10/UGREEN-25683-Power-Bank-20000mAh-22.5W-PD-3.0-Fast-Charging.webp',
     tag: 'Portable Power',
     status: 'Available in Showroom'
-  }
-];
-
-export const PRICING_CATEGORIES: PricingCategory[] = [
-  {
-    id: 'device-services',
-    title: 'Phone & Tablet Repair',
-    subtitle: 'iPhone, Samsung Galaxy, Android and iPad screen, battery and port services.',
-    iconName: 'Smartphone',
-    items: [
-      {
-        name: 'Screen & Glass Replacement',
-        description: 'Assessment of the digitizer, OLED or LCD panel and glass, then replacement with the correct part for your exact model.',
-        pricingNote: 'Custom quote based on your exact device model',
-        turnaroundGuide: 'Same-day or next-day where the part is in stock',
-        popular: true
-      },
-      {
-        name: 'Battery Replacement & Health Check',
-        description: 'Testing cell degradation and charge cycles, then fitting a fresh battery so the phone lasts a full day again.',
-        pricingNote: 'Contact us with your model for an exact quote',
-        turnaroundGuide: 'Fast inspection and replacement'
-      },
-      {
-        name: 'Charging Port, Camera & Speaker Repair',
-        description: 'Cleaning blocked or oxidised ports, connector realignment or port board replacement, plus camera, speaker, microphone and button repair.',
-        pricingNote: 'Free initial inspection, quote after diagnostic',
-        turnaroundGuide: 'Typically a quick service'
-      }
-    ]
   },
-  {
-    id: 'computer-services',
-    title: 'Computer Diagnostics & Hardware',
-    subtitle: 'Laptop and desktop diagnostics, physical repairs and performance upgrades.',
-    iconName: 'Laptop',
-    items: [
-      {
-        name: 'Full Hardware Diagnostic Check',
-        description: 'Testing the motherboard, RAM, power supply, CPU thermals and storage health, with a plain itemised report.',
-        pricingNote: 'Diagnostic with itemised findings',
-        turnaroundGuide: 'Findings explained clearly before any work',
-        popular: true
-      },
-      {
-        name: 'Laptop Screen, Keyboard & Hinge Repair',
-        description: 'Panel replacement for cracked, flickering or dim displays, plus keyboard replacement and hinge reinforcement.',
-        pricingNote: 'Quote based on panel size and connector type',
-        turnaroundGuide: 'Ordered parts checked on arrival'
-      },
-      {
-        name: 'SSD & Memory Upgrade',
-        description: 'Replacing a slow spinning hard drive with fast NVMe or SATA SSD storage, and expanding RAM, with data cloning if you want it.',
-        pricingNote: 'Varies by capacity, 500GB to 2TB',
-        turnaroundGuide: 'The biggest speed gain for an ageing PC'
-      }
-    ]
-  },
-  {
-    id: 'repair-services',
-    title: 'Software & System Recovery',
-    subtitle: 'Boot loops, corrupted operating systems, malware and data rescue.',
-    iconName: 'Wrench',
-    items: [
-      {
-        name: 'Windows Installation & Clean Setup',
-        description: 'Fresh Windows installation with current drivers, security updates and sensible performance settings.',
-        pricingNote: 'Standard service rate',
-        turnaroundGuide: 'Returned fully updated and clean',
-        popular: true
-      },
-      {
-        name: 'Virus, Malware & Adware Removal',
-        description: 'Deep scanning and removal of rogue processes, browser hijackers, popups and the vulnerabilities that let them in.',
-        pricingNote: 'Fixed-rate diagnostic and cleanup',
-        turnaroundGuide: 'Thorough multi-engine scan'
-      },
-      {
-        name: 'Data Backup & File Transfer',
-        description: 'Recovering documents, photos and records from a failing system and moving them to your new device or external storage.',
-        pricingNote: 'Assessed by drive condition and data volume',
-        turnaroundGuide: 'Handled privately and carefully'
-      }
-    ]
-  },
-  {
-    id: 'gaming-services',
-    title: 'Gaming Console Repair',
-    subtitle: 'PlayStation 5, PlayStation 4 and other gaming systems.',
-    iconName: 'Gamepad2',
-    items: [
-      {
-        name: 'HDMI Port & No Display Repair',
-        description: 'Diagnosing and repairing a damaged HDMI port, the most common cause of a console that powers on but shows no picture.',
-        pricingNote: 'Quote after inspection',
-        turnaroundGuide: 'Assessed while you wait where possible',
-        popular: true
-      },
-      {
-        name: 'Power, Overheating & Fan Service',
-        description: 'Console will not power on, shuts down under load, or runs loud and hot. Internal cleaning, thermal service and power fault diagnosis.',
-        pricingNote: 'Quote based on the fault found',
-        turnaroundGuide: 'Tested under load before collection'
-      },
-      {
-        name: 'Disc Drive, Ports & System Software',
-        description: 'Disc drive faults, damaged USB and controller ports, and system software problems including safe mode and restore issues.',
-        pricingNote: 'Free initial assessment',
-        turnaroundGuide: 'Explained before any work is approved'
-      }
-    ]
-  },
-  {
-    id: 'wrapping-services',
-    title: 'Custom Wrapping',
-    subtitle: 'A new look for phones, laptops, consoles and controllers.',
-    iconName: 'Palette',
-    items: [
-      {
-        name: 'Phone & Tablet Wrap',
-        description: 'A professional wrap in your choice of colour, pattern or texture, fitted in store, that also helps protect the original exterior.',
-        pricingNote: 'Quote by device size and finish chosen',
-        turnaroundGuide: 'Usually fitted on the same visit',
-        popular: true
-      },
-      {
-        name: 'Laptop, Console & Controller Wrap',
-        description: 'Larger surfaces including laptop lids, console shells and controllers. Come in to see the finishes in person before choosing.',
-        pricingNote: 'Quote by surface area and finish',
-        turnaroundGuide: 'Booked in for a fitting slot'
-      }
-    ]
-  },
-  {
-    id: 'security-services',
-    title: 'Security Cameras & Installation',
-    subtitle: 'CCTV systems for homes, retail stores, offices and commercial property.',
-    iconName: 'Cctv',
-    items: [
-      {
-        name: 'Camera System Consultation',
-        description: 'We go through your property, coverage priorities and recording needs, then recommend a camera count and system that fits.',
-        pricingNote: 'Consultation quote provided in advance',
-        turnaroundGuide: 'Scheduled at your convenience',
-        popular: true
-      },
-      {
-        name: 'IP & PoE System Supply and Installation',
-        description: 'Supply and professional installation of IP or PoE cameras with an NVR, night vision, recording storage and remote smartphone viewing.',
-        pricingNote: 'Quote by camera count, cabling and property type',
-        turnaroundGuide: 'Tested and remote viewing set up on handover'
-      }
-    ]
-  },
-  {
-    id: 'buy-sell-services',
-    title: 'We Buy Devices',
-    subtitle: 'Selling or trading in a phone, tablet, laptop or console.',
-    iconName: 'Recycle',
-    items: [
-      {
-        name: 'Device Evaluation & Purchase Offer',
-        description: 'Bring in a working, damaged or broken device and we will inspect it and make an offer. Subject to inspection, ownership verification and our purchasing requirements.',
-        pricingNote: 'Offer based on model, condition and demand',
-        turnaroundGuide: 'Evaluated in store, usually while you wait'
-      }
-    ]
-  },
-  {
-    id: 'technology-solutions',
-    title: 'Business Technology & Custom Builds',
-    subtitle: 'Practical setups for small business, home office and study.',
-    iconName: 'Cpu',
-    items: [
-      {
-        name: 'Custom Desktop PC Build',
-        description: 'Choosing the right components for your budget, precision assembly, cable management, BIOS setup and stress testing.',
-        pricingNote: 'Custom quote based on parts and build depth',
-        turnaroundGuide: 'Tested for thermal stability before handover'
-      },
-      {
-        name: 'Business & Home Office Setup',
-        description: 'Reliable Wi-Fi, multi-monitor setups, printer sharing, network equipment, POS related hardware and backup routines.',
-        pricingNote: 'Consultation quote provided in advance',
-        turnaroundGuide: 'Scheduled around your opening hours'
-      }
-    ]
-  }
+  /* Temporary stand-in listings. Remove this line and DEMO_PRODUCTS above
+     once the real inventory is in. */
+  ...DEMO_PRODUCTS,
 ];
 
 export const TESTIMONIALS_DATA: TestimonialItem[] = [
@@ -660,7 +599,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     id: 'faq-10',
     question: 'How do I get a repair or product quote?',
-    answer: 'Repair cost depends on your exact make, model and the parts involved, so we quote each job rather than publishing flat prices. Submit a request on our Pricing page or call us directly at (416) 771-9078, and we will give you a straight answer, including when a repair is not worth doing.',
+    answer: 'Repair cost depends on your exact make, model and the parts involved, so we quote each job rather than publishing flat prices. Call us at (416) 771-9078 or send a booking request, and we will give you a straight answer, including when a repair is not worth doing.',
     category: 'Booking & Quotes'
   },
   {
@@ -714,7 +653,8 @@ export const PROMO_SLIDES: PromoSlide[] = [
     headline: 'Wrap your phone, laptop or console',
     body: 'Colours, patterns and textures fitted in store, protecting the original finish underneath.',
     ctaLabel: 'See wrapping',
-    ctaRoute: 'services',
+    ctaRoute: 'service',
+    ctaServiceId: 'device-wrapping',
     image: 'https://images.unsplash.com/photo-1616348436168-de43ad0db179?q=80&w=1400&auto=format&fit=crop',
     imageAlt: 'Smartphone finished in a custom textured wrap'
   },
@@ -724,7 +664,8 @@ export const PROMO_SLIDES: PromoSlide[] = [
     headline: 'Turn old electronics into money',
     body: 'Phones, tablets, laptops and consoles. Working, damaged or broken. Bring them in for an offer.',
     ctaLabel: 'Get an offer',
-    ctaRoute: 'contact',
+    ctaRoute: 'service',
+    ctaServiceId: 'we-buy-devices',
     image: 'https://images.unsplash.com/photo-1610945415295-d9bbf067e59c?q=80&w=1400&auto=format&fit=crop',
     imageAlt: 'Used smartphone resting on a dark surface, ready for evaluation'
   },
@@ -733,8 +674,9 @@ export const PROMO_SLIDES: PromoSlide[] = [
     badge: 'Security cameras',
     headline: 'CCTV for your home or business',
     body: 'IP and PoE systems with NVR recording and remote viewing from your phone. Installation available.',
-    ctaLabel: 'Discuss a system',
-    ctaRoute: 'contact',
+    ctaLabel: 'See camera systems',
+    ctaRoute: 'service',
+    ctaServiceId: 'security-cameras',
     image: 'https://images.unsplash.com/photo-1558002038-1055907df827?q=80&w=1400&auto=format&fit=crop',
     imageAlt: 'Security camera beside a phone showing its live view'
   },
@@ -757,5 +699,73 @@ export const PROMO_SLIDES: PromoSlide[] = [
     ctaRoute: 'products',
     image: 'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?q=80&w=1400&auto=format&fit=crop',
     imageAlt: 'Open laptop on a bright desk'
-  }
+  },
+
+  /* --------------------------------------------------------------------
+     TEMPORARY DEMO BANNERS.
+
+     Stand-in promotional slides so the banner sizing and rotation can be
+     reviewed. Wording is deliberately non-numeric: no percentages, no
+     struck-through prices and no limited-time claims, because the store has
+     not set any. Each carries `isDemo` so they stay identifiable in code;
+     nothing labels them in the UI. Delete these five
+     entries to remove them.
+     -------------------------------------------------------------------- */
+  {
+    id: 'demo-promo-featured-deals',
+    badge: 'Featured deals',
+    headline: 'This week on the shelf',
+    body: 'A rotating pick of phones, computers and accessories. Ask us what is in.',
+    ctaLabel: 'See the store',
+    ctaRoute: 'products',
+    image: DEMO_IMAGE.accessoriesFlatlay,
+    imageAlt: 'Demo image: electronics and accessories arranged flat',
+    isDemo: true,
+  },
+  {
+    id: 'demo-promo-new-arrivals',
+    badge: 'New arrivals',
+    headline: 'Just in at King Street',
+    body: 'Stock changes weekly. Call ahead and we will check a specific model for you.',
+    ctaLabel: 'Browse arrivals',
+    ctaRoute: 'products',
+    image: DEMO_IMAGE.phonesBright,
+    imageAlt: 'Demo image: several smartphones displayed on a bright surface',
+    isDemo: true,
+  },
+  {
+    id: 'demo-promo-special',
+    badge: 'Special promotion',
+    headline: 'Ask about a custom wrap',
+    body: 'Phones, laptops, consoles and controllers, finished in store.',
+    ctaLabel: 'See wrapping',
+    ctaRoute: 'service',
+    ctaServiceId: 'device-wrapping',
+    image: DEMO_IMAGE.texturedPhone,
+    imageAlt: 'Demo image: a smartphone in a coloured, textured finish',
+    isDemo: true,
+  },
+  {
+    id: 'demo-promo-security',
+    badge: 'Featured service',
+    headline: 'Cameras for home and business',
+    body: 'Supply and installation, with remote viewing set up before we leave.',
+    ctaLabel: 'See camera systems',
+    ctaRoute: 'service',
+    ctaServiceId: 'security-cameras',
+    image: DEMO_IMAGE.securityCamera,
+    imageAlt: 'Demo image: a security camera mounted outdoors',
+    isDemo: true,
+  },
+  {
+    id: 'demo-promo-accessories',
+    badge: 'Featured products',
+    headline: 'Audio, charging and protection',
+    body: 'Headphones, chargers, cables and cases. Screen protection fitted in store.',
+    ctaLabel: 'See accessories',
+    ctaRoute: 'products',
+    image: DEMO_IMAGE.headphones,
+    imageAlt: 'Demo image: headphones and charging accessories',
+    isDemo: true,
+  },
 ];

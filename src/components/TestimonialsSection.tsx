@@ -1,255 +1,336 @@
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import { useReducedMotion } from 'motion/react';
+import { ChevronLeft, ChevronRight, Quote, Star } from 'lucide-react';
 import { TESTIMONIALS_DATA } from '../data/mockData';
-import { TestimonialItem, PageRoute } from '../types';
-import { Star, CheckCircle2, Plus, X } from 'lucide-react';
+import { TestimonialItem } from '../types';
+import { Modal } from './Modal';
 
 interface TestimonialsSectionProps {
-  /** Suppress the in-section title when a PageHero already states it. */
-  hideHeader?: boolean;
-  isFullPage?: boolean;
-  onNavigate?: (route: PageRoute) => void;
   onNotify?: (msg: string) => void;
 }
 
+/**
+ * Testimonials live on the homepage and nowhere else.
+ *
+ * The rail advances on its own so the section reads as moving without the
+ * visitor doing anything, and stops the moment they touch it, hover it, focus
+ * a card, open a modal, or scroll it by hand. It does not autoplay at all
+ * under `prefers-reduced-motion`. Each card shows a trimmed quote; the full
+ * quote opens in the site modal. Content comes from `TESTIMONIALS_DATA`;
+ * nothing here is generated.
+ */
+const ADVANCE_MS = 4500;
 export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
-  hideHeader = false,
-  isFullPage = false,
   onNotify = (_msg: string) => {},
 }) => {
   const [reviews, setReviews] = useState<TestimonialItem[]>(TESTIMONIALS_DATA);
-  const [showReviewModal, setShowReviewModal] = useState(false);
-  const [newReview, setNewReview] = useState({
+  const [openReview, setOpenReview] = useState<TestimonialItem | null>(null);
+  const [formOpen, setFormOpen] = useState(false);
+  const [draft, setDraft] = useState({
     name: '',
-    serviceCategory: 'Mobile Device & Accessories',
+    serviceCategory: 'Cell Phone Repair',
     quote: '',
     rating: 5,
   });
+  const railRef = useRef<HTMLDivElement | null>(null);
+  const [paused, setPaused] = useState(false);
+  const reduceMotion = useReducedMotion();
 
-  useEffect(() => {
-    if (!showReviewModal) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') setShowReviewModal(false);
-    };
-    document.addEventListener('keydown', onKey);
-    document.body.style.overflow = 'hidden';
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      document.body.style.overflow = '';
-    };
-  }, [showReviewModal]);
+  /* The rail repeats the real reviews. With only a handful of them a single
+     pass fits inside a desktop viewport, leaving nothing to scroll and nothing
+     to autoplay, so the loop below scrolls through one pass and then jumps
+     back by exactly one pass. That jump is invisible because the passes are
+     identical, but it only works if the wrap point is actually reachable:
+     scrolling stops at `scrollWidth - clientWidth`, so the rail needs at least
+     one pass of slack beyond the wrap point. Hence a minimum of four passes
+     for a short list, three once the list is long enough to overflow on its
+     own. Repeats are hidden from assistive tech and skipped by the tab order,
+     so nobody hears or tabs the same review twice. */
+  const copies = reviews.length >= 6 ? 3 : 4;
+  const railItems = Array.from({ length: copies }, (_, copy) =>
+    reviews.map((review) => ({ review, copy }))
+  ).flat();
 
-  const handleReviewSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!newReview.name || !newReview.quote) return;
-
-    const reviewItem: TestimonialItem = {
-      id: `review-${Date.now()}`,
-      customerName: newReview.name,
-      serviceCategory: newReview.serviceCategory,
-      quote: newReview.quote,
-      verified: true,
-      date: 'Just now',
-      rating: newReview.rating,
-    };
-
-    setReviews([reviewItem, ...reviews]);
-    setShowReviewModal(false);
-    onNotify(`Thank you ${newReview.name}. Your review has been submitted.`);
-    setNewReview({
-      name: '',
-      serviceCategory: 'Mobile Device & Accessories',
-      quote: '',
-      rating: 5,
-    });
+  /** One card plus its gap, so a step always lands a card at the left edge. */
+  const stepWidth = (rail: HTMLDivElement) => {
+    const card = rail.firstElementChild as HTMLElement | null;
+    if (!card) return Math.round(rail.clientWidth * 0.8);
+    const gap = parseFloat(getComputedStyle(rail).columnGap || '0') || 0;
+    return card.offsetWidth + gap;
   };
 
-  const shown = isFullPage ? reviews : reviews.slice(0, 3);
+  const scrollRail = useCallback((direction: 1 | -1) => {
+    const rail = railRef.current;
+    if (!rail) return;
+    rail.scrollBy({ left: direction * stepWidth(rail), behavior: 'smooth' });
+  }, []);
+
+  /* Autoplay. Wraps back to the start once the last card is showing, rather
+     than stalling against the end of the scroll range. */
+  useEffect(() => {
+    if (paused || reduceMotion) return;
+    if (openReview || formOpen) return;
+
+    const id = window.setInterval(() => {
+      const rail = railRef.current;
+      if (!rail) return;
+      /* Once two passes have gone by, drop back one pass with no animation.
+         The passes are identical, so the visitor sees no change. */
+      const pass = rail.scrollWidth / copies;
+      if (rail.scrollLeft >= pass * 2 - 8) {
+        rail.scrollTo({ left: rail.scrollLeft - pass, behavior: 'instant' as ScrollBehavior });
+      }
+      rail.scrollBy({ left: stepWidth(rail), behavior: 'smooth' });
+    }, ADVANCE_MS);
+
+    return () => window.clearInterval(id);
+  }, [paused, reduceMotion, openReview, formOpen, copies]);
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!draft.name.trim() || !draft.quote.trim()) return;
+
+    setReviews([
+      {
+        id: `review-${Date.now()}`,
+        customerName: draft.name,
+        serviceCategory: draft.serviceCategory,
+        quote: draft.quote,
+        verified: false,
+        date: 'Just now',
+        rating: draft.rating,
+      },
+      ...reviews,
+    ]);
+    setFormOpen(false);
+    onNotify(`Thank you ${draft.name}. Your feedback has been received.`);
+    setDraft({ name: '', serviceCategory: 'Cell Phone Repair', quote: '', rating: 5 });
+  };
 
   return (
-    <section id="testimonials-section" className="section bg-white">
+    <section id="testimonials-section" className="section bg-mist">
       <div className="shell">
-
-        {!hideHeader && (
-  <div className="max-w-2xl">
-            <h2 className="text-2xl sm:text-3xl lg:text-[2.5rem] lg:leading-[1.1] font-bold text-ink">
-              What our customers say
+        <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
+          <div className="max-w-xl">
+            <p className="eyebrow">Customer feedback</p>
+            <h2 className="mt-3 text-2xl font-bold leading-[1.1] text-ink sm:text-3xl lg:text-[2.5rem]">
+              What people say after they collect their device
             </h2>
-            <p className="mt-4 text-base sm:text-lg text-copy leading-relaxed">
-              Real feedback from individuals, families and businesses across Brantford.
-            </p>
           </div>
-        )}
 
-        <div className={`${hideHeader ? '' : 'mt-10 lg:mt-12'} grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6`}>
-          {shown.map((test) => (
-            <figure
-              key={test.id}
-              id={`testimonial-${test.id}`}
-              className="card p-6 flex flex-col"
+          <div className="hidden shrink-0 items-center gap-2 sm:flex">
+            <button
+              type="button"
+              onClick={() => {
+                setPaused(true);
+                scrollRail(-1);
+              }}
+              aria-label="Previous testimonials"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-white text-ink transition-colors hover:border-brand-300"
             >
-              <div className="flex items-center gap-0.5" aria-label={`Rated ${test.rating} out of 5`}>
-                {[...Array(test.rating)].map((_, i) => (
-                  <Star key={i} aria-hidden="true" className="w-4 h-4 fill-amber-400 text-amber-400" />
-                ))}
-              </div>
+              <ChevronLeft aria-hidden="true" className="h-5 w-5" />
+            </button>
+            <button
+              type="button"
+              onClick={() => {
+                setPaused(true);
+                scrollRail(1);
+              }}
+              aria-label="Next testimonials"
+              className="flex h-11 w-11 items-center justify-center rounded-full border border-line bg-white text-ink transition-colors hover:border-brand-300"
+            >
+              <ChevronRight aria-hidden="true" className="h-5 w-5" />
+            </button>
+          </div>
+        </div>
 
-              <blockquote className="mt-4 text-[0.95rem] text-copy leading-relaxed">
-                {test.quote}
+        <div
+          ref={railRef}
+          onMouseEnter={() => setPaused(true)}
+          onMouseLeave={() => setPaused(false)}
+          onFocusCapture={() => setPaused(true)}
+          onBlurCapture={() => setPaused(false)}
+          onPointerDown={() => setPaused(true)}
+          className="-mx-4 mt-8 flex snap-x snap-mandatory gap-4 overflow-x-auto px-4 pb-3 sm:mx-0 sm:px-0 lg:gap-5"
+        >
+          {railItems.map(({ review, copy }) => (
+            <figure
+              key={`${review.id}-${copy}`}
+              id={copy === 0 ? `testimonial-${review.id}` : undefined}
+              aria-hidden={copy > 0 ? 'true' : undefined}
+              className="card card-interactive group relative flex w-[min(85vw,22rem)] shrink-0 snap-start flex-col p-6 lg:w-[24rem]"
+            >
+              {/* The whole card opens the full review. One button stretched
+                  over the figure keeps that a single tab stop while leaving
+                  the figure and blockquote semantics intact. */}
+              <button
+                type="button"
+                onClick={() => setOpenReview(review)}
+                aria-label={`Read the full review from ${review.customerName}`}
+                tabIndex={copy > 0 ? -1 : undefined}
+                className="absolute inset-0 z-10 rounded-2xl"
+              />
+
+              <Quote aria-hidden="true" className="h-6 w-6 text-brand-300" />
+
+              <blockquote className="mt-4 line-clamp-4 text-[0.95rem] leading-relaxed text-copy">
+                {review.quote}
               </blockquote>
 
-              <figcaption className="mt-auto pt-5 flex items-center justify-between gap-3">
+              <span className="mt-2 inline-flex min-h-[44px] items-center self-start text-sm font-semibold text-brand-700 transition-colors group-hover:text-brand-800">
+                Read the full review
+              </span>
+
+              <figcaption className="mt-auto flex items-center justify-between gap-3 border-t border-line pt-4">
                 <div className="min-w-0">
-                  <p className="text-sm font-bold text-ink truncate">{test.customerName}</p>
-                  <p className="text-xs text-faint truncate">{test.serviceCategory}</p>
+                  <p className="truncate text-sm font-bold text-ink">{review.customerName}</p>
+                  <p className="truncate text-xs text-faint">{review.serviceCategory}</p>
                 </div>
-                {test.verified && (
-                  <span className="flex items-center gap-1 text-[11px] font-semibold text-emerald-700 shrink-0">
-                    <CheckCircle2 aria-hidden="true" className="w-3.5 h-3.5" />
-                    Verified
-                  </span>
-                )}
+                <span
+                  className="flex shrink-0 items-center gap-0.5"
+                  aria-label={`Rated ${review.rating} out of 5`}
+                >
+                  {Array.from({ length: review.rating }).map((_, i) => (
+                    <Star
+                      key={i}
+                      aria-hidden="true"
+                      className="h-3.5 w-3.5 fill-amber-400 text-amber-400"
+                    />
+                  ))}
+                </span>
               </figcaption>
             </figure>
           ))}
         </div>
 
-        <div className="mt-10">
-          <button
-            id="leave-review-modal-btn"
-            onClick={() => setShowReviewModal(true)}
-            className="btn btn-secondary"
-          >
-            <Plus aria-hidden="true" className="w-4 h-4" />
-            <span>Share your feedback</span>
-          </button>
-        </div>
-
+        <button
+          type="button"
+          id="leave-review-btn"
+          onClick={() => setFormOpen(true)}
+          className="mt-6 inline-flex min-h-[44px] items-center text-[15px] font-semibold text-brand-700 transition-colors hover:text-brand-800"
+        >
+          Share your own feedback
+        </button>
       </div>
 
-      {showReviewModal && (
-        <div
-          id="review-submission-modal"
-          role="dialog"
-          aria-modal="true"
-          aria-labelledby="review-modal-title"
-          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/50 backdrop-blur-sm overflow-y-auto"
-          onClick={(e) => {
-            if (e.target === e.currentTarget) setShowReviewModal(false);
-          }}
-        >
-          <div className="relative w-full max-w-lg bg-white rounded-2xl p-6 sm:p-8 my-8">
-            <button
-              type="button"
-              onClick={() => setShowReviewModal(false)}
-              aria-label="Close feedback form"
-              className="absolute top-4 right-4 w-10 h-10 rounded-full flex items-center justify-center text-faint hover:text-ink hover:bg-mist transition-colors"
+      {/* Full quote. Secondary detail, so it belongs in a modal. */}
+      <Modal
+        isOpen={openReview !== null}
+        onClose={() => setOpenReview(null)}
+        title={openReview ? `Review by ${openReview.customerName}` : ''}
+        hideTitle
+        size="md"
+      >
+        {openReview && (
+          <figure className="p-6 pr-16 sm:p-8 sm:pr-16">
+            <span
+              className="flex items-center gap-0.5"
+              aria-label={`Rated ${openReview.rating} out of 5`}
             >
-              <X aria-hidden="true" className="w-5 h-5" />
-            </button>
+              {Array.from({ length: openReview.rating }).map((_, i) => (
+                <Star key={i} aria-hidden="true" className="h-4 w-4 fill-amber-400 text-amber-400" />
+              ))}
+            </span>
 
-            <h3 id="review-modal-title" className="text-xl font-bold text-ink pr-10">
-              Submit your feedback
-            </h3>
-            <p className="mt-2 text-sm text-copy">
-              Your honest feedback helps us keep our standard of service high.
-            </p>
+            <blockquote className="mt-4 text-lg leading-relaxed text-ink">
+              {openReview.quote}
+            </blockquote>
 
-            <form onSubmit={handleReviewSubmit} className="mt-6 space-y-4">
-              <div>
-                <label htmlFor="review-name" className="block text-sm font-semibold text-ink mb-1.5">
-                  Your name <span className="text-brand-700">*</span>
-                </label>
-                <input
-                  id="review-name"
-                  name="name"
-                  type="text"
-                  required
-                  value={newReview.name}
-                  onChange={(e) => setNewReview({ ...newReview, name: e.target.value })}
-                  className="field"
-                />
-              </div>
+            <figcaption className="mt-6 border-t border-line pt-4">
+              <p className="text-sm font-bold text-ink">{openReview.customerName}</p>
+              <p className="text-xs text-faint">
+                {openReview.serviceCategory} · {openReview.date}
+              </p>
+            </figcaption>
+          </figure>
+        )}
+      </Modal>
 
-              <div>
-                <label htmlFor="review-service" className="block text-sm font-semibold text-ink mb-1.5">
-                  Service or product
-                </label>
-                <select
-                  id="review-service"
-                  name="serviceCategory"
-                  value={newReview.serviceCategory}
-                  onChange={(e) => setNewReview({ ...newReview, serviceCategory: e.target.value })}
-                  className="field"
-                >
-                  <option value="Cell Phone Repair">Cell Phone Repair</option>
-                  <option value="Computer &amp; Laptop Repair">Computer &amp; Laptop Repair</option>
-                  <option value="Gaming Console Repair">Gaming Console Repair</option>
-                  <option value="Custom Device Wrapping">Custom Device Wrapping</option>
-                  <option value="Security Cameras &amp; CCTV">Security Cameras &amp; CCTV</option>
-                  <option value="Device Purchase or Trade In">Device Purchase or Trade In</option>
-                  <option value="Device Support &amp; Setup">Device Support &amp; Setup</option>
-                  <option value="Other Technology Service">Other Technology Service</option>
-                </select>
-              </div>
-
-              <fieldset>
-                <legend className="block text-sm font-semibold text-ink mb-1.5">Rating</legend>
-                <div className="flex items-center gap-1">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <button
-                      key={star}
-                      type="button"
-                      onClick={() => setNewReview({ ...newReview, rating: star })}
-                      aria-label={`${star} star${star > 1 ? 's' : ''}`}
-                      aria-pressed={star === newReview.rating}
-                      className="w-11 h-11 flex items-center justify-center rounded-full hover:bg-mist transition-colors"
-                    >
-                      <Star
-                        aria-hidden="true"
-                        className={`w-6 h-6 ${
-                          star <= newReview.rating
-                            ? 'fill-amber-400 text-amber-400'
-                            : 'text-line'
-                        }`}
-                      />
-                    </button>
-                  ))}
-                </div>
-              </fieldset>
-
-              <div>
-                <label htmlFor="review-quote" className="block text-sm font-semibold text-ink mb-1.5">
-                  Your experience <span className="text-brand-700">*</span>
-                </label>
-                <textarea
-                  id="review-quote"
-                  name="quote"
-                  rows={3}
-                  required
-                  value={newReview.quote}
-                  onChange={(e) => setNewReview({ ...newReview, quote: e.target.value })}
-                  placeholder="Tell us about the service you received"
-                  className="field resize-none"
-                />
-              </div>
-
-              <div className="pt-2 flex items-center justify-end gap-3">
-                <button
-                  type="button"
-                  onClick={() => setShowReviewModal(false)}
-                  className="btn !bg-transparent text-copy hover:text-ink"
-                >
-                  Cancel
-                </button>
-                <button id="submit-review-btn" type="submit" className="btn btn-primary">
-                  Post feedback
-                </button>
-              </div>
-            </form>
+      <Modal
+        isOpen={formOpen}
+        onClose={() => setFormOpen(false)}
+        title="Share your feedback"
+        size="md"
+      >
+        <form onSubmit={handleSubmit} className="space-y-4 p-6 pt-4 sm:p-8 sm:pt-4">
+          <div>
+            <label htmlFor="review-name" className="mb-1.5 block text-sm font-semibold text-ink">
+              Your name <span className="text-brand-700">*</span>
+            </label>
+            <input
+              id="review-name"
+              type="text"
+              required
+              value={draft.name}
+              onChange={(e) => setDraft({ ...draft, name: e.target.value })}
+              className="field"
+            />
           </div>
-        </div>
-      )}
 
+          <div>
+            <label htmlFor="review-service" className="mb-1.5 block text-sm font-semibold text-ink">
+              Service
+            </label>
+            <select
+              id="review-service"
+              value={draft.serviceCategory}
+              onChange={(e) => setDraft({ ...draft, serviceCategory: e.target.value })}
+              className="field"
+            >
+              <option>Cell Phone Repair</option>
+              <option>Computer &amp; Laptop Repair</option>
+              <option>Gaming Console Repair</option>
+              <option>Custom Device Wrapping</option>
+              <option>Security Cameras &amp; CCTV</option>
+              <option>Device Purchase or Trade In</option>
+              <option>Other Technology Service</option>
+            </select>
+          </div>
+
+          <fieldset>
+            <legend className="mb-1.5 block text-sm font-semibold text-ink">Rating</legend>
+            <div className="flex items-center gap-1">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  onClick={() => setDraft({ ...draft, rating: star })}
+                  aria-label={`${star} star${star > 1 ? 's' : ''}`}
+                  aria-pressed={star === draft.rating}
+                  className="flex h-11 w-11 items-center justify-center rounded-full transition-colors hover:bg-mist"
+                >
+                  <Star
+                    aria-hidden="true"
+                    className={`h-6 w-6 ${
+                      star <= draft.rating ? 'fill-amber-400 text-amber-400' : 'text-line'
+                    }`}
+                  />
+                </button>
+              ))}
+            </div>
+          </fieldset>
+
+          <div>
+            <label htmlFor="review-quote" className="mb-1.5 block text-sm font-semibold text-ink">
+              Your experience <span className="text-brand-700">*</span>
+            </label>
+            <textarea
+              id="review-quote"
+              rows={4}
+              required
+              value={draft.quote}
+              onChange={(e) => setDraft({ ...draft, quote: e.target.value })}
+              className="field resize-none"
+            />
+          </div>
+
+          <div className="flex justify-end pt-1">
+            <button type="submit" className="btn btn-primary">
+              Post feedback
+            </button>
+          </div>
+        </form>
+      </Modal>
     </section>
   );
 };

@@ -1,15 +1,22 @@
-export type PageRoute = 
+/**
+ * Every destination on the site. Each value must be reachable from the header
+ * or the footer, and every link in the UI must point at one of them.
+ *
+ * `service` is the single service detail page; which service it shows is held
+ * alongside the route in `App.tsx`.
+ *
+ * The pricing, quote, testimonials, team and FAQ pages were removed: the first
+ * two duplicated the booking flow, and the last three now live as sections on
+ * the pages that already had the context for them.
+ */
+export type PageRoute =
   | 'home'
   | 'services'
+  | 'service'
   | 'products'
-  | 'pricing'
-  | 'booking'
-  | 'testimonials'
-  | 'faq'
-  | 'team'
+  | 'about'
   | 'contact'
-  | 'privacy'
-  | 'terms';
+  | 'booking';
 
 export interface ServiceItem {
   id: string;
@@ -62,21 +69,9 @@ export interface ProductItem {
   image: string;
   tag?: string;
   isPopular?: boolean;
+  /** Temporary demo listing. Renders a DEMO chip and is not real inventory. */
+  isDemo?: boolean;
   status: 'Inquire for Availability' | 'Available in Showroom' | 'Special Order';
-}
-
-export interface PricingCategory {
-  id: string;
-  title: string;
-  subtitle: string;
-  iconName: string;
-  items: {
-    name: string;
-    description: string;
-    pricingNote: string;
-    turnaroundGuide: string;
-    popular?: boolean;
-  }[];
 }
 
 export interface TestimonialItem {
@@ -133,7 +128,11 @@ export interface PromoSlide {
   ctaLabel: string;
   /** Where the CTA sends the visitor. 'booking' opens the booking page. */
   ctaRoute: PageRoute;
+  /** Set with ctaRoute 'service' to open that service's detail page. */
+  ctaServiceId?: string;
   image: string;
   /** Alt text for the product image. Required. */
   imageAlt: string;
+  /** Temporary demo banner. Renders a DEMO chip. */
+  isDemo?: boolean;
 }

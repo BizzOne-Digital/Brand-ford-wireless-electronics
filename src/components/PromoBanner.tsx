@@ -6,12 +6,17 @@ import { PROMO_SLIDES } from '../data/mockData';
 
 interface PromoBannerProps {
   onNavigate: (route: PageRoute) => void;
+  onOpenService: (serviceId: string) => void;
   onOpenBooking: () => void;
 }
 
 const ROTATE_MS = 7000;
 
-export const PromoBanner: React.FC<PromoBannerProps> = ({ onNavigate, onOpenBooking }) => {
+export const PromoBanner: React.FC<PromoBannerProps> = ({
+  onNavigate,
+  onOpenService,
+  onOpenBooking,
+}) => {
   const slides = PROMO_SLIDES;
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
@@ -89,9 +94,15 @@ export const PromoBanner: React.FC<PromoBannerProps> = ({ onNavigate, onOpenBook
                   <div className="mt-6">
                     <button
                       type="button"
-                      onClick={() =>
-                        slide.ctaRoute === 'booking' ? onOpenBooking() : onNavigate(slide.ctaRoute)
-                      }
+                      onClick={() => {
+                        if (slide.ctaRoute === 'booking') {
+                          onOpenBooking();
+                        } else if (slide.ctaRoute === 'service' && slide.ctaServiceId) {
+                          onOpenService(slide.ctaServiceId);
+                        } else {
+                          onNavigate(slide.ctaRoute);
+                        }
+                      }}
                       className="btn btn-primary group"
                     >
                       {slide.ctaLabel}
