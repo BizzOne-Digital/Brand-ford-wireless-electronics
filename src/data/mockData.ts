@@ -648,6 +648,23 @@ export const PROMO_SLIDES: PromoSlide[] = [
     imageAlt: 'Technician replacing a cracked smartphone screen at a workbench'
   },
   {
+    /* Second slide: a plain before-and-after pair. Static on purpose; the
+       drag-to-reveal comparison lives in the Before and after section. */
+    id: 'promo-before-after',
+    badge: 'Before and after',
+    headline: 'See the work, not a description',
+    body: 'Devices come in damaged or plain and leave finished. Ask to see more in store.',
+    ctaLabel: 'See wrapping',
+    ctaRoute: 'service',
+    ctaServiceId: 'device-wrapping',
+    image: DEMO_IMAGE.texturedPhone,
+    imageAlt: 'A device finished in a custom wrap',
+    beforeImage: DEMO_IMAGE.phoneInHand,
+    beforeImageAlt: 'A plain device before work',
+    afterImage: DEMO_IMAGE.texturedPhone,
+    afterImageAlt: 'The same kind of device after work',
+  },
+  {
     id: 'promo-wrapping',
     badge: 'Store specialty',
     headline: 'Wrap your phone, laptop or console',

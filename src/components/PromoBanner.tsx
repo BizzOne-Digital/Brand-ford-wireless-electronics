@@ -142,18 +142,58 @@ export const PromoBanner: React.FC<PromoBannerProps> = ({
             {/* Product image. Fixed aspect on mobile, fills the cell on desktop. */}
             <div className="order-1 lg:order-2 relative bg-brand-100/60 aspect-[16/9] sm:aspect-[21/9] lg:aspect-auto lg:min-h-[340px] overflow-hidden">
               <AnimatePresence mode="wait">
-                <motion.img
-                  key={slide.id}
-                  src={slide.image}
-                  alt={slide.imageAlt}
-                  loading={index === 0 ? 'eager' : 'lazy'}
-                  decoding="async"
-                  initial={reduceMotion ? {} : { opacity: 0, scale: 1.03 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={reduceMotion ? {} : { opacity: 0 }}
-                  transition={{ duration: 0.45, ease: 'easeOut' }}
-                  className="absolute inset-0 w-full h-full object-cover"
-                />
+                {slide.beforeImage && slide.afterImage ? (
+                  /* A before-and-after slide: the two photographs sit side by
+                     side, labelled, with no drag handle. The comparison slider
+                     is a separate section further down the page. */
+                  <motion.div
+                    key={slide.id}
+                    initial={reduceMotion ? {} : { opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    exit={reduceMotion ? {} : { opacity: 0 }}
+                    transition={{ duration: 0.45, ease: 'easeOut' }}
+                    className="absolute inset-0 grid grid-cols-2"
+                  >
+                    <figure className="relative m-0 h-full w-full overflow-hidden">
+                      <img
+                        src={slide.beforeImage}
+                        alt={slide.beforeImageAlt ?? ''}
+                        loading={index === 0 ? 'eager' : 'lazy'}
+                        decoding="async"
+                        className="absolute inset-0 h-full w-full object-cover"
+                      />
+                      <figcaption className="absolute bottom-3 left-3 rounded-full bg-ink/85 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.1em] text-white">
+                        Before
+                      </figcaption>
+                    </figure>
+
+                    <figure className="relative m-0 h-full w-full overflow-hidden border-l border-white/70">
+                      <img
+                        src={slide.afterImage}
+                        alt={slide.afterImageAlt ?? ''}
+                        loading={index === 0 ? 'eager' : 'lazy'}
+                        decoding="async"
+                        className="absolute inset-0 h-full w-full object-cover"
+                      />
+                      <figcaption className="absolute bottom-3 right-3 rounded-full bg-brand-600 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.1em] text-white">
+                        After
+                      </figcaption>
+                    </figure>
+                  </motion.div>
+                ) : (
+                  <motion.img
+                    key={slide.id}
+                    src={slide.image}
+                    alt={slide.imageAlt}
+                    loading={index === 0 ? 'eager' : 'lazy'}
+                    decoding="async"
+                    initial={reduceMotion ? {} : { opacity: 0, scale: 1.03 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    exit={reduceMotion ? {} : { opacity: 0 }}
+                    transition={{ duration: 0.45, ease: 'easeOut' }}
+                    className="absolute inset-0 w-full h-full object-cover"
+                  />
+                )}
               </AnimatePresence>
               {/* Softens the image edge into the panel on desktop only */}
               <div

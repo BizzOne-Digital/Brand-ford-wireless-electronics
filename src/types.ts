@@ -133,6 +133,13 @@ export interface PromoSlide {
   image: string;
   /** Alt text for the product image. Required. */
   imageAlt: string;
+  /** Optional before-and-after pair. When both are set the slide shows the two
+      photographs side by side instead of the single `image`. Deliberately
+      static: no drag-to-reveal slider, which belongs further down the page. */
+  beforeImage?: string;
+  beforeImageAlt?: string;
+  afterImage?: string;
+  afterImageAlt?: string;
   /** Temporary demo banner. Renders a DEMO chip. */
   isDemo?: boolean;
 }

@@ -1,7 +1,7 @@
 import React from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { ArrowRight } from 'lucide-react';
-import { STORE_FILM, WORKBENCH } from '../data/media';
+import { WORKBENCH } from '../data/media';
 import { MediaFrame } from './MediaFrame';
 
 interface FeaturedWorkProps {
@@ -68,20 +68,16 @@ export const FeaturedWork: React.FC<FeaturedWorkProps> = ({ onOpenService, onNav
             transition={{ duration: 0.45, delay: 0.08, ease: 'easeOut' }}
             className="lg:col-span-7"
           >
-            <div className="grid gap-4 sm:grid-cols-5">
-              <button
-                type="button"
-                onClick={() => onOpenService('cell-phone-repair')}
-                aria-label="Phone repair: see the service"
-                className="group relative block overflow-hidden rounded-2xl sm:col-span-3"
-              >
-                <MediaFrame media={WORKBENCH} ratio="aspect-[4/5] sm:aspect-[3/4]" zoomOnHover />
-              </button>
-
-              <div className="relative overflow-hidden rounded-2xl sm:col-span-2">
-                <MediaFrame media={STORE_FILM} ratio="aspect-[4/3] sm:aspect-[3/4]" />
-              </div>
-            </div>
+            {/* One photograph, full width. The short film that used to sit
+                beside it has been removed. */}
+            <button
+              type="button"
+              onClick={() => onOpenService('cell-phone-repair')}
+              aria-label="Phone repair: see the service"
+              className="group relative block w-full overflow-hidden rounded-2xl"
+            >
+              <MediaFrame media={WORKBENCH} ratio="aspect-[4/3] sm:aspect-[16/10]" zoomOnHover />
+            </button>
           </motion.div>
         </div>
       </div>

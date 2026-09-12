@@ -101,6 +101,14 @@ export function App() {
           <>
             <Hero onNavigate={handleNavigate} onOpenBooking={handleOpenBooking} />
 
+            {/* Promotions sit directly under the hero, as they did before the
+                rebuild: this is the first thing below "One local store". */}
+            <PromoBanner
+              onNavigate={handleNavigate}
+              onOpenService={handleOpenService}
+              onOpenBooking={handleOpenBooking}
+            />
+
             <TrustStrip />
 
             {/* Services as photography. Each tile opens that service's page. */}
@@ -143,12 +151,6 @@ export function App() {
                 onActivate={() => handleOpenService('computer-repairs')}
               />
             </div>
-
-            <PromoBanner
-              onNavigate={handleNavigate}
-              onOpenService={handleOpenService}
-              onOpenBooking={handleOpenBooking}
-            />
 
             <TestimonialsSection onNotify={showToast} />
 
