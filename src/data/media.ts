@@ -170,10 +170,6 @@ export const STORE_FILM: MediaRef = {
 
 export interface ServiceMedia {
   hero: MediaRef;
-  /** Set when `hero` is designed artwork that already carries its own
-      headline. The page then shows it whole, with the page title beneath,
-      instead of cropping it under a scrim and stacking two headlines. */
-  heroIsBanner?: boolean;
   gallery: MediaRef[];
   before?: MediaRef;
   after?: MediaRef;
@@ -236,19 +232,19 @@ export const SERVICE_MEDIA: Record<string, ServiceMedia> = {
   },
   'device-wrapping': {
     tagline: 'Same device. Bigger personality. Fitted in store.',
-    heroIsBanner: true,
-    hero: {
-      kind: 'image',
-      src: wrappingBanner,
-      /* The wrapped devices sit on the right of this banner, so a tall crop
-         keeps them in frame rather than showing only the headline. */
-      focus: 'object-right',
-      alt: 'Custom device wrapping: phones, laptops, consoles and controllers in marble, carbon and abstract finishes',
-    },
+    /* A photograph, like every other service page. This page used to open
+       with the designed banner and put its title underneath, which was the
+       one service page that did not match the rest. The banner now sits in
+       the gallery, where it is still shown whole. */
+    hero: wrappingCustomerPhoto,
     gallery: [
       wrappingAfterPhoto,
       demoWrappingRange,
-      wrappingCustomerPhoto,
+      {
+        kind: 'image',
+        src: wrappingBanner,
+        alt: 'Custom device wrapping: phones, laptops, consoles and controllers in marble, carbon and abstract finishes',
+      },
     ],
     before: wrappingBeforePhoto,
     after: wrappingAfterPhoto,

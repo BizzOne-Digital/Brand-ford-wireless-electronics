@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { motion, useReducedMotion } from 'motion/react';
 import { ArrowRight, Search, X } from 'lucide-react';
 import { PRODUCTS_DATA } from '../data/mockData';
@@ -10,6 +10,9 @@ interface ProductCatalogProps {
   hideHeader?: boolean;
   /** The store page adds search, category groups and the full inventory. */
   isFullPage?: boolean;
+  /** Category group to open on. Lets a service page link straight to its
+      shelf, e.g. used phones or accessories. */
+  initialGroup?: string;
   onSeeAll?: () => void;
   onSelectProduct: (product: ProductItem) => void;
 }
@@ -24,6 +27,7 @@ interface ProductCatalogProps {
 const GROUPS: { id: string; label: string; match: ProductCategory[]; image?: string }[] = [
   { id: 'all', label: 'Everything', match: [] },
   { id: 'phones', label: 'Phones', match: ['smartphones', 'used-phones'], image: DEMO_IMAGE.phonesBright },
+  { id: 'used', label: 'Used & refurbished', match: ['used-phones'], image: DEMO_IMAGE.phoneInHand },
   { id: 'computers', label: 'Computers', match: ['laptops', 'desktops'], image: DEMO_IMAGE.laptopDesk },
   { id: 'gaming', label: 'Gaming', match: ['gaming'], image: DEMO_IMAGE.console },
   { id: 'wraps', label: 'Custom wraps', match: ['wraps'], image: DEMO_IMAGE.texturedPhone },
@@ -54,12 +58,20 @@ const byId = (id: string) => PRODUCTS_DATA.find((p) => p.id === id);
 export const ProductCatalog: React.FC<ProductCatalogProps> = ({
   hideHeader = false,
   isFullPage = false,
+  initialGroup = 'all',
   onSeeAll,
   onSelectProduct,
 }) => {
-  const [group, setGroup] = useState('all');
+  const [group, setGroup] = useState(initialGroup);
   const [query, setQuery] = useState('');
   const reduceMotion = useReducedMotion();
+
+  /* Follow the prop when the visitor arrives from a different service link
+     while this component is already mounted. */
+  useEffect(() => {
+    setGroup(initialGroup);
+    setQuery('');
+  }, [initialGroup]);
 
   const filtered = useMemo(() => {
     const q = query.trim().toLowerCase();

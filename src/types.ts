@@ -16,7 +16,9 @@ export type PageRoute =
   | 'products'
   | 'about'
   | 'contact'
-  | 'booking';
+  | 'booking'
+  /** Buy-back intake. A sale is not a booking, so it has its own form. */
+  | 'sell';
 
 export interface ServiceItem {
   id: string;

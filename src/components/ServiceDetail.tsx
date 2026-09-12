@@ -73,75 +73,42 @@ export const ServiceDetail: React.FC<ServiceDetailProps> = ({
 
   return (
     <>
-      {/* 1. Large visual. The artwork or photograph is the first thing here. */}
-      {media.heroIsBanner ? (
-        /* Designed artwork carries its own headline, so it runs whole and the
-           page title sits beneath it rather than on top of it. */
-        <section className="bg-white pt-20 lg:pt-24">
-          <div className="shell">
-            <MediaFrame
-              media={media.hero}
-              ratio="aspect-[8/3]"
-              priority
-              className="rounded-2xl border border-line sm:rounded-3xl"
-            />
+      {/* 1. Large visual. The photograph is the first thing on the page. */}
+      <section className="relative isolate">
+        <MediaFrame
+          media={media.hero}
+          ratio="aspect-[4/5] sm:aspect-[16/10] lg:aspect-[21/9]"
+          priority
+          className="min-h-[28rem] sm:min-h-0"
+        />
 
+        <span
+          aria-hidden="true"
+          className="absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-ink/25 lg:bg-gradient-to-r lg:from-ink lg:via-ink/70 lg:to-transparent"
+        />
+
+        <div className="absolute inset-x-0 bottom-0">
+          <div className="shell pb-8 lg:pb-14">
             <motion.div
               {...rise}
               transition={{ duration: 0.5, ease: 'easeOut' }}
-              className="max-w-2xl pt-7 pb-4 lg:pt-10"
+              className="max-w-2xl"
             >
-              {backLink(false)}
+              {backLink(true)}
 
-              <h1 className="mt-1 font-display text-[2rem] font-bold leading-[1.08] text-ink sm:text-5xl lg:text-[3.2rem]">
+              <h1 className="mt-1 font-display text-[2rem] font-bold leading-[1.08] text-white sm:text-5xl lg:text-[3.4rem]">
                 {service.title}
               </h1>
 
-              <p className="mt-3 max-w-[42ch] text-base font-medium text-copy sm:text-lg">
+              <p className="mt-3 max-w-[42ch] text-base font-medium text-white/90 sm:text-lg">
                 {media.tagline}
               </p>
 
-              {actions(false)}
+              {actions(true)}
             </motion.div>
           </div>
-        </section>
-      ) : (
-        <section className="relative isolate">
-          <MediaFrame
-            media={media.hero}
-            ratio="aspect-[4/5] sm:aspect-[16/10] lg:aspect-[21/9]"
-            priority
-            className="min-h-[28rem] sm:min-h-0"
-          />
-
-          <span
-            aria-hidden="true"
-            className="absolute inset-0 bg-gradient-to-t from-ink via-ink/55 to-ink/25 lg:bg-gradient-to-r lg:from-ink lg:via-ink/70 lg:to-transparent"
-          />
-
-          <div className="absolute inset-x-0 bottom-0">
-            <div className="shell pb-8 lg:pb-14">
-              <motion.div
-                {...rise}
-                transition={{ duration: 0.5, ease: 'easeOut' }}
-                className="max-w-2xl"
-              >
-                {backLink(true)}
-
-                <h1 className="mt-1 font-display text-[2rem] font-bold leading-[1.08] text-white sm:text-5xl lg:text-[3.4rem]">
-                  {service.title}
-                </h1>
-
-                <p className="mt-3 max-w-[42ch] text-base font-medium text-white/90 sm:text-lg">
-                  {media.tagline}
-                </p>
-
-                {actions(true)}
-              </motion.div>
-            </div>
-          </div>
-        </section>
-      )}
+        </div>
+      </section>
 
       {/* 2 + 3. One line of context, then the work itself, large. */}
       <section className="section bg-white">

@@ -22,6 +22,7 @@ import { TestimonialsSection } from './components/TestimonialsSection';
 import { FAQSection } from './components/FAQSection';
 import { TeamSection } from './components/TeamSection';
 import { BookingForm } from './components/BookingForm';
+import { SellDeviceForm } from './components/SellDeviceForm';
 import { ContactSection } from './components/ContactSection';
 import { MobileQuickBar } from './components/MobileQuickBar';
 import { Footer } from './components/Footer';
@@ -40,6 +41,19 @@ const PAGE_IMAGES = {
   products: DEMO_IMAGE.accessoriesFlatlay,
   booking: DEMO_IMAGE.benchTools,
   contact: DEMO_IMAGE.deskPhone,
+  sell: DEMO_IMAGE.phoneInHand,
+};
+
+/**
+ * Three services are not really pages: they are a shortcut to somewhere else.
+ * Selling a device is a form, and the two shelf services are the store filtered
+ * to their own category. Routing them here means every entry point behaves the
+ * same, whether it is a tile, the footer or a promo slide.
+ */
+const SERVICE_SHORTCUTS: Record<string, { route: PageRoute; storeGroup?: string }> = {
+  'we-buy-devices': { route: 'sell' },
+  'used-refurbished-phones': { route: 'products', storeGroup: 'used' },
+  'accessories-peripherals': { route: 'products', storeGroup: 'accessories' },
 };
 
 export function App() {
@@ -49,6 +63,8 @@ export function App() {
   /** Prefills the booking form when a service page sends someone to it. */
   const [bookingService, setBookingService] = useState('');
 
+  /** Category the store opens on, set by the shelf shortcuts above. */
+  const [storeGroup, setStoreGroup] = useState('all');
   const [selectedProduct, setSelectedProduct] = useState<ProductItem | null>(null);
   const [privacyTermsType, setPrivacyTermsType] = useState<'privacy' | 'terms' | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -58,11 +74,19 @@ export function App() {
   const toTop = () => window.scrollTo({ top: 0, behavior: 'smooth' });
 
   const handleNavigate = (route: PageRoute) => {
+    if (route === 'products') setStoreGroup('all');
     setCurrentRoute(route);
     toTop();
   };
 
   const handleOpenService = (serviceId: string) => {
+    const shortcut = SERVICE_SHORTCUTS[serviceId];
+    if (shortcut) {
+      setStoreGroup(shortcut.storeGroup ?? 'all');
+      setCurrentRoute(shortcut.route);
+      toTop();
+      return;
+    }
     setActiveServiceId(serviceId);
     setCurrentRoute('service');
     toTop();
@@ -216,7 +240,12 @@ export function App() {
               onOpenBooking={handleOpenBooking}
             />
 
-            <ProductCatalog hideHeader isFullPage onSelectProduct={setSelectedProduct} />
+            <ProductCatalog
+              hideHeader
+              isFullPage
+              initialGroup={storeGroup}
+              onSelectProduct={setSelectedProduct}
+            />
 
             <div className="shell pb-4">
               <AdBanner
@@ -260,6 +289,17 @@ export function App() {
               onNavigate={handleNavigate}
               onNotify={showToast}
             />
+          </>
+        )}
+
+        {currentRoute === 'sell' && (
+          <>
+            <PageHero
+              title="We buy phones and electronics"
+              subtitle="Working, damaged or broken. Tell us what you have and we will come back to you."
+              image={PAGE_IMAGES.sell}
+            />
+            <SellDeviceForm onNotify={showToast} />
           </>
         )}
 
