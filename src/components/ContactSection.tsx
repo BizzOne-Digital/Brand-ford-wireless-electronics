@@ -128,7 +128,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                     className="btn btn-primary"
                   >
                     <Calendar aria-hidden="true" className="w-4 h-4" />
-                    <span>Book a Service</span>
+                    <span>Mailed in Service</span>
                   </button>
                 )}
                 <a href={`tel:${BUSINESS_INFO.phoneRaw}`} className="btn btn-secondary">
@@ -175,7 +175,7 @@ export const ContactSection: React.FC<ContactSectionProps> = ({
                   className="btn btn-primary w-full mt-6"
                 >
                   <Calendar aria-hidden="true" className="w-4 h-4" />
-                  <span>Book a Service</span>
+                  <span>Mailed in Service</span>
                 </button>
               )}
             </div>

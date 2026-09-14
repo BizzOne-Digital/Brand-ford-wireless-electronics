@@ -67,7 +67,7 @@ export const Footer: React.FC<FooterProps> = ({
               className="btn btn-onink mt-6"
             >
               <Calendar aria-hidden="true" className="w-4 h-4" />
-              <span>Book a Service</span>
+              <span>Mailed in Service</span>
             </button>
           </div>
 

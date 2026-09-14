@@ -83,7 +83,7 @@ export const AboutSection: React.FC<AboutSectionProps> = ({ onNavigate, onOpenBo
                   onClick={onOpenBooking}
                   className="btn btn-primary"
                 >
-                  Book a service
+                  Mailed in Service
                 </button>
               )}
               {onNavigate && (

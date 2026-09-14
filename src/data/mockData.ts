@@ -593,7 +593,7 @@ export const FAQ_DATA: FAQItem[] = [
   {
     id: 'faq-9',
     question: 'Can I book a repair appointment online?',
-    answer: 'Yes. Use the Book a Service tool on this website to choose your device type, the service you need, and a preferred date and time. We review every request and get in touch to confirm the details.',
+    answer: 'Yes. Use the Mailed in Service tool on this website to choose your device type, the service you need, and a preferred date and time. We review every request and get in touch to confirm the details.',
     category: 'Booking & Quotes'
   },
   {

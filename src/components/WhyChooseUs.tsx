@@ -69,7 +69,7 @@ export const WhyChooseUs: React.FC<WhyChooseUsProps> = ({ onOpenBooking }) => {
               onClick={onOpenBooking}
               className="btn btn-primary group sm:ml-auto"
             >
-              <span>Book a Service</span>
+              <span>Mailed in Service</span>
               <ArrowRight
                 aria-hidden="true"
                 className="w-4 h-4 transition-transform duration-200 group-hover:translate-x-0.5"

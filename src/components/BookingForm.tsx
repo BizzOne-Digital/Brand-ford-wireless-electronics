@@ -210,6 +210,7 @@ export const BookingForm: React.FC<BookingFormProps> = ({
                       onChange={(e) => setFormData({ ...formData, serviceType: e.target.value })}
                     className="field"
                   >
+                    <option value="Mailed in Service">Mailed in Service (ship your device to us)</option>
                     <option value="Cell Phone Repair">Cell Phone Repair (iPhone / Samsung / Android)</option>
                     <option value="Tablet Repair">iPad &amp; Tablet Repair</option>
                     <option value="Computer Repair">Computer &amp; Laptop Repair</option>

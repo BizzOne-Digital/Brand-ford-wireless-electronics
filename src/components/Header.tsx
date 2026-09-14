@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from 'react';
 import { PageRoute } from '../types';
 import { BUSINESS_INFO } from '../data/mockData';
-import { Phone, Calendar, Menu, X, ChevronRight } from 'lucide-react';
+import { Phone, Calendar, Menu, X, ChevronRight, PackageOpen } from 'lucide-react';
 import { BrandLogo } from './BrandLogo';
 
 interface HeaderProps {
   currentRoute: PageRoute;
   onNavigate: (route: PageRoute) => void;
+  /** Unused while the two Book a Service buttons below are commented out.
+      Kept so restoring them needs no change in App.tsx. */
   onOpenBooking: () => void;
+  /** Mail-in repairs: booking, with the service already chosen. */
+  onOpenMailIn: () => void;
 }
 
 export const Header: React.FC<HeaderProps> = ({
   currentRoute,
   onNavigate,
-  onOpenBooking
+  onOpenBooking,
+  onOpenMailIn,
 }) => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -122,16 +127,37 @@ export const Header: React.FC<HeaderProps> = ({
                 <span>{BUSINESS_INFO.phone}</span>
               </a>
 
+              {/* Highlighted against the blue Book button: on the dark bar a
+                  white pill is the loudest thing available without adding a
+                  second brand colour. Label shortens below xl so the nav keeps
+                  its gap. */}
+              <button
+                id="header-mailin-btn"
+                onClick={onOpenMailIn}
+                className="btn btn-onink !px-4 !py-2.5 !text-[13px] ring-2 ring-white/70"
+              >
+                <PackageOpen aria-hidden="true" className="w-4 h-4 text-brand-700" />
+                <span className="xl:hidden">Mail-In</span>
+                <span className="hidden xl:inline">Mailed in Service</span>
+              </button>
+
+              {/* Book a Service, commented out while the Mailed in Service
+                  button above occupies this slot. Two primary CTAs side by
+                  side in the bar split the visitor's attention, so only one
+                  runs at a time. Booking is still reachable from the home
+                  hero, every service page, the footer, the contact section
+                  and the mobile quick bar. Uncomment to bring it back. */}
+              {/*
               <button
                 id="header-book-btn"
                 onClick={onOpenBooking}
                 className="btn btn-primary !px-4 !py-2.5 !text-[13px]"
               >
                 <Calendar aria-hidden="true" className="w-4 h-4" />
-                {/* Shortened through the laptop range so the nav keeps its gap */}
                 <span className="xl:hidden">Book Service</span>
                 <span className="hidden xl:inline">Book a Service</span>
               </button>
+              */}
             </div>
 
             {/* Drawer controls. These run to `lg`, where the inline nav takes
@@ -206,6 +232,22 @@ export const Header: React.FC<HeaderProps> = ({
 
             <div className="mt-auto pt-4 flex flex-col gap-2.5">
               <button
+                id="mobile-drawer-mailin-btn"
+                onClick={() => {
+                  setMobileMenuOpen(false);
+                  onOpenMailIn();
+                }}
+                className="btn btn-onink w-full ring-2 ring-white/70"
+              >
+                <PackageOpen aria-hidden="true" className="w-4 h-4 text-brand-700" />
+                Mailed in Service
+              </button>
+
+              {/* Book a Service, commented out for the same reason as the
+                  header button above. The fixed mobile quick bar at the foot
+                  of the screen still carries Book Service. */}
+              {/*
+              <button
                 id="mobile-drawer-book-btn"
                 onClick={() => {
                   setMobileMenuOpen(false);
@@ -216,6 +258,7 @@ export const Header: React.FC<HeaderProps> = ({
                 <Calendar aria-hidden="true" className="w-4 h-4" />
                 Book a Service
               </button>
+              */}
               <a
                 id="mobile-drawer-call-btn"
                 href={`tel:${BUSINESS_INFO.phoneRaw}`}

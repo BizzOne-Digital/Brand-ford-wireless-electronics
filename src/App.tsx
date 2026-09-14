@@ -24,7 +24,6 @@ import { TeamSection } from './components/TeamSection';
 import { BookingForm } from './components/BookingForm';
 import { SellDeviceForm } from './components/SellDeviceForm';
 import { ContactSection } from './components/ContactSection';
-import { MobileQuickBar } from './components/MobileQuickBar';
 import { Footer } from './components/Footer';
 import { PrivacyTermsModal } from './components/PrivacyTermsModal';
 import { Toast } from './components/Toast';
@@ -98,6 +97,13 @@ export function App() {
     toTop();
   };
 
+  /** Mail-in repairs use the booking form with the service preselected. */
+  const handleOpenMailIn = () => {
+    setBookingService('Mailed in Service');
+    setCurrentRoute('booking');
+    toTop();
+  };
+
   /** Sends a visitor to the booking page with the service already chosen. */
   const handleBookService = (serviceId: string) => {
     setBookingService(SERVICE_BOOKING_OPTION[serviceId] ?? 'Other');
@@ -117,6 +123,7 @@ export function App() {
         currentRoute={currentRoute}
         onNavigate={handleNavigate}
         onOpenBooking={handleOpenBooking}
+        onOpenMailIn={handleOpenMailIn}
       />
 
       {/* The mobile quick bar is fixed to the bottom, so main clears it. */}
@@ -336,8 +343,6 @@ export function App() {
         onOpenBooking={handleOpenBooking}
         onOpenPrivacyTerms={setPrivacyTermsType}
       />
-
-      <MobileQuickBar onOpenBooking={handleOpenBooking} />
     </div>
   );
 }

@@ -106,7 +106,7 @@ export const Hero: React.FC<HeroProps> = ({ onOpenBooking }) => {
               className="btn btn-primary"
             >
               <Calendar aria-hidden="true" className="w-4 h-4" />
-              <span>Book a Service</span>
+              <span>Mailed in Service</span>
             </button>
 
             <a
