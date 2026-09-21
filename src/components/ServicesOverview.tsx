@@ -58,7 +58,7 @@ export const ServicesOverview: React.FC<ServicesOverviewProps> = ({
             620px wide rather than 400px. The homepage keeps three, because it
             is a summary of five and sits above a long page. */}
         <div
-          className={`${hideHeader ? '' : 'mt-8 lg:mt-12'} grid gap-4 sm:grid-cols-2 lg:gap-6 ${
+          className={`${hideHeader ? '' : 'mt-8 lg:mt-12'} grid grid-cols-2 gap-3 sm:gap-4 lg:gap-6 ${
             isFullPage ? 'lg:grid-cols-2' : 'lg:grid-cols-3 lg:gap-5'
           }`}
         >
@@ -117,7 +117,7 @@ const ServiceTile: React.FC<{
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.4, delay: Math.min(index, 5) * 0.06, ease: 'easeOut' }}
       className={`group relative block overflow-hidden rounded-2xl border border-line text-left transition-colors hover:border-brand-300 ${
-        wide ? (large ? 'sm:col-span-2' : 'sm:col-span-2 lg:col-span-3') : ''
+        wide ? (large ? 'col-span-2' : 'col-span-2 lg:col-span-3') : ''
       }`}
     >
       <MediaFrame
@@ -126,8 +126,8 @@ const ServiceTile: React.FC<{
           wide
             ? 'aspect-[16/10] sm:aspect-[21/9]'
             : large
-              ? 'aspect-[4/3] sm:aspect-[3/2]'
-              : 'aspect-[4/3]'
+              ? 'aspect-square sm:aspect-[3/2]'
+              : 'aspect-square sm:aspect-[4/3]'
         }
         zoomOnHover
         priority={index === 0}
@@ -140,7 +140,7 @@ const ServiceTile: React.FC<{
         className="absolute inset-x-0 bottom-0 h-3/5 bg-gradient-to-t from-ink via-ink/70 to-transparent"
       />
 
-      <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-4 p-4 sm:p-5">
+      <span className="absolute inset-x-0 bottom-0 flex items-end justify-between gap-2 p-3 sm:gap-4 sm:p-5">
         <span className="min-w-0">
           {service.badge && (
             <span className="text-[11px] font-bold uppercase tracking-[0.12em] text-brand-300">
@@ -149,14 +149,18 @@ const ServiceTile: React.FC<{
           )}
           <span
             className={`mt-1 block font-display font-bold leading-tight text-white ${
-              wide ? 'text-xl sm:text-2xl lg:text-3xl' : large ? 'text-xl sm:text-2xl' : 'text-lg'
+              wide
+                ? 'text-xl sm:text-2xl lg:text-3xl'
+                : large
+                  ? 'text-[15px] sm:text-xl md:text-2xl'
+                  : 'text-[15px] sm:text-lg'
             }`}
           >
             {service.title}
           </span>
           <span
-            className={`mt-1 block leading-snug text-white/85 ${
-              large || wide ? 'text-sm' : 'text-[13px]'
+            className={`mt-1 leading-snug text-white/85 ${
+              wide ? 'block text-sm' : 'hidden text-[13px] sm:block sm:text-sm'
             }`}
           >
             {media.tagline}
@@ -175,7 +179,9 @@ const ServiceTile: React.FC<{
 
         <span
           aria-hidden="true"
-          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-ink transition-transform duration-200 group-hover:translate-x-0.5 sm:hidden"
+          className={`h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-ink transition-transform duration-200 group-hover:translate-x-0.5 sm:hidden ${
+            wide ? 'flex' : 'hidden'
+          }`}
         >
           <ArrowRight className="h-4 w-4" />
         </span>

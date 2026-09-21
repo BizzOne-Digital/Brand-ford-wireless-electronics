@@ -36,7 +36,9 @@ export const PageHero: React.FC<PageHeroProps> = ({
   if (!image) {
     return (
       <section className="relative isolate overflow-hidden bg-frost">
-        <div className="shell relative z-10 pt-28 pb-12 lg:pt-32 lg:pb-16">
+        {/* The header sits in normal flow, so this band carries no offset
+            for it. It was `pt-28` back when the header was fixed. */}
+        <div className="shell relative z-10 py-12 lg:py-16">
           <motion.div
             {...rise}
             transition={{ duration: 0.45, ease: 'easeOut' }}

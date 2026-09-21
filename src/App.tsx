@@ -1,25 +1,21 @@
 import React, { useState } from 'react';
 import { PageRoute, ProductItem } from './types';
 import { SERVICES_DATA, SERVICE_BOOKING_OPTION } from './data/mockData';
-import { STORE_MEDIA } from './data/media';
+import { STORE_MEDIA, STORE_MEDIA_MOBILE } from './data/media';
 import { DEMO_IMAGE } from './data/demoMedia';
 
 import { Header } from './components/Header';
 import { PromoBanner } from './components/PromoBanner';
 import { AdBanner } from './components/AdBanner';
-import { Hero } from './components/Hero';
 import { PageHero } from './components/PageHero';
-import { TrustStrip } from './components/TrustStrip';
+import { CategoryRail } from './components/CategoryRail';
 import { ServicesOverview } from './components/ServicesOverview';
 import { ServiceDetail } from './components/ServiceDetail';
-import { FeaturedWork } from './components/FeaturedWork';
 import { BeforeAfterShowcase } from './components/BeforeAfterShowcase';
 import { ProductCatalog } from './components/ProductCatalog';
 import { ProductInquiryModal } from './components/ProductInquiryModal';
 import { AboutSection } from './components/AboutSection';
 import { WhyChooseUs } from './components/WhyChooseUs';
-import { TestimonialsSection } from './components/TestimonialsSection';
-import { FAQSection } from './components/FAQSection';
 import { TeamSection } from './components/TeamSection';
 import { BookingForm } from './components/BookingForm';
 import { SellDeviceForm } from './components/SellDeviceForm';
@@ -39,7 +35,6 @@ const PAGE_IMAGES = {
   services: DEMO_IMAGE.texturedPhone,
   products: DEMO_IMAGE.accessoriesFlatlay,
   booking: DEMO_IMAGE.benchTools,
-  contact: DEMO_IMAGE.deskPhone,
   sell: DEMO_IMAGE.phoneInHand,
 };
 
@@ -97,7 +92,9 @@ export function App() {
     toTop();
   };
 
-  /** Mail-in repairs use the booking form with the service preselected. */
+  /** Mail-in repairs use the booking form with the service preselected.
+      Every CTA on the site now reads "Mailed in Service", so they all route
+      here; only the promo carousel's "Book a repair" slide stays generic. */
   const handleOpenMailIn = () => {
     setBookingService('Mailed in Service');
     setCurrentRoute('booking');
@@ -126,72 +123,76 @@ export function App() {
         onOpenMailIn={handleOpenMailIn}
       />
 
-      {/* The mobile quick bar is fixed to the bottom, so main clears it. */}
-      <main id="main-content" className="pb-20 lg:pb-0">
+      {/* Site chrome, on every route: the header scrolls away, so this bar
+          is the only navigation that survives scrolling. It is `hidden
+          lg:block`, so on a phone the homepage's tile grid below the hero
+          stays the only category navigation. */}
+      <CategoryRail
+        variant="bar"
+        onOpenService={handleOpenService}
+        onSeeAll={() => handleNavigate('services')}
+      />
+
+      <main id="main-content">
         {currentRoute === 'home' && (
           <>
-            <Hero onNavigate={handleNavigate} onOpenBooking={handleOpenBooking} />
-
-            {/* Promotions sit directly under the hero, as they did before the
-                rebuild: this is the first thing below "One local store". */}
             <PromoBanner
+              asHero
               onNavigate={handleNavigate}
               onOpenService={handleOpenService}
               onOpenBooking={handleOpenBooking}
             />
 
-            <TrustStrip />
+            {/* Phone and tablet only: the desktop bar above the page covers
+                those widths. */}
+            <CategoryRail
+              variant="tiles"
+              onOpenService={handleOpenService}
+              onSeeAll={() => handleNavigate('services')}
+            />
 
-            {/* Services as photography. Each tile opens that service's page. */}
+            {/* The store's own artwork. Two across on desktop, in the wider
+                1440px container so each gains width without losing the gap
+                or the gutters. Below `lg` it becomes a swipe rail: each
+                banner takes 86% of the width and snaps, so the edge of the
+                next one is always visible and says the row scrolls. Two
+                across on a phone made each 166px, which was too small to
+                read the artwork at all. */}
+            <section aria-label="Featured from the store" className="bg-mist py-10 lg:py-14">
+              <div className="shell-wide flex snap-x snap-mandatory gap-3 overflow-x-auto pb-1 [-ms-overflow-style:none] [scrollbar-width:none] lg:grid lg:grid-cols-2 lg:gap-6 lg:overflow-visible lg:pb-0 [&::-webkit-scrollbar]:hidden">
+                <AdBanner
+                  className="w-[88%] shrink-0 snap-start lg:w-auto"
+                  media={{
+                    kind: 'image',
+                    src: STORE_MEDIA.wrappingBanner,
+                    alt: 'Custom device wrapping: phones, laptops, consoles and controllers in marble, carbon and abstract finishes',
+                  }}
+                  mobileSrc={STORE_MEDIA_MOBILE.wrappingBanner}
+                  action="Custom device wrapping"
+                  note={SERVICES_DATA.find((s) => s.id === 'device-wrapping')?.shortDesc}
+                  onActivate={() => handleOpenService('device-wrapping')}
+                />
+                <AdBanner
+                  className="w-[88%] shrink-0 snap-start lg:w-auto"
+                  media={{
+                    kind: 'image',
+                    src: STORE_MEDIA.pcBuildsBanner,
+                    alt: 'Custom PC builds by Brantford Wireless, for gaming, work, school and home',
+                  }}
+                  mobileSrc={STORE_MEDIA_MOBILE.pcBuildsBanner}
+                  action="Custom PC builds"
+                  note={SERVICES_DATA.find((s) => s.id === 'computer-repairs')?.shortDesc}
+                  onActivate={() => handleOpenService('computer-repairs')}
+                />
+              </div>
+            </section>
+
             <ServicesOverview
               onOpenService={handleOpenService}
               onSeeAll={() => handleNavigate('services')}
             />
 
-            {/* The store's own wrapping banner, at full width. */}
-            <div className="shell pb-4">
-              <AdBanner
-                media={{
-                  kind: 'image',
-                  src: STORE_MEDIA.wrappingBanner,
-                  alt: 'Custom device wrapping: phones, laptops, consoles and controllers in marble, carbon and abstract finishes',
-                }}
-                action="Custom device wrapping"
-                onActivate={() => handleOpenService('device-wrapping')}
-              />
-            </div>
-
-            <FeaturedWork onOpenService={handleOpenService} onNavigate={handleNavigate} />
-
             <BeforeAfterShowcase onOpenService={handleOpenService} />
-
-            <ProductCatalog
-              onSeeAll={() => handleNavigate('products')}
-              onSelectProduct={setSelectedProduct}
-            />
-
-            {/* The store's own custom PC banner, leading into the store. */}
-            <div className="shell pb-4">
-              <AdBanner
-                media={{
-                  kind: 'image',
-                  src: STORE_MEDIA.pcBuildsBanner,
-                  alt: 'Custom PC builds by Brantford Wireless, for gaming, work, school and home',
-                }}
-                action="Custom PC builds"
-                onActivate={() => handleOpenService('computer-repairs')}
-              />
-            </div>
-
-            <TestimonialsSection onNotify={showToast} />
-
-            <TeamSection />
-
-            <ContactSection
-              onNavigate={handleNavigate}
-              onOpenBooking={handleOpenBooking}
-              onNotify={showToast}
-            />
           </>
         )}
 
@@ -276,9 +277,9 @@ export function App() {
               image={STORE_MEDIA.workbenchPhoto}
             />
 
-            <AboutSection onNavigate={handleNavigate} onOpenBooking={handleOpenBooking} />
+            <AboutSection onNavigate={handleNavigate} onOpenBooking={handleOpenMailIn} />
             <TeamSection />
-            <WhyChooseUs onNavigate={handleNavigate} onOpenBooking={handleOpenBooking} />
+            <WhyChooseUs onNavigate={handleNavigate} onOpenBooking={handleOpenMailIn} />
           </>
         )}
 
@@ -312,19 +313,14 @@ export function App() {
 
         {currentRoute === 'contact' && (
           <>
+            {/* A tinted band, not a photograph: the contact page is a form
+                and an address, and a full-bleed hero above them only pushes
+                both further down the screen. */}
             <PageHero
-              title="Contact Brantford Wireless"
+              title="Contact Us"
               subtitle="28 King Street, Brantford. Call for the fastest answer."
-              image={PAGE_IMAGES.contact}
             />
-            <ContactSection
-              hideHeader
-              isFullPage
-              onNavigate={handleNavigate}
-              onOpenBooking={handleOpenBooking}
-              onNotify={showToast}
-            />
-            <FAQSection onNavigate={handleNavigate} onOpenBooking={handleOpenBooking} />
+            <ContactSection hideHeader onNavigate={handleNavigate} onNotify={showToast} />
           </>
         )}
       </main>
@@ -340,7 +336,7 @@ export function App() {
       <Footer
         onNavigate={handleNavigate}
         onOpenService={handleOpenService}
-        onOpenBooking={handleOpenBooking}
+        onOpenBooking={handleOpenMailIn}
         onOpenPrivacyTerms={setPrivacyTermsType}
       />
     </div>

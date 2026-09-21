@@ -40,7 +40,6 @@ import {
 import pcBuildsBanner from '../Img/brandford1.jpeg';
 import wrappingBanner from '../Img/brandford2.jpeg';
 import workbenchPhoto from '../Img/brandford3.jpeg';
-import storeVideo from '../vid/brat.mp4';
 
 const wrappingCustomerPhoto: MediaRef = {
   kind: 'image',
@@ -143,20 +142,37 @@ export const STORE_MEDIA = {
   wrappingBanner,
   /** In-store photograph: a technician opening a phone at the bench. */
   workbenchPhoto,
-  /** Short muted loop used behind the home hero. */
-  storeVideo,
+};
+
+/**
+ * Mobile cuts of the two wide store banners.
+ *
+ * The wide artwork is 2048x768 (8:3) and packed to all four edges, so on a
+ * phone it can only ever be about 129px tall and cannot be cropped taller
+ * without losing the logo and the corner text. A second cut at 4:3 or 1:1,
+ * with the same content relaid out for a tall box, is the only way to a
+ * full-size mobile banner.
+ *
+ * To switch them on:
+ *   1. Drop the files in `src/Img/`.
+ *   2. Add the two imports at the top of this file.
+ *   3. Fill the two entries below.
+ * Nothing else changes: `AdBanner` already swaps source and aspect ratio at
+ * `lg` whenever a mobile entry exists, and falls back to the wide art when
+ * it does not.
+ */
+export const STORE_MEDIA_MOBILE: {
+  pcBuildsBanner?: string;
+  wrappingBanner?: string;
+} = {
+  // pcBuildsBanner: pcBuildsBannerMobile,
+  // wrappingBanner: wrappingBannerMobile,
 };
 
 export const WORKBENCH: MediaRef = {
   kind: 'image',
   src: workbenchPhoto,
   alt: 'Brantford Wireless technician opening a smartphone at the repair bench',
-};
-
-export const STORE_FILM: MediaRef = {
-  kind: 'video',
-  src: storeVideo,
-  label: 'Inside the store on King Street',
 };
 
 /* --------------------------------------------------------------------------

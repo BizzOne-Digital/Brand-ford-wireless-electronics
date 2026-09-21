@@ -155,36 +155,12 @@
     box-shadow: 0 18px 40px -24px rgba(10, 27, 51, 0.45);
   }
 
-  /* Caret for the home hero typing effect. Stops with the global
-     prefers-reduced-motion block further down. */
-  .type-caret {
-    display: inline-block;
-    width: 0.07em;
-    height: 0.82em;
-    margin-left: 0.06em;
-    vertical-align: -0.06em;
-    background-color: var(--color-brand-600);
-    animation: caretBlink 1s steps(1) infinite;
-  }
-
-  .trust-marquee-track {
-    display: flex;
-    width: max-content;
-    animation: trustMarquee 24s linear infinite;
-  }
-
-  .trust-marquee-group {
-    flex: 0 0 100vw;
-  }
-
-  @keyframes trustMarquee {
-    from { transform: translateX(0); }
-    to { transform: translateX(-100vw); }
-  }
-
-  @keyframes caretBlink {
-    0%, 45% { opacity: 1; }
-    55%, 100% { opacity: 0; }
+  /* The home hero shows its photograph with no overlay, so its copy has
+     nothing behind it. This is the one place text carries a shadow: it keeps
+     white type readable over the bright slides without putting a wash back
+     over the artwork. It is a perceptual aid, not a contrast guarantee. */
+  .on-photo {
+    text-shadow: 0 1px 2px rgba(10, 27, 51, 0.65), 0 2px 14px rgba(10, 27, 51, 0.55);
   }
 
   .field {

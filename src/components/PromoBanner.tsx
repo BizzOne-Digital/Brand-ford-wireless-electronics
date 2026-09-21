@@ -5,6 +5,10 @@ import { PageRoute } from '../types';
 import { PROMO_SLIDES } from '../data/mockData';
 
 interface PromoBannerProps {
+  /** On the homepage this carousel IS the hero, so it carries the page's
+      single `h1` and clears the fixed header itself. On the store page a
+      PageHero above it already holds the `h1`, so it stays an `h2`. */
+  asHero?: boolean;
   onNavigate: (route: PageRoute) => void;
   onOpenService: (serviceId: string) => void;
   onOpenBooking: () => void;
@@ -13,6 +17,7 @@ interface PromoBannerProps {
 const ROTATE_MS = 7000;
 
 export const PromoBanner: React.FC<PromoBannerProps> = ({
+  asHero = false,
   onNavigate,
   onOpenService,
   onOpenBooking,
@@ -59,18 +64,43 @@ export const PromoBanner: React.FC<PromoBannerProps> = ({
       ref={regionRef}
       aria-roledescription="carousel"
       aria-label="Store promotions"
-      className="bg-white pt-5 pb-2 lg:pt-8"
+      /* As the hero it runs edge to edge with no band around it; the
+         category strip above already carries the fixed header's offset. On
+         the store page it stays a card inside the content column. */
+      className={
+        asHero
+          ? 'bg-white px-4 pt-4 sm:px-6 lg:px-0 lg:pt-0'
+          : 'bg-white pt-5 pb-10 lg:pt-8 lg:pb-14'
+      }
       onMouseEnter={() => setPaused(true)}
       onMouseLeave={() => setPaused(false)}
       onFocusCapture={() => setPaused(true)}
       onBlurCapture={() => setPaused(false)}
       onKeyDown={handleKeyDown}
     >
-      <div className="shell">
-        <div className="relative overflow-hidden rounded-2xl sm:rounded-3xl bg-frost border border-brand-100">
-          <div className="grid lg:grid-cols-[1.05fr_1fr] items-stretch">
+      <div className={asHero ? '' : 'shell'}>
+        <div
+          className={
+            asHero
+              ? 'relative overflow-hidden rounded-2xl bg-frost sm:rounded-3xl lg:rounded-none'
+              : 'relative overflow-hidden rounded-2xl sm:rounded-3xl bg-frost border border-brand-100'
+          }
+        >
+          <div
+            className={
+              asHero
+                ? 'relative'
+                : 'grid lg:grid-cols-[1.05fr_1fr] items-stretch'
+            }
+          >
             {/* Copy. min-height reserves space so slide changes never shift layout. */}
-            <div className="order-2 lg:order-1 px-5 py-7 sm:px-8 sm:py-10 lg:px-12 lg:py-14 flex flex-col justify-center min-h-[248px] sm:min-h-[268px] lg:min-h-[340px]">
+            <div
+              className={`flex flex-col justify-center ${
+                asHero
+                  ? 'relative z-10 max-w-[46rem] px-5 py-11 sm:px-8 sm:py-14 lg:py-20 lg:pl-16 xl:pl-24 min-h-[420px] sm:min-h-[460px] lg:min-h-[520px]'
+                  : 'order-2 lg:order-1 px-5 py-7 sm:px-8 sm:py-10 lg:px-12 lg:py-14 min-h-[248px] sm:min-h-[268px] lg:min-h-[340px]'
+              }`}
+            >
               <AnimatePresence mode="wait">
                 <motion.div
                   key={slide.id}
@@ -83,11 +113,22 @@ export const PromoBanner: React.FC<PromoBannerProps> = ({
                     {slide.badge}
                   </span>
 
-                  <h2 className="mt-4 text-2xl sm:text-3xl lg:text-[2.6rem] lg:leading-[1.08] font-bold text-ink max-w-[18ch]">
-                    {slide.headline}
-                  </h2>
+                  {React.createElement(
+                    asHero ? 'h1' : 'h2',
+                    {
+                      className:
+                        asHero
+                          ? 'on-photo mt-4 text-[2rem] sm:text-4xl lg:text-[3.4rem] lg:leading-[1.06] font-bold text-white max-w-[18ch]'
+                          : 'mt-4 text-2xl sm:text-3xl lg:text-[2.6rem] lg:leading-[1.08] font-bold text-ink max-w-[18ch]',
+                    },
+                    slide.headline
+                  )}
 
-                  <p className="mt-3 text-[0.95rem] sm:text-base text-copy leading-relaxed max-w-[46ch]">
+                  <p
+                    className={`mt-3 leading-relaxed max-w-[46ch] ${
+                      asHero ? 'on-photo text-base text-white sm:text-lg' : 'text-[0.95rem] text-copy sm:text-base'
+                    }`}
+                  >
                     {slide.body}
                   </p>
 
@@ -118,7 +159,11 @@ export const PromoBanner: React.FC<PromoBannerProps> = ({
               {/* Slide indicators. In flow on mobile so they never sit under the
                   CTA; pinned to the panel corner from lg up. */}
               {hasControls && (
-                <div className="mt-6 flex items-center gap-1 lg:absolute lg:bottom-6 lg:left-12 lg:mt-0">
+                <div
+                  className={`mt-6 flex flex-wrap items-center gap-1 ${
+                    asHero ? '' : 'lg:absolute lg:bottom-6 lg:left-12 lg:mt-0 lg:flex-nowrap'
+                  }`}
+                >
                   {slides.map((s, i) => (
                     <button
                       key={s.id}
@@ -130,7 +175,9 @@ export const PromoBanner: React.FC<PromoBannerProps> = ({
                     >
                       <span
                         className={`block h-1.5 rounded-full transition-all duration-300 ${
-                          i === index ? 'w-6 bg-brand-600' : 'w-1.5 bg-brand-300'
+                          i === index
+                            ? `w-6 ${asHero ? 'bg-white shadow-[0_1px_4px_rgba(10,27,51,0.7)]' : 'bg-brand-600'}`
+                            : `w-1.5 ${asHero ? 'bg-white/70 shadow-[0_1px_4px_rgba(10,27,51,0.7)]' : 'bg-brand-300'}`
                         }`}
                       />
                     </button>
@@ -140,7 +187,13 @@ export const PromoBanner: React.FC<PromoBannerProps> = ({
             </div>
 
             {/* Product image. Fixed aspect on mobile, fills the cell on desktop. */}
-            <div className="order-1 lg:order-2 relative bg-brand-100/60 aspect-[16/9] sm:aspect-[21/9] lg:aspect-auto lg:min-h-[340px] overflow-hidden">
+            <div
+              className={`overflow-hidden ${
+                asHero
+                  ? 'absolute inset-0 bg-ink'
+                  : 'order-1 lg:order-2 relative bg-brand-100/60 aspect-[16/9] sm:aspect-[21/9] lg:aspect-auto lg:min-h-[340px]'
+              }`}
+            >
               <AnimatePresence mode="wait">
                 {slide.beforeImage && slide.afterImage ? (
                   /* A before-and-after slide: the two photographs sit side by
@@ -195,11 +248,15 @@ export const PromoBanner: React.FC<PromoBannerProps> = ({
                   />
                 )}
               </AnimatePresence>
-              {/* Softens the image edge into the panel on desktop only */}
-              <div
-                aria-hidden="true"
-                className="hidden lg:block absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-frost to-transparent"
-              />
+              {/* The hero carries no overlay: the artwork shows as shot.
+                  Its copy relies on `.on-photo` instead, see index.css. */}
+              {!asHero && (
+                /* Softens the image edge into the panel on desktop only */
+                <div
+                  aria-hidden="true"
+                  className="hidden lg:block absolute inset-y-0 left-0 w-24 bg-gradient-to-r from-frost to-transparent"
+                />
+              )}
             </div>
           </div>
 

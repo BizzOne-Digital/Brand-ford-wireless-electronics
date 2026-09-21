@@ -20,16 +20,7 @@ export const Header: React.FC<HeaderProps> = ({
   onOpenBooking,
   onOpenMailIn,
 }) => {
-  const [isScrolled, setIsScrolled] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 15);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // Escape closes the drawer; lock the page behind it.
   useEffect(() => {
@@ -64,13 +55,12 @@ export const Header: React.FC<HeaderProps> = ({
 
   return (
     <>
+      {/* Not fixed. The bar scrolls up and out of view with the page; the
+          category strip below it is what stays pinned. z-50 is kept for the
+          mobile drawer, which is a sibling of this element. */}
       <header
         id="main-header"
-        className={`fixed top-3 left-3 right-3 z-50 rounded-2xl bg-ink/75 backdrop-blur-xl transition-shadow duration-300 ${
-          isScrolled
-            ? 'shadow-[0_2px_24px_-10px_rgba(0,0,0,0.6)] border-b border-white/10'
-            : 'border-b border-white/[0.07]'
-        }`}
+        className="relative z-50 mx-3 mt-3 rounded-2xl border-b border-white/[0.07] bg-ink/75 backdrop-blur-xl"
       >
         <div className="shell-wide">
           <div className="flex items-center justify-between h-16">

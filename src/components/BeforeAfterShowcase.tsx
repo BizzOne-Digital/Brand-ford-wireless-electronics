@@ -31,7 +31,7 @@ export const BeforeAfterShowcase: React.FC<BeforeAfterShowcaseProps> = ({ onOpen
   const current = entries[active];
 
   return (
-    <section id="before-after-section" className="section bg-white">
+    <section id="before-after-section" className="section bg-mist">
       <div className="shell">
         <div className="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between">
           <div className="max-w-xl">
