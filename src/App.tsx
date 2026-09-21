@@ -12,6 +12,7 @@ import { CategoryRail } from './components/CategoryRail';
 import { ServicesOverview } from './components/ServicesOverview';
 import { ServiceDetail } from './components/ServiceDetail';
 import { BeforeAfterShowcase } from './components/BeforeAfterShowcase';
+import { TestimonialsSection } from './components/TestimonialsSection';
 import { ProductCatalog } from './components/ProductCatalog';
 import { ProductInquiryModal } from './components/ProductInquiryModal';
 import { AboutSection } from './components/AboutSection';
@@ -192,7 +193,8 @@ export function App() {
               onSeeAll={() => handleNavigate('services')}
             />
 
-            <BeforeAfterShowcase onOpenService={handleOpenService} />
+            {/* Closes the page. */}
+            <TestimonialsSection onNotify={showToast} />
           </>
         )}
 

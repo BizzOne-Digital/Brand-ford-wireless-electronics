@@ -8,7 +8,7 @@
 
 **Revision note:** The site previously ran a dark "midnight showroom" theme. In the current revision the client asked for a brighter, blue and white identity and a shorter homepage. The blue accent and the Space Grotesk / Plus Jakarta Sans pairing carry over from that design; the surfaces inverted from near-black to white.
 
-**Homepage revision.** The homepage was later restructured against a retail-commerce information architecture: a pinned category strip, a full-bleed promotional hero, then paired banners, services and proof. It deliberately carries no contact band; the footer holds the address, phone, email and social, and the contact page holds the form and the map. In the same pass the header stopped being fixed, the separate `Hero` component was removed, and the showroom, inside-the-store, team and testimonial blocks were taken off the homepage. Those components still exist where they are still used; `Hero`, `TrustStrip`, `MobileQuickBar`, `FeaturedWork` and `TestimonialsSection` were deleted outright and are recoverable from git history.
+**Homepage revision.** The homepage was later restructured against a retail-commerce information architecture: a pinned category strip, a full-bleed promotional hero, then paired banners, services and proof. It deliberately carries no contact band; the footer holds the address, phone, email and social, and the contact page holds the form. In the same pass the header stopped being fixed, the separate `Hero` component was removed, and the showroom, inside-the-store, team and testimonial blocks were taken off the homepage. `TestimonialsSection` was later restored at the client's request and closes the page on `mist`; the before-and-after block came off the homepage too and now runs on the services page alone; `ProductCatalog` and `TeamSection` still serve the store and about pages. `Hero`, `TrustStrip`, `MobileQuickBar`, `FeaturedWork` and `FAQSection` were deleted outright and are recoverable from git history.
 
 ---
 
@@ -52,7 +52,7 @@ The palette is defined once, in `@theme` in `src/index.css`, and used only throu
 --color-frost: #ECF3FF;  /* light blue surface */
 ```
 
-**Surface rhythm.** Sections alternate `white` → `mist` → `frost`. The colour change is the divider; sections do not need top borders. Two sections of the same surface must never sit next to each other. The homepage runs white (category strip) -> photograph (hero) -> mist (paired banners) -> white (services) -> mist (before and after) -> ink (footer).
+**Surface rhythm.** Sections alternate `white` → `mist` → `frost`. The colour change is the divider; sections do not need top borders. Two sections of the same surface must never sit next to each other. The homepage runs photograph (hero) -> white (category tiles, phone only) -> mist (paired banners) -> white (services) -> mist (testimonials) -> ink (footer).
 
 **Color rules**
 - **One accent only.** Blue. Never introduce purple, teal, pink, or a second brand hue.
