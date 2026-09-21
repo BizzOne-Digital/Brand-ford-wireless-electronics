@@ -188,11 +188,6 @@ export function App() {
               </div>
             </section>
 
-            <ServicesOverview
-              onOpenService={handleOpenService}
-              onSeeAll={() => handleNavigate('services')}
-            />
-
             {/* Closes the page. */}
             <TestimonialsSection onNotify={showToast} />
           </>
@@ -209,15 +204,17 @@ export function App() {
             <ServicesOverview hideHeader isFullPage onOpenService={handleOpenService} />
 
             <div className="shell pb-4">
-              <AdBanner
-                media={{
-                  kind: 'image',
-                  src: STORE_MEDIA.wrappingBanner,
-                  alt: 'Custom device wrapping: phones, laptops, consoles and controllers in marble, carbon and abstract finishes',
-                }}
-                action="Custom device wrapping"
-                onActivate={() => handleOpenService('device-wrapping')}
-              />
+              <div className="mx-auto max-w-3xl">
+                <AdBanner
+                  media={{
+                    kind: 'image',
+                    src: STORE_MEDIA.wrappingBanner,
+                    alt: 'Custom device wrapping: phones, laptops, consoles and controllers in marble, carbon and abstract finishes',
+                  }}
+                  action="Custom device wrapping"
+                  onActivate={() => handleOpenService('device-wrapping')}
+                />
+              </div>
             </div>
 
             <BeforeAfterShowcase onOpenService={handleOpenService} />

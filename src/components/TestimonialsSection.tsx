@@ -108,7 +108,7 @@ export const TestimonialsSection: React.FC<TestimonialsSectionProps> = ({
   };
 
   return (
-    <section id="testimonials-section" className="section bg-mist">
+    <section id="testimonials-section" className="section bg-white">
       <div className="shell">
         <div className="flex flex-col gap-5 sm:flex-row sm:items-end sm:justify-between">
           <div className="max-w-xl">

@@ -54,23 +54,15 @@ export const ServicesOverview: React.FC<ServicesOverviewProps> = ({
           </div>
         )}
 
-        {/* The services page runs two across so each photograph is roughly
-            620px wide rather than 400px. The homepage keeps three, because it
-            is a summary of five and sits above a long page. */}
+        {/* Three across from `lg`, two below it, on both pages. */}
         <div
-          className={`${hideHeader ? '' : 'mt-8 lg:mt-12'} grid grid-cols-2 gap-3 sm:gap-4 lg:gap-6 ${
-            isFullPage ? 'lg:grid-cols-2' : 'lg:grid-cols-3 lg:gap-5'
-          }`}
+          className={`${hideHeader ? '' : 'mt-8 lg:mt-12'} grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3 lg:gap-5`}
         >
           {services.map((service, index) => (
             <ServiceTile
               key={service.id}
               service={service}
               index={index}
-              /* The lead tile runs full width so the grid is not twelve
-                 identical rectangles. */
-              wide={index === 0}
-              large={isFullPage}
               onOpen={() => onOpenService(service.id)}
             />
           ))}
@@ -100,10 +92,8 @@ export const ServicesOverview: React.FC<ServicesOverviewProps> = ({
 const ServiceTile: React.FC<{
   service: ServiceItem;
   index: number;
-  wide: boolean;
-  large: boolean;
   onOpen: () => void;
-}> = ({ service, index, wide, large, onOpen }) => {
+}> = ({ service, index, onOpen }) => {
   const reduceMotion = useReducedMotion();
   const media = getServiceMedia(service.id);
 
@@ -116,19 +106,11 @@ const ServiceTile: React.FC<{
       whileInView={reduceMotion ? undefined : { opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-60px' }}
       transition={{ duration: 0.4, delay: Math.min(index, 5) * 0.06, ease: 'easeOut' }}
-      className={`group relative block overflow-hidden rounded-2xl border border-line text-left transition-colors hover:border-brand-300 ${
-        wide ? (large ? 'col-span-2' : 'col-span-2 lg:col-span-3') : ''
-      }`}
+      className="group relative block overflow-hidden rounded-2xl border border-line text-left transition-colors hover:border-brand-300"
     >
       <MediaFrame
         media={media.hero}
-        ratio={
-          wide
-            ? 'aspect-[16/10] sm:aspect-[21/9]'
-            : large
-              ? 'aspect-square sm:aspect-[3/2]'
-              : 'aspect-square sm:aspect-[4/3]'
-        }
+        ratio="aspect-square sm:aspect-[4/3]"
         zoomOnHover
         priority={index === 0}
       />
@@ -147,22 +129,12 @@ const ServiceTile: React.FC<{
               {service.badge}
             </span>
           )}
-          <span
-            className={`mt-1 block font-display font-bold leading-tight text-white ${
-              wide
-                ? 'text-xl sm:text-2xl lg:text-3xl'
-                : large
-                  ? 'text-[15px] sm:text-xl md:text-2xl'
-                  : 'text-[15px] sm:text-lg'
-            }`}
-          >
+          <span className="mt-1 block font-display text-[15px] font-bold leading-tight text-white sm:text-lg">
             {service.title}
           </span>
-          <span
-            className={`mt-1 leading-snug text-white/85 ${
-              wide ? 'block text-sm' : 'hidden text-[13px] sm:block sm:text-sm'
-            }`}
-          >
+          {/* At 166px on a phone the tile has room for a title and nothing
+              else, so the tagline waits for `sm`. */}
+          <span className="mt-1 hidden text-[13px] leading-snug text-white/85 sm:block sm:text-sm">
             {media.tagline}
           </span>
 
@@ -177,14 +149,7 @@ const ServiceTile: React.FC<{
           </span>
         </span>
 
-        <span
-          aria-hidden="true"
-          className={`h-9 w-9 shrink-0 items-center justify-center rounded-full bg-white text-ink transition-transform duration-200 group-hover:translate-x-0.5 sm:hidden ${
-            wide ? 'flex' : 'hidden'
-          }`}
-        >
-          <ArrowRight className="h-4 w-4" />
-        </span>
+
       </span>
     </motion.button>
   );
